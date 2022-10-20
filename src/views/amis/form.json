@@ -1,0 +1,21 @@
+{
+  "title": "表单",
+  "body": {
+    "mode": "horizontal",
+    "type": "form",
+    "body": [
+      {
+        "type": "input-text",
+        "label": "文本框",
+        "name": "text",
+        "size": "md"
+      },
+      {
+        "type": "input-password",
+        "label": "<a href='./password'>密码</a>",
+        "name": "password",
+        "size": "md"
+      }
+    ]
+  }
+}

@@ -1,0 +1,3095 @@
+{
+  "body": [
+    {
+      "api": {
+        "url": "/iotapi/amis/Device?perPage=${perPage}&page=${page}&count=objectId&where=%7B%20%22name%22%3A%7B%22regex%22%3A%22${name}%22%7D%2C%22product%22%3A%2221efa507f6%22%2C%22detail.realstatus%22%3A%7B%22regex%22%3A%22${realstatus}%22%7D%2C%22content.baseInfo.Material_List.Specifications%22%3A%7B%22regex%22%3A%22${content.baseInfo.Material_List.Specifications}%22%7D%7D",
+        "data": {
+          "&": "$$"
+        },
+        "method": "get"
+      },
+      "type": "crud",
+      "filter": {
+        "body": [
+          {
+            "mode": "inline",
+            "name": "name",
+            "size": "md",
+            "type": "input-text",
+            "label": "单据编号",
+            "placeholder": "按单据编号查询"
+          },
+          {
+            "mode": "inline",
+            "name": "content.baseInfo.Material_List.Specifications",
+            "size": "md",
+            "type": "input-text",
+            "label": "规格型号",
+            "placeholder": "按单据编号查询"
+          },
+          {
+            "mode": "inline",
+            "name": "realstatus",
+            "size": "md",
+            "type": "select",
+            "label": "订单状态",
+            "options": [
+              {
+                "label": "未派发",
+                "value": "0"
+              },
+              {
+                "label": "未开始",
+                "value": "1"
+              },
+              {
+                "label": "加工中",
+                "value": "2"
+              },
+              {
+                "label": "待首检",
+                "value": "3"
+              },
+              {
+                "label": "首检完成",
+                "value": "4"
+              },
+              {
+                "label": "待尾检",
+                "value": "5"
+              },
+              {
+                "label": "尾检完成",
+                "value": "6"
+              },
+              {
+                "label": "待入库",
+                "value": "7"
+              },
+              {
+                "label": "已入库",
+                "value": "8"
+              },
+              {
+                "label": "已出库",
+                "value": "9"
+              },
+              {
+                "label": "暂停中",
+                "value": "10"
+              }
+            ]
+          },
+          {
+            "size": "md",
+            "type": "submit",
+            "label": "查询",
+            "level": "primary"
+          },
+          {
+            "size": "md",
+            "type": "reset",
+            "label": "重置"
+          }
+        ],
+        "title": "",
+        "submitText": ""
+      },
+      "columns": [
+        {
+          "name": "name",
+          "label": "单据编号",
+          "sortable": true
+        },
+        {
+          "name": "content.baseInfo.Type_of_document",
+          "label": "单据类型",
+          "sortable": true
+        },
+        {
+          "name": "content.baseInfo.Document_date",
+          "label": "单据日期",
+          "width": 120,
+          "sortable": true
+        },
+        {
+          "name": "content.baseInfo.Material_List.Specifications",
+          "label": "规格型号",
+          "width": 120,
+          "sortable": true,
+          "placeholder": "-",
+          "perPageAvailable": [
+            10
+          ]
+        },
+        {
+          "name": "content.baseInfo.Material_List.DeviceName",
+          "label": "物料名称",
+          "width": 120,
+          "sortable": true,
+          "placeholder": "-",
+          "perPageAvailable": [
+            10
+          ]
+        },
+        {
+          "name": "content.baseInfo.Documents_state",
+          "label": "单据状态",
+          "sortable": true
+        },
+        {
+          "name": "content.baseInfo.Material_List.Production_workshop",
+          "label": "车间",
+          "sortable": true
+        },
+        {
+          "name": "content.baseInfo.Number",
+          "label": "生产数量",
+          "sortable": true
+        },
+        {
+          "name": "basedata.progress",
+          "label": "合格数量",
+          "sortable": true,
+          "placeholder": "-"
+        },
+        {
+          "name": "basedata.warehouse",
+          "label": "已入库数量",
+          "sortable": true,
+          "placeholder": "-"
+        },
+        {
+          "name": "content.baseInfo.Product_type",
+          "label": "产品类型",
+          "sortable": true
+        },
+        {
+          "type": "operation",
+          "label": "用料清单",
+          "width": 100,
+          "buttons": [
+            {
+              "type": "button",
+              "label": "查看",
+              "level": "info",
+              "dialog": {
+                "body": [
+                  {
+                    "mode": "inline",
+                    "name": "id",
+                    "type": "input-text",
+                    "label": "id",
+                    "value": "${objectId}",
+                    "readOnly": true
+                  },
+                  {
+                    "api": {
+                      "url": "/iotapi/material?objectId=${objectId}",
+                      "method": "get"
+                    },
+                    "type": "crud",
+                    "columns": [
+                      {
+                        "name": "material_name",
+                        "label": "原料名称",
+                        "popOver": {
+                          "body": "${material_name}",
+                          "trigger": "hover",
+                          "showIcon": false,
+                          "popOverClassName": "min-w-0"
+                        },
+                        "className": "overflow-hidden white-space-nowrap text-overflow-ellipsis"
+                      },
+                      {
+                        "name": "Production_workshop",
+                        "label": "生产车间"
+                      },
+                      {
+                        "name": "material_spec",
+                        "label": "原料型号",
+                        "width": 80
+                      },
+                      {
+                        "name": "material_total",
+                        "label": "应发数量",
+                        "width": 80
+                      },
+                      {
+                        "name": "material_picked",
+                        "label": "已领总数",
+                        "width": 80
+                      }
+                    ],
+                    "className": "form-label-5x"
+                  }
+                ],
+                "size": "lg",
+                "title": "",
+                "actions": [
+                  {
+                    "type": "button",
+                    "label": "关闭",
+                    "level": "primary",
+                    "actionType": "close"
+                  }
+                ],
+                "closeOnEsc": true
+              },
+              "actionType": "dialog"
+            }
+          ]
+        },
+        {
+          "name": "content.baseInfo.Unit",
+          "label": "单位",
+          "sortable": true
+        },
+        {
+          "map": {
+            "0": "<span class='label label-danger'>未派发</span>",
+            "1": "<span class='label label-default'>未开始</span>",
+            "2": "<span class='label label-warning'>加工中</span>",
+            "3": "<span class='label  label-danger'>待首检</span>",
+            "4": "<span class='label label-success'>首检完成</span>",
+            "5": "<span class='label label-danger'>待尾检</span>",
+            "6": "<span class='label label-success'>尾检完成</span>",
+            "7": "<span class='label label-danger'>待入库</span>",
+            "8": "<span class='label label-success'>已入库</span>",
+            "9": "<span class='label label-success'>已出库</span>",
+            "10": "<span class='label label-danger'>暂停中</span>"
+          },
+          "name": "detail.realstatus",
+          "type": "mapping",
+          "label": "工单状态",
+          "sortable": true,
+          "placeholder": "-"
+        },
+        {
+          "type": "operation",
+          "fixed": "right",
+          "label": "操作",
+          "width": 240,
+          "buttons": [
+            {
+              "type": "button",
+              "label": "查看",
+              "drawer": {
+                "body": {
+                  "body": [
+                    {
+                      "name": "name",
+                      "type": "static",
+                      "label": "单据编号",
+                      "required": true,
+                      "extractValue": true,
+                      "labelClassName": "font-bold"
+                    },
+                    {
+                      "name": "content.baseInfo.Number",
+                      "type": "static",
+                      "label": "计划数量",
+                      "required": true,
+                      "labelClassName": "font-bold"
+                    },
+                    {
+                      "src": "${content.jdinfo.imageUrl}",
+                      "type": "image",
+                      "source": "content.jdinfo.imageUrl",
+                      "enlargeAble": true
+                    },
+                    {
+                      "type": "table",
+                      "style": "hieght:150px",
+                      "title": "部门",
+                      "source": "$department",
+                      "columns": [
+                        {
+                          "name": "${index+1}",
+                          "label": "索引",
+                          "width": 50
+                        },
+                        {
+                          "name": "name",
+                          "label": "名称"
+                        }
+                      ]
+                    }
+                  ],
+                  "type": "form"
+                },
+                "title": "查看"
+              },
+              "actionType": "drawer"
+            },
+            {
+              "type": "button",
+              "label": "派发",
+              "level": "success",
+              "dialog": {
+                "body": [
+                  {
+                    "api": {
+                      "url": "/iotapi/amis/Device/${objectId}",
+                      "method": "put",
+                      "requestAdaptor": "acl = api.data.ACL\r\nlet dept = api.data.dept\r\n\r\ndelete api.data\r\napi.data = {}\r\napi.data.detail ={}\r\nacl[`role:${dept}`] ={\"write\":true ,\"read\":true}\r\napi.data.detail.realstatus = 1\r\napi.data.ACL = acl\r\nreturn{\r\n  ...api\r\n}"
+                    },
+                    "body": [
+                      {
+                        "name": "dept",
+                        "type": "nested-select",
+                        "label": "派发人员",
+                        "source": {
+                          "url": "/iotapi/roletree",
+                          "method": "get",
+                          "adaptor": "console.log('payload_roletree',payload)\r\npayload.data = {}\r\npayload.data.options =payload.results\r\ndelete payload.results\r\nreturn {\r\n  ...payload,\r\n  msg:'成功',\r\n  status:0\r\n}",
+                          "responseData": {
+                            "options": "${options|pick:label~label,value~value,children~children}"
+                          }
+                        },
+                        "required": true,
+                        "selectMode": "tree"
+                      },
+                      {
+                        "name": "content.image",
+                        "type": "input-file",
+                        "label": "图片上传",
+                        "accept": "",
+                        "visible": false,
+                        "autoFill": {
+                          "detail.imgUrl": "${path}"
+                        },
+                        "btnLabel": "请选择文件",
+                        "chunkApi": "/api/upload/chunk",
+                        "receiver": {
+                          "url": "/upload",
+                          "method": "post",
+                          "adaptor": "    return {\r\n            ...payload,\r\n              status: 0,\r\n              msg: 'ok'\r\n}",
+                          "requestAdaptor": "                                var file = api.data\r\n                                var jsonData = { file: '' }\r\n                                file.forEach((value: any, key: any) => jsonData[key] = value);\r\n                                console.log(jsonData);\r\n                                // var res:any = await getBinaryFromFile(file)\r\n                                let token =   'r:c640042506eb7320ae73acdf4d9827ea'\r\n                                console.log('token', token)\r\n                                var data = new FormData();\r\n                                let time = new Date().getTime()\r\n                                data.append(\"file\", jsonData.file);\r\n                                data.append(\"scene\", \"app\");\r\n                                data.append(\"filename\", time + '.png');\r\n                                data.append(\"output\", \"json\");\r\n                                data.append(\"path\", \"dgiot_file/order/png/\");\r\n                                data.append(\"auth_token\", token);\r\n                                data.append(\"code\", \"\");\r\n                                data.append(\"submit\", \"upload\");\r\n                                console.log('data内容', data)\r\n                                api.data = data\r\n                                return {\r\n                                    ...api,\r\n                                };"
+                        },
+                        "useChunk": "auto",
+                        "chunkSize": 5242880,
+                        "fileField": "file",
+                        "visibleOn": "",
+                        "autoUpload": true,
+                        "startChunkApi": "/api/upload/startChunk",
+                        "finishChunkApi": "/api/upload/finishChunk",
+                        "hideUploadButton": false,
+                        "clearValueOnHidden": false
+                      },
+                      {
+                        "name": "detail.imgUrl",
+                        "type": "input-text",
+                        "label": "url",
+                        "visible": false,
+                        "visibleOn": "",
+                        "clearValueOnHidden": false
+                      }
+                    ],
+                    "type": "form",
+                    "className": "flex-form-label-5x"
+                  }
+                ],
+                "type": "dialog",
+                "title": "派发任务-${name}"
+              },
+              "actionType": "dialog"
+            },
+            {
+              "type": "button",
+              "label": "指标",
+              "level": "secondary",
+              "dialog": {
+                "body": [
+                  {
+                    "api": {
+                      "url": "/iotapi/amis/Device/${objectId}",
+                      "method": "put"
+                    },
+                    "body": [
+                      {
+                        "name": "basedata.FSaleOrderNo",
+                        "type": "input-text",
+                        "label": "销售订单号",
+                        "disabled": true
+                      },
+                      {
+                        "name": "basedata.FMOBillNO",
+                        "type": "input-text",
+                        "label": "生产用料清单号",
+                        "disabled": true
+                      },
+                      {
+                        "name": "basedata.PUR_PurchaseOrder",
+                        "type": "input-text",
+                        "label": "采购订单编号"
+                      },
+                      {
+                        "name": "basedata.orderid",
+                        "type": "input-text",
+                        "label": "生产订单号",
+                        "disabled": true
+                      },
+                      {
+                        "tabs": [
+                          {
+                            "tab": [
+                              {
+                                "api": {
+                                  "url": "/iotapi/material?objectId=${objectId}&dept=水刺",
+                                  "method": "get"
+                                },
+                                "type": "crud",
+                                "columns": [
+                                  {
+                                    "name": "material_name",
+                                    "label": "原料名称",
+                                    "width": 125,
+                                    "popOver": {
+                                      "body": "${material_name}",
+                                      "trigger": "hover",
+                                      "showIcon": false,
+                                      "popOverClassName": "min-w-0"
+                                    },
+                                    "className": "overflow-hidden white-space-nowrap text-overflow-ellipsis"
+                                  },
+                                  {
+                                    "name": "Production_workshop",
+                                    "label": "生产车间"
+                                  },
+                                  {
+                                    "name": "material_spec",
+                                    "label": "原料型号",
+                                    "width": 80
+                                  },
+                                  {
+                                    "name": "material_total",
+                                    "label": "应发数量",
+                                    "width": 80
+                                  },
+                                  {
+                                    "name": "material_picked",
+                                    "label": "已领总数",
+                                    "width": 80
+                                  }
+                                ],
+                                "className": "form-label-5x"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.spec",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "产品型号",
+                                "source": {
+                                  "url": "/iotapi/spec",
+                                  "data": {
+                                    "worksh": "水刺",
+                                    "objectId": "${objectId}"
+                                  },
+                                  "method": "get"
+                                },
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.way",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "工艺方式",
+                                "options": [
+                                  {
+                                    "label": "木浆湿纸水刺复合",
+                                    "value": "木浆湿纸水刺复合"
+                                  },
+                                  {
+                                    "label": "干纸水刺复合",
+                                    "value": "干纸水刺复合"
+                                  },
+                                  {
+                                    "label": "其它非木浆产品",
+                                    "value": "其它非木浆产品"
+                                  }
+                                ],
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.proline",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "上机产线",
+                                "options": [
+                                  {
+                                    "label": "水刺1#线",
+                                    "value": "水刺1#线"
+                                  },
+                                  {
+                                    "label": "水刺2#线",
+                                    "value": "水刺2#线"
+                                  }
+                                ],
+                                "required": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.pnum",
+                                "size": "sm",
+                                "type": "input-number",
+                                "label": "订单数量kg",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.starttime",
+                                "size": "sm",
+                                "type": "input-date",
+                                "label": "开工日期",
+                                "format": "YYYY-MM-DD",
+                                "required": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "name": "basedata.psweight",
+                                "type": "input-number",
+                                "label": "标准克重",
+                                "value": 0,
+                                "required": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.pdweight",
+                                "size": "sm",
+                                "type": "input-number",
+                                "label": "下限克重",
+                                "disabled": true,
+                                "className": "m-l-md",
+                                "precision": 4,
+                                "displayMode": "enhance"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.pdweightpre",
+                                "size": "sm",
+                                "type": "input-number",
+                                "label": "%",
+                                "value": 2,
+                                "displayMode": "enhance"
+                              },
+                              {
+                                "name": "basedata.pdweight",
+                                "type": "formula",
+                                "label": "计算差值",
+                                "formula": "${FLOOR(basedata.psweight - basedata.psweight * basedata.pdweightpre * 0.01 , 4)}"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.puweight",
+                                "size": "sm",
+                                "type": "input-number",
+                                "label": "上限克重",
+                                "disabled": true,
+                                "className": "m-l-md",
+                                "precision": 4,
+                                "displayMode": "enhance"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.puweightpre",
+                                "size": "sm",
+                                "type": "input-number",
+                                "label": "%",
+                                "value": 2,
+                                "displayMode": "enhance"
+                              },
+                              {
+                                "name": "basedata.puweight",
+                                "type": "formula",
+                                "label": "计算上限值",
+                                "formula": "${FLOOR(basedata.psweight + basedata.psweight * basedata.puweightpre * 0.01 , 4)}"
+                              },
+                              {
+                                "name": "basedata.pswidth",
+                                "type": "input-number",
+                                "label": "标准幅宽",
+                                "value": 0,
+                                "required": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.pdwidth",
+                                "size": "sm",
+                                "type": "input-number",
+                                "label": "下限幅宽",
+                                "disabled": true,
+                                "className": "m-l-md",
+                                "displayMode": "enhance"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.pdwidthdec",
+                                "size": "sm",
+                                "type": "input-number",
+                                "label": "",
+                                "value": 10,
+                                "displayMode": "enhance"
+                              },
+                              {
+                                "name": "basedata.pdwidth",
+                                "type": "formula",
+                                "label": "计算下限幅宽",
+                                "formula": "basedata.pswidth - basedata.pdwidthdec"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.puwidth",
+                                "size": "sm",
+                                "type": "input-number",
+                                "label": "上限幅宽",
+                                "disabled": true,
+                                "className": "m-l-md",
+                                "displayMode": "enhance"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.puwidthadd",
+                                "size": "sm",
+                                "type": "input-number",
+                                "label": "",
+                                "value": 10,
+                                "displayMode": "enhance"
+                              },
+                              {
+                                "name": "basedata.puwidth",
+                                "type": "formula",
+                                "label": "计算上限幅宽",
+                                "formula": "basedata.pswidth + basedata.puwidthadd"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.peyenum",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "平网目数",
+                                "options": [
+                                  {
+                                    "label": "18",
+                                    "value": "18"
+                                  },
+                                  {
+                                    "label": "38",
+                                    "value": "38"
+                                  },
+                                  {
+                                    "label": "80",
+                                    "value": "80"
+                                  },
+                                  {
+                                    "label": "T22",
+                                    "value": "T22"
+                                  }
+                                ],
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "name": "basedata.phour",
+                                "type": "input-number",
+                                "label": "计划用时"
+                              },
+                              {
+                                "name": "basedata.phour",
+                                "type": "formula",
+                                "label": "计算计划用时",
+                                "formula": "${CEIL(basedata.prolllength * basedata.proll * 1/basedata.speed * 1/60 , 1)}"
+                              },
+                              {
+                                "min": 0.1,
+                                "mode": "inline",
+                                "name": "basedata.proll",
+                                "size": "sm",
+                                "type": "input-number",
+                                "label": "生产卷数",
+                                "value": 1,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "min": 0.1,
+                                "mode": "inline",
+                                "name": "basedata.speed",
+                                "size": "sm",
+                                "type": "input-number",
+                                "label": "车速",
+                                "value": 1,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "min": 0.1,
+                                "mode": "inline",
+                                "name": "basedata.prolllength",
+                                "size": "sm",
+                                "type": "input-number",
+                                "label": "下卷米长m",
+                                "value": 1,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.rolldiameter",
+                                "size": "sm",
+                                "type": "input-number",
+                                "label": "卷径mm",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.afeeding",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "原料规格",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.subpanel1",
+                                "size": "md",
+                                "type": "input-number",
+                                "label": "米长 （m/卷）",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.refrollnum1",
+                                "size": "md",
+                                "type": "input-number",
+                                "label": "卷数 （卷）",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.bfeeding",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "原料规格",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.subpanel2",
+                                "size": "md",
+                                "type": "input-number",
+                                "label": "米长 （m/卷）",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.refrollnum2",
+                                "size": "md",
+                                "type": "input-number",
+                                "label": "卷数 （卷）",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.cfeeding",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "原料规格",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.subpanel3",
+                                "size": "md",
+                                "type": "input-number",
+                                "label": "米长 （m/卷）",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.refrollnum3",
+                                "size": "md",
+                                "type": "input-number",
+                                "label": "卷数 （卷）",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.pflower",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "圆谷提花",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.destination",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "下一工序去向",
+                                "options": [
+                                  {
+                                    "label": "印染",
+                                    "value": "2印染"
+                                  },
+                                  {
+                                    "label": "分切",
+                                    "value": "3分切"
+                                  },
+                                  {
+                                    "label": "入库直发",
+                                    "value": "成品仓库"
+                                  }
+                                ],
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.promachine",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "机台选择",
+                                "options": [
+                                  {
+                                    "label": "1#机",
+                                    "value": "1#机"
+                                  },
+                                  {
+                                    "label": "2#机",
+                                    "value": "2#机"
+                                  },
+                                  {
+                                    "label": "3#机",
+                                    "value": "3#机"
+                                  },
+                                  {
+                                    "label": "4#机",
+                                    "value": "4#机"
+                                  },
+                                  {
+                                    "label": "5#机",
+                                    "value": "5#机"
+                                  }
+                                ],
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.proinfo",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "后加工信息",
+                                "options": [
+                                  {
+                                    "label": "染色&分切",
+                                    "value": "染色&分切"
+                                  },
+                                  {
+                                    "label": "染色&直发",
+                                    "value": "染色&直发"
+                                  },
+                                  {
+                                    "label": "印花&分切",
+                                    "value": "印花&分切"
+                                  },
+                                  {
+                                    "label": "印花&直发",
+                                    "value": "印花&直发"
+                                  },
+                                  {
+                                    "label": "上胶&染色&分切",
+                                    "value": "上胶&染色&分切"
+                                  },
+                                  {
+                                    "label": "上胶&染色&直发",
+                                    "value": "上胶&染色&直发"
+                                  },
+                                  {
+                                    "label": "上胶&分切",
+                                    "value": "上胶&分切"
+                                  },
+                                  {
+                                    "label": "上胶&直发",
+                                    "value": "上胶&直发"
+                                  },
+                                  {
+                                    "label": "亲水&分切",
+                                    "value": "亲水&分切"
+                                  }
+                                ],
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "name": "basedata.desc",
+                                "type": "textarea",
+                                "label": "特殊要求",
+                                "labelClassName": "font-bold"
+                              }
+                            ],
+                            "title": "水刺",
+                            "visibleOn": "content.baseInfo.Material_List.Production_workshop.indexOf('水刺')>=0"
+                          },
+                          {
+                            "tab": [
+                              {
+                                "api": {
+                                  "url": "/iotapi/material?objectId=${objectId}&dept=印染",
+                                  "method": "get"
+                                },
+                                "type": "crud",
+                                "columns": [
+                                  {
+                                    "name": "material_name",
+                                    "label": "原料名称",
+                                    "width": 125,
+                                    "popOver": {
+                                      "body": "${material_name}",
+                                      "trigger": "hover",
+                                      "showIcon": false,
+                                      "popOverClassName": "min-w-0"
+                                    },
+                                    "className": "overflow-hidden white-space-nowrap text-overflow-ellipsis"
+                                  },
+                                  {
+                                    "name": "Production_workshop",
+                                    "label": "生产车间"
+                                  },
+                                  {
+                                    "name": "material_spec",
+                                    "label": "原料型号",
+                                    "width": 80
+                                  },
+                                  {
+                                    "name": "material_total",
+                                    "label": "应发数量",
+                                    "width": 80
+                                  },
+                                  {
+                                    "name": "material_picked",
+                                    "label": "已领总数",
+                                    "width": 80
+                                  }
+                                ],
+                                "className": "form-label-5x"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.way",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "工艺方式",
+                                "options": [
+                                  {
+                                    "label": "上胶加工",
+                                    "value": "上胶加工"
+                                  },
+                                  {
+                                    "label": "亲水加工",
+                                    "value": "亲水加工"
+                                  },
+                                  {
+                                    "label": "染色加工",
+                                    "value": "染色加工"
+                                  },
+                                  {
+                                    "label": "印花加工",
+                                    "value": "印花加工"
+                                  }
+                                ],
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.proline",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "上机产线",
+                                "options": [
+                                  {
+                                    "label": "印染1#线",
+                                    "value": "印染1#线"
+                                  },
+                                  {
+                                    "label": "印染2#线",
+                                    "value": "印染2#线"
+                                  }
+                                ],
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.pnum",
+                                "size": "sm",
+                                "type": "input-number",
+                                "label": "订单数量kg",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.starttime",
+                                "size": "sm",
+                                "type": "input-date",
+                                "label": "开工日期",
+                                "format": "YYYY-MM-DD",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.spec",
+                                "size": "lg",
+                                "type": "input-text",
+                                "label": "产品型号",
+                                "source": {
+                                  "url": "/iotapi/spec",
+                                  "data": {
+                                    "worksh": "印染",
+                                    "objectId": "${objectId}"
+                                  },
+                                  "method": "get"
+                                },
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.proroll",
+                                "size": "lg",
+                                "type": "input-number",
+                                "label": "参考加工卷数(卷)",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.mhour",
+                                "size": "lg",
+                                "type": "input-number",
+                                "label": "计划用时(h)",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.speed",
+                                "size": "lg",
+                                "type": "input-number",
+                                "label": "车速",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.afeeding",
+                                "size": "lg",
+                                "type": "input-text",
+                                "label": "原料型号",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.subpanel1",
+                                "size": "md",
+                                "type": "input-number",
+                                "label": "重量 （Kg）",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.refrollnum1",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "说明",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.bfeeding",
+                                "size": "lg",
+                                "type": "input-text",
+                                "label": "原料型号",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.subpanel2",
+                                "size": "md",
+                                "type": "input-number",
+                                "label": "重量 （Kg）",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.refrollnum2",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "说明",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.cfeeding",
+                                "size": "lg",
+                                "type": "input-text",
+                                "label": "原料型号",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.subpanel3",
+                                "size": "md",
+                                "type": "input-number",
+                                "label": "重量 （Kg）",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.refrollnum3",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "说明",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.destination",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "下一工序去向",
+                                "options": [
+                                  {
+                                    "label": "印染",
+                                    "value": "印染"
+                                  },
+                                  {
+                                    "label": "分切",
+                                    "value": "分切"
+                                  },
+                                  {
+                                    "label": "入库直发",
+                                    "value": "入库直发"
+                                  }
+                                ],
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.promachine",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "机台选择",
+                                "options": [
+                                  {
+                                    "label": "1#机",
+                                    "value": "1#机"
+                                  },
+                                  {
+                                    "label": "2#机",
+                                    "value": "2#机"
+                                  },
+                                  {
+                                    "label": "3#机",
+                                    "value": "3#机"
+                                  },
+                                  {
+                                    "label": "4#机",
+                                    "value": "4#机"
+                                  },
+                                  {
+                                    "label": "5#机",
+                                    "value": "5#机"
+                                  }
+                                ],
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.proinfo",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "后加工信息",
+                                "options": [
+                                  {
+                                    "label": "分切",
+                                    "value": "分切"
+                                  },
+                                  {
+                                    "label": "直发",
+                                    "value": "直发"
+                                  },
+                                  {
+                                    "label": "染色&分切",
+                                    "value": "染色&分切"
+                                  },
+                                  {
+                                    "label": "染色&直发",
+                                    "value": "染色&直发"
+                                  }
+                                ],
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "name": "basedata.yrinfo.desc",
+                                "type": "textarea",
+                                "label": "特殊要求",
+                                "labelClassName": "font-bold"
+                              }
+                            ],
+                            "title": "印染",
+                            "visibleOn": "content.baseInfo.Material_List.Production_workshop.indexOf('印染')>=0"
+                          },
+                          {
+                            "tab": [
+                              {
+                                "api": {
+                                  "url": "/iotapi/material?objectId=${objectId}&dept=分切",
+                                  "method": "get"
+                                },
+                                "type": "crud",
+                                "columns": [
+                                  {
+                                    "name": "material_name",
+                                    "label": "原料名称",
+                                    "popOver": {
+                                      "body": "${material_name}",
+                                      "trigger": "hover",
+                                      "showIcon": false,
+                                      "popOverClassName": "min-w-0"
+                                    },
+                                    "className": "overflow-hidden white-space-nowrap text-overflow-ellipsis"
+                                  },
+                                  {
+                                    "name": "Production_workshop",
+                                    "label": "生产车间"
+                                  },
+                                  {
+                                    "name": "material_spec",
+                                    "label": "原料型号",
+                                    "width": 80
+                                  },
+                                  {
+                                    "name": "material_total",
+                                    "label": "应发数量",
+                                    "width": 80
+                                  }
+                                ],
+                                "className": "form-label-5x"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.way",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "工艺方式",
+                                "options": [
+                                  {
+                                    "label": "分切加工",
+                                    "value": "分切加工"
+                                  },
+                                  {
+                                    "label": "压花分切加工",
+                                    "value": "压花分切加工"
+                                  }
+                                ],
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.proline",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "上机产线",
+                                "options": [
+                                  {
+                                    "label": "分切机",
+                                    "value": "分切机"
+                                  },
+                                  {
+                                    "label": "压花机",
+                                    "value": "压花机"
+                                  }
+                                ],
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.starttime",
+                                "size": "md",
+                                "type": "input-date",
+                                "label": "开工日期",
+                                "format": "YYYY-MM-DD",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.endtime",
+                                "size": "md",
+                                "type": "input-date",
+                                "label": "完工日期",
+                                "format": "YYYY-MM-DD",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "name": "basedata.fqinfo.shipmethod",
+                                "type": "input-text",
+                                "label": "出货方式",
+                                "options": [
+                                  {
+                                    "label": "分切机",
+                                    "value": "分切机"
+                                  },
+                                  {
+                                    "label": "压花机",
+                                    "value": "压花机"
+                                  }
+                                ],
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.spec1",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "产品型号",
+                                "source": {
+                                  "url": "/iotapi/spec",
+                                  "data": {
+                                    "worksh": "分切",
+                                    "objectId": "${objectId}"
+                                  },
+                                  "method": "get"
+                                },
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.ordernum1",
+                                "size": "md",
+                                "type": "input-number",
+                                "label": "订单数量(kg)",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.refnum1",
+                                "size": "md",
+                                "type": "input-number",
+                                "label": "参考子卷数(卷)",
+                                "value": 0,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.spec2",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "产品型号",
+                                "source": {
+                                  "url": "/iotapi/spec",
+                                  "data": {
+                                    "worksh": "分切",
+                                    "objectId": "${objectId}"
+                                  },
+                                  "method": "get"
+                                },
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.ordernum2",
+                                "size": "md",
+                                "type": "input-number",
+                                "label": "订单数量(kg)",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.refnum2",
+                                "size": "md",
+                                "type": "input-number",
+                                "label": "参考子卷数(卷)",
+                                "value": 0,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.spec3",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "产品型号",
+                                "source": {
+                                  "url": "/iotapi/spec",
+                                  "data": {
+                                    "worksh": "分切",
+                                    "objectId": "${objectId}"
+                                  },
+                                  "method": "get"
+                                },
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.ordernum3",
+                                "size": "md",
+                                "type": "input-number",
+                                "label": "订单数量(kg)",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.refnum3",
+                                "size": "md",
+                                "type": "input-number",
+                                "label": "参考子卷数(卷)",
+                                "value": 0,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.spec4",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "产品型号",
+                                "source": {
+                                  "url": "/iotapi/spec",
+                                  "data": {
+                                    "worksh": "分切",
+                                    "objectId": "${objectId}"
+                                  },
+                                  "method": "get"
+                                },
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.ordernum4",
+                                "size": "md",
+                                "type": "input-number",
+                                "label": "订单数量(kg)",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.refnum4",
+                                "size": "md",
+                                "type": "input-number",
+                                "label": "参考子卷数(卷)",
+                                "value": 0,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.spec5",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "产品型号",
+                                "source": {
+                                  "url": "/iotapi/spec",
+                                  "data": {
+                                    "worksh": "分切",
+                                    "objectId": "${objectId}"
+                                  },
+                                  "method": "get"
+                                },
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.ordernum5",
+                                "size": "md",
+                                "type": "input-number",
+                                "label": "订单数量(kg)",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.refnum5",
+                                "size": "md",
+                                "type": "input-number",
+                                "label": "参考子卷数(卷)",
+                                "value": 0,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.afeeding",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "原材料型号",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.subpanel1",
+                                "size": "md",
+                                "type": "input-number",
+                                "label": "重量 （Kg）",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.refrollnum1",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "子门幅排列",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.bfeeding",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "原材料型号",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.subpanel2",
+                                "size": "md",
+                                "type": "input-number",
+                                "label": "重量 （Kg）",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.refrollnum2",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "子门幅排列",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.cfeeding",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "原材料型号",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.subpanel3",
+                                "size": "md",
+                                "type": "input-number",
+                                "label": "重量 （Kg）",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.refrollnum3",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "子门幅排列",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.package",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "打包方式",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "name": "basedata.fqinfo.desc",
+                                "type": "textarea",
+                                "label": "特殊要求",
+                                "labelClassName": "font-bold"
+                              }
+                            ],
+                            "title": "分切",
+                            "visibleOn": "content.baseInfo.Material_List.Production_workshop.indexOf('分切')>=0"
+                          }
+                        ],
+                        "type": "tabs",
+                        "tabsMode": "strong",
+                        "mountOnEnter": true,
+                        "unmountOnExit": true
+                      }
+                    ],
+                    "type": "form",
+                    "className": "flex-form-label-5x"
+                  }
+                ],
+                "size": "lg",
+                "type": "dialog",
+                "title": "订单指标-${name}"
+              },
+              "actionType": "dialog"
+            },
+            {
+              "type": "button",
+              "label": "指标展示",
+              "level": "light",
+              "dialog": {},
+              "drawer": {
+                "body": [
+                  {
+                    "body": [
+                      {
+                        "tabs": [
+                          {
+                            "tab": [
+                              {
+                                "mode": "inline",
+                                "name": "basedata.spec",
+                                "size": "md",
+                                "type": "button",
+                                "label": "ERP关联信息",
+                                "dialog": {
+                                  "body": [
+                                    {
+                                      "body": [
+                                        {
+                                          "name": "basedata.FSaleOrderNo",
+                                          "type": "input-text",
+                                          "label": "销售订单号",
+                                          "disabled": false,
+                                          "readOnly": true
+                                        },
+                                        {
+                                          "name": "basedata.FMOBillNO",
+                                          "type": "input-text",
+                                          "label": "生产用料清单号",
+                                          "disabled": false,
+                                          "readOnly": true
+                                        },
+                                        {
+                                          "name": "basedata.PUR_PurchaseOrder",
+                                          "type": "input-text",
+                                          "label": "采购订单编号",
+                                          "disabled": false,
+                                          "readOnly": true
+                                        },
+                                        {
+                                          "name": "basedata.orderid",
+                                          "type": "input-text",
+                                          "label": "生产订单号",
+                                          "disabled": false,
+                                          "readOnly": true
+                                        }
+                                      ],
+                                      "type": "form",
+                                      "className": "flex-form-label-5x"
+                                    }
+                                  ],
+                                  "size": "lg",
+                                  "type": "dialog",
+                                  "title": "ERP关联信息-${name}"
+                                },
+                                "actionType": "dialog"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.proline",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "上机产线",
+                                "disabled": false,
+                                "readOnly": true,
+                                "required": false,
+                                "labelClassName": "font-bold m-l-md"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.starttime",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "开工日期",
+                                "format": "YYYY-MM-DD",
+                                "disabled": false,
+                                "required": false,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.spec",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "生产订单号",
+                                "disabled": false,
+                                "multiple": true,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.spec",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "产品型号",
+                                "disabled": false,
+                                "multiple": true,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.spec",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "订单数量",
+                                "disabled": false,
+                                "multiple": true,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.phour",
+                                "size": "xs",
+                                "type": "input-text",
+                                "label": "计划用时",
+                                "disabled": false,
+                                "readOnly": true,
+                                "precision": 4
+                              },
+                              {
+                                "min": 0.1,
+                                "mode": "inline",
+                                "name": "basedata.speed",
+                                "size": "xs",
+                                "type": "input-text",
+                                "label": "车速",
+                                "value": 1,
+                                "disabled": false,
+                                "readOnly": true,
+                                "required": false,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "min": 0.1,
+                                "mode": "inline",
+                                "name": "basedata.peyenum",
+                                "size": "xs",
+                                "type": "input-text",
+                                "label": "平网目数",
+                                "value": 1,
+                                "disabled": false,
+                                "readOnly": true,
+                                "required": false,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "min": 0.1,
+                                "mode": "inline",
+                                "name": "basedata.proll",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "生产卷数",
+                                "value": 1,
+                                "disabled": false,
+                                "readOnly": true,
+                                "required": false,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "min": 0.1,
+                                "mode": "inline",
+                                "name": "basedata.prolllength",
+                                "size": "xs",
+                                "type": "input-text",
+                                "label": "下卷米长m",
+                                "value": 1,
+                                "disabled": false,
+                                "readOnly": true,
+                                "required": false,
+                                "labelClassName": "font-bold b-5x"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.rolldiameter",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "卷径mm",
+                                "disabled": false,
+                                "readOnly": true,
+                                "required": false,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.pdweight",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "下限克重",
+                                "disabled": false,
+                                "readOnly": true,
+                                "className": "m-l-md",
+                                "precision": 4,
+                                "displayMode": "enhance"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.psweight",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "标准克重",
+                                "value": 0,
+                                "disabled": false,
+                                "readOnly": true,
+                                "required": false,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.puweight",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "上限克重",
+                                "disabled": false,
+                                "readOnly": true,
+                                "className": "m-l-md",
+                                "precision": 4,
+                                "displayMode": "enhance",
+                                "labelClassName": ""
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.pdwidth",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "下限幅宽",
+                                "disabled": false,
+                                "readOnly": true,
+                                "className": "m-l-md",
+                                "displayMode": "enhance"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.pswidth",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "标准幅宽",
+                                "value": 0,
+                                "disabled": false,
+                                "readOnly": true,
+                                "required": false,
+                                "className": "b-white",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.puwidth",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "上限幅宽",
+                                "disabled": false,
+                                "readOnly": true,
+                                "className": "m-l-md",
+                                "displayMode": "enhance"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.pavweight",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "整卷平均克重",
+                                "disabled": false,
+                                "readOnly": true,
+                                "required": false
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.pflower",
+                                "size": "lg",
+                                "type": "input-text",
+                                "label": "圆谷提花",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.afeeding",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "原料规格",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.subpanel1",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "米长 （m/卷）",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.refrollnum1",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "卷数 （卷）",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.bfeeding",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "原料规格",
+                                "disabled": false,
+                                "readOnly": true,
+                                "required": false,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.subpanel2",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "米长 （m/卷）",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.refrollnum2",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "卷数 （卷）",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.cfeeding",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "原料规格",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.subpanel3",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "米长 （m/卷）",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.refrollnum3",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "卷数 （卷）",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.destination",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "下一工序去向",
+                                "options": [
+                                  {
+                                    "label": "印染",
+                                    "value": "印染"
+                                  },
+                                  {
+                                    "label": "分切",
+                                    "value": "分切"
+                                  },
+                                  {
+                                    "label": "入库直发",
+                                    "value": "入库直发"
+                                  }
+                                ],
+                                "disabled": false,
+                                "readOnly": true,
+                                "required": false,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.promachine",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "机台选择",
+                                "options": [
+                                  {
+                                    "label": "1#机",
+                                    "value": "1#机"
+                                  },
+                                  {
+                                    "label": "2#机",
+                                    "value": "2#机"
+                                  },
+                                  {
+                                    "label": "3#机",
+                                    "value": "3#机"
+                                  },
+                                  {
+                                    "label": "4#机",
+                                    "value": "4#机"
+                                  },
+                                  {
+                                    "label": "5#机",
+                                    "value": "5#机"
+                                  }
+                                ],
+                                "disabled": false,
+                                "readOnly": true,
+                                "required": false,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.proinfo",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "后加工信息",
+                                "options": [
+                                  {
+                                    "label": "染色&分切",
+                                    "value": "染色&分切"
+                                  },
+                                  {
+                                    "label": "染色&直发",
+                                    "value": "染色&直发"
+                                  },
+                                  {
+                                    "label": "印花&分切",
+                                    "value": "印花&分切"
+                                  },
+                                  {
+                                    "label": "印花&直发",
+                                    "value": "印花&直发"
+                                  },
+                                  {
+                                    "label": "上胶&染色&分切",
+                                    "value": "上胶&染色&分切"
+                                  },
+                                  {
+                                    "label": "上胶&染色&直发",
+                                    "value": "上胶&染色&直发"
+                                  },
+                                  {
+                                    "label": "上胶&分切",
+                                    "value": "上胶&分切"
+                                  },
+                                  {
+                                    "label": "上胶&直发",
+                                    "value": "上胶&直发"
+                                  },
+                                  {
+                                    "label": "亲水&分切",
+                                    "value": "亲水&分切"
+                                  }
+                                ],
+                                "disabled": false,
+                                "readOnly": true,
+                                "required": false,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "name": "basedata.desc",
+                                "type": "textarea",
+                                "label": "特殊要求",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              }
+                            ],
+                            "title": "水刺",
+                            "visibleOn": "content.baseInfo.Material_List.Production_workshop.indexOf('水刺')>=0"
+                          },
+                          {
+                            "tab": [
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.spec",
+                                "size": "md",
+                                "type": "button",
+                                "label": "ERP 关联信息",
+                                "dialog": {
+                                  "body": [
+                                    {
+                                      "body": [
+                                        {
+                                          "name": "basedata.FSaleOrderNo",
+                                          "type": "input-text",
+                                          "label": "销售订单号",
+                                          "disabled": false,
+                                          "readOnly": true
+                                        },
+                                        {
+                                          "name": "basedata.FMOBillNO",
+                                          "type": "input-text",
+                                          "label": "生产用料清单号",
+                                          "disabled": false,
+                                          "readOnly": true
+                                        },
+                                        {
+                                          "name": "basedata.PUR_PurchaseOrder",
+                                          "type": "input-text",
+                                          "label": "采购订单编号",
+                                          "disabled": false,
+                                          "readOnly": true
+                                        },
+                                        {
+                                          "name": "basedata.orderid",
+                                          "type": "input-text",
+                                          "label": "生产订单号",
+                                          "disabled": false,
+                                          "readOnly": true
+                                        }
+                                      ],
+                                      "type": "form",
+                                      "className": "flex-form-label-5x"
+                                    }
+                                  ],
+                                  "size": "lg",
+                                  "type": "dialog",
+                                  "title": "ERP关联信息-${name}"
+                                },
+                                "disabled": false,
+                                "multiple": true,
+                                "required": true,
+                                "actionType": "dialog",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.way",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "工艺方式",
+                                "options": [
+                                  {
+                                    "label": "上胶加工",
+                                    "value": "上胶加工"
+                                  },
+                                  {
+                                    "label": "亲水加工",
+                                    "value": "亲水加工"
+                                  },
+                                  {
+                                    "label": "染色加工",
+                                    "value": "染色加工"
+                                  },
+                                  {
+                                    "label": "印花加工",
+                                    "value": "印花加工"
+                                  }
+                                ],
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold m-l-md"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.proline",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "上机产线",
+                                "options": [
+                                  {
+                                    "label": "印染1#线",
+                                    "value": "印染1#线"
+                                  },
+                                  {
+                                    "label": "印染2#线",
+                                    "value": "印染2#线"
+                                  }
+                                ],
+                                "disabled": false,
+                                "readOnly": true,
+                                "required": false,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.starttime",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "开工日期",
+                                "format": "YYYY-MM-DD",
+                                "disabled": false,
+                                "readOnly": true,
+                                "required": false,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.spec",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "产品型号",
+                                "disabled": false,
+                                "multiple": true,
+                                "readOnly": true,
+                                "required": false,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.pnum",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "订单数量（Kg）",
+                                "disabled": false,
+                                "multiple": true,
+                                "readOnly": true,
+                                "required": false,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.proroll",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "参考加工卷数(卷)",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.mhour",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "计划用时(h)",
+                                "disabled": false,
+                                "readOnly": true,
+                                "required": false,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.speed",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "车速",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.afeeding",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "原料型号",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.subpanel1",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "重量 （Kg）",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.refrollnum1",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "说明",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.bfeeding",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "原料型号",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.subpanel2",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "重量 （Kg）",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.refrollnum2",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "说明",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.cfeeding",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "原料型号",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.subpanel3",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "重量 （Kg）",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.refrollnum3",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "说明",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.destination",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "下一工序去向",
+                                "options": [
+                                  {
+                                    "label": "印染",
+                                    "value": "印染"
+                                  },
+                                  {
+                                    "label": "分切",
+                                    "value": "分切"
+                                  },
+                                  {
+                                    "label": "入库直发",
+                                    "value": "入库直发"
+                                  }
+                                ],
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.promachine",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "机台选择",
+                                "options": [
+                                  {
+                                    "label": "1#机",
+                                    "value": "1#机"
+                                  },
+                                  {
+                                    "label": "2#机",
+                                    "value": "2#机"
+                                  },
+                                  {
+                                    "label": "3#机",
+                                    "value": "3#机"
+                                  },
+                                  {
+                                    "label": "4#机",
+                                    "value": "4#机"
+                                  },
+                                  {
+                                    "label": "5#机",
+                                    "value": "5#机"
+                                  }
+                                ],
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.yrinfo.proinfo",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "后加工信息",
+                                "options": [
+                                  {
+                                    "label": "分切",
+                                    "value": "分切"
+                                  },
+                                  {
+                                    "label": "直发",
+                                    "value": "直发"
+                                  },
+                                  {
+                                    "label": "染色&分切",
+                                    "value": "染色&分切"
+                                  },
+                                  {
+                                    "label": "染色&直发",
+                                    "value": "染色&直发"
+                                  }
+                                ],
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "name": "basedata.yrinfo.desc",
+                                "type": "textarea",
+                                "label": "特殊要求",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              }
+                            ],
+                            "title": "印染",
+                            "visibleOn": "content.baseInfo.Material_List.Production_workshop.indexOf('印染')>=0"
+                          },
+                          {
+                            "tab": [
+                              {
+                                "mode": "inline",
+                                "name": "basedata.spec",
+                                "size": "md",
+                                "type": "button",
+                                "label": "ERP关联信息",
+                                "dialog": {
+                                  "body": [
+                                    {
+                                      "body": [
+                                        {
+                                          "name": "basedata.FSaleOrderNo",
+                                          "type": "input-text",
+                                          "label": "销售订单号",
+                                          "disabled": false,
+                                          "readOnly": true
+                                        },
+                                        {
+                                          "name": "basedata.FMOBillNO",
+                                          "type": "input-text",
+                                          "label": "生产用料清单号",
+                                          "disabled": false,
+                                          "readOnly": true
+                                        },
+                                        {
+                                          "name": "basedata.PUR_PurchaseOrder",
+                                          "type": "input-text",
+                                          "label": "采购订单编号",
+                                          "disabled": false,
+                                          "readOnly": true
+                                        },
+                                        {
+                                          "name": "basedata.orderid",
+                                          "type": "input-text",
+                                          "label": "生产订单号",
+                                          "disabled": false,
+                                          "readOnly": true
+                                        }
+                                      ],
+                                      "type": "form",
+                                      "className": "flex-form-label-5x"
+                                    }
+                                  ],
+                                  "size": "lg",
+                                  "type": "dialog",
+                                  "title": "ERP关联信息-${name}"
+                                },
+                                "actionType": "dialog"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.way",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "工艺方式",
+                                "options": [
+                                  {
+                                    "label": "分切加工",
+                                    "value": "分切加工"
+                                  },
+                                  {
+                                    "label": "压花分切加工",
+                                    "value": "压花分切加工"
+                                  }
+                                ],
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold m-l-md"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.proline",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "上机产线",
+                                "options": [
+                                  {
+                                    "label": "分切机",
+                                    "value": "分切机"
+                                  },
+                                  {
+                                    "label": "压花机",
+                                    "value": "压花机"
+                                  }
+                                ],
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.starttime",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "开工日期",
+                                "format": "YYYY-MM-DD",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.orderid",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "生产订单号",
+                                "format": "YYYY-MM-DD",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.shipmethod",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "出货方式",
+                                "options": [
+                                  {
+                                    "label": "分切机",
+                                    "value": "分切机"
+                                  },
+                                  {
+                                    "label": "压花机",
+                                    "value": "压花机"
+                                  }
+                                ],
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.endtime",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "送达客户日期",
+                                "format": "YYYY-MM-DD",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.spec1",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "产品型号",
+                                "disabled": false,
+                                "multiple": true,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.ordernum1",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "订单数量(kg)",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.refnum1",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "参考子卷数(卷)",
+                                "value": 0,
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.spec2",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "产品型号",
+                                "disabled": false,
+                                "multiple": true,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.ordernum2",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "订单数量(kg)",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.refnum2",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "参考子卷数(卷)",
+                                "value": 0,
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.spec3",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "产品型号",
+                                "disabled": false,
+                                "multiple": true,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.ordernum3",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "订单数量(kg)",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.refnum3",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "参考子卷数(卷)",
+                                "value": 0,
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.spec4",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "产品型号",
+                                "disabled": false,
+                                "multiple": true,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.ordernum4",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "订单数量(kg)",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.refnum4",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "参考子卷数(卷)",
+                                "value": 0,
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.spec5",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "产品型号",
+                                "disabled": false,
+                                "multiple": true,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.ordernum5",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "订单数量(kg)",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.refnum5",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "参考子卷数(卷)",
+                                "value": 0,
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.afeeding",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "原材料型号",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.subpanel1",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "重量 （Kg）",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.refrollnum1",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "子门幅排列",
+                                "disabled": false,
+                                "readOnly": true,
+                                "className": "b-primary",
+                                "inputClassName": "b-danger",
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.bfeeding",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "原材料型号",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.subpanel2",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "重量 （Kg）",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.refrollnum2",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "子门幅排列",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.cfeeding",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "原材料型号",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.subpanel3",
+                                "size": "sm",
+                                "type": "input-text",
+                                "label": "重量 （Kg）",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.refrollnum3",
+                                "size": "md",
+                                "type": "input-text",
+                                "label": "子门幅排列",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "mode": "inline",
+                                "name": "basedata.fqinfo.package",
+                                "size": "lg",
+                                "type": "input-text",
+                                "label": "打包方式",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              },
+                              {
+                                "name": "basedata.fqinfo.desc",
+                                "type": "textarea",
+                                "label": "特殊要求",
+                                "disabled": false,
+                                "readOnly": true,
+                                "labelClassName": "font-bold"
+                              }
+                            ],
+                            "title": "分切",
+                            "visibleOn": "content.baseInfo.Material_List.Production_workshop.indexOf('分切')>=0"
+                          }
+                        ],
+                        "type": "tabs",
+                        "width": 1000,
+                        "tabsMode": "chrome",
+                        "closeOnEsc": false,
+                        "subFormMode": "",
+                        "mountOnEnter": true,
+                        "unmountOnExit": true,
+                        "closeOnOutside": false,
+                        "showCloseButton": true
+                      }
+                    ],
+                    "mode": "horizontal",
+                    "type": "form",
+                    "initApi": "",
+                    "horizontal": {
+                      "left": 4,
+                      "right": 8,
+                      "leftFixed": "sm"
+                    }
+                  }
+                ],
+                "type": "drawer",
+                "title": "订单指标-${name}",
+                "width": "1000px",
+                "height": "500",
+                "closeOnEsc": false,
+                "footerBtnSize": "lg",
+                "closeOnOutside": false,
+                "showCloseButton": true
+              },
+              "actionType": "drawer"
+            },
+            {
+              "type": "button",
+              "label": "加急",
+              "level": "warning",
+              "dialog": {
+                "body": [
+                  {
+                    "api": {
+                      "url": "/iotapi/amis/Device/${objectId}",
+                      "method": "put"
+                    },
+                    "body": [
+                      {
+                        "name": "isfast",
+                        "type": "select",
+                        "label": "是否加急",
+                        "value": true,
+                        "options": [
+                          {
+                            "label": "是",
+                            "value": true
+                          },
+                          {
+                            "label": "否",
+                            "value": false
+                          }
+                        ],
+                        "labelClassName": "font-bold"
+                      }
+                    ],
+                    "type": "form",
+                    "className": "flex-form-label-5x"
+                  }
+                ],
+                "type": "dialog",
+                "title": "任务-${name}"
+              },
+              "actionType": "dialog",
+              "perPageAvailable": [
+                10
+              ]
+            },
+            {
+              "id": "u:79835445d9ea",
+              "type": "button",
+              "label": "判入",
+              "dialog": {
+                "body": [
+                  {
+                    "id": "u:90e746f07a04",
+                    "api": {
+                      "url": "/iotapi/amis/Device/${objectId}",
+                      "data": {
+                        "&": "$$",
+                        "person.num": "${content.person.num}",
+                        "change.newtask": "${objectId}",
+                        "person.orderid": "${name}",
+                        "change.neworder": "${name}",
+                        "person.deviceid": "${objectId}",
+                        "person.sheetsid": "${rollid}"
+                      },
+                      "method": "put",
+                      "requestAdaptor": "person = api.data.person\r\nchange = api.data.change\r\ndelete api.data\r\napi.data={}\r\napi.data.content={}\r\napi.data.content.person=person\r\napi.data.content.change = change\r\nreturn {\r\n  ...api\r\n}"
+                    },
+                    "body": [
+                      {
+                        "api": {
+                          "url": "/iotapi/uniapp/scancode/dbd9f5baeb",
+                          "method": "put",
+                          "headers": {
+                            "store": "localStorage",
+                            "dgiotReplace": "${objectId}"
+                          },
+                          "responseData": {
+                            "rollid": "${content.app_scancode}"
+                          }
+                        },
+                        "type": "button",
+                        "block": true,
+                        "label": "扫码",
+                        "level": "primary",
+                        "dialog": {
+                          "body": "对你点击了",
+                          "title": "系统提示"
+                        },
+                        "actionType": "ajax"
+                      },
+                      {
+                        "name": "rollid",
+                        "type": "input-text",
+                        "label": "母卷号id",
+                        "value": "0"
+                      },
+                      {
+                        "name": "content.person.rollnum",
+                        "type": "input-text",
+                        "label": "母卷号",
+                        "readOnly": true
+                      },
+                      {
+                        "name": "name",
+                        "type": "input-text",
+                        "label": "判入订单名",
+                        "readOnly": true
+                      },
+                      {
+                        "name": "content.person.spec",
+                        "type": "input-text",
+                        "label": "现规格型号",
+                        "readOnly": true
+                      },
+                      {
+                        "name": "content.person.num",
+                        "type": "input-text",
+                        "label": "数量",
+                        "readOnly": true
+                      },
+                      {
+                        "name": "person.type",
+                        "type": "input-text",
+                        "label": "操作类型",
+                        "value": "change",
+                        "visible": false,
+                        "readOnly": true,
+                        "visibleOn": "",
+                        "clearValueOnHidden": false
+                      },
+                      {
+                        "name": "change.status",
+                        "type": "input-number",
+                        "label": "判入",
+                        "value": 1,
+                        "visible": false,
+                        "readOnly": true,
+                        "visibleOn": "",
+                        "clearValueOnHidden": false
+                      }
+                    ],
+                    "type": "form",
+                    "title": "表单",
+                    "initApi": {
+                      "url": "/iotapi/amis/Device/${rollid}",
+                      "method": "get",
+                      "sendOn": "this.rollid != 0",
+                      "adaptor": "delete payload.data.objectId\r\ndelete payload.data.name\r\nreturn{\r\n  ...payload\r\n}"
+                    }
+                  }
+                ],
+                "type": "dialog",
+                "title": "系统提示"
+              },
+              "actionType": "dialog"
+            }
+          ]
+        }
+      ],
+      "checkAll": false,
+      "messages": {},
+      "initFetch": true,
+      "placeholder": "-",
+      "syncLocation": false,
+      "defaultParams": {
+        "orderby": "updateat"
+      },
+      "footerToolbar": [
+        "switch-per-page",
+        "pagination"
+      ],
+      "headerToolbar": [],
+      "perPageAvailable": [
+        10,
+        20,
+        50,
+        100
+      ]
+    }
+  ],
+  "type": "page"
+}
