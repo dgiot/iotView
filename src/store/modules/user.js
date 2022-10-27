@@ -10,6 +10,7 @@ const getDefaultState = () => {
     name: localStorage.getItem('name')||'',
     avatar: '',
     objectId:localStorage.getItem('objectId')||'',
+    routes:[],
   }
 }
 
@@ -31,6 +32,10 @@ const mutations = {
   SET_OBJECTID: (state, objectId) => {
     console.log('objectId',objectId);
     state.objectId = objectId
+  },
+  setRoutes: (state, routes) => {
+    console.log('routes',routes);
+    state.routes = routes
   }
 }
 

@@ -1,8 +1,8 @@
 {
-  "name": "amis-vue-template",
+  "name": "dashboard-amis",
   "version": "4.4.0",
   "description": "Amis Vue Template with Element UI & axios & iconfont & permission control & lint",
-  "author": "Pan <panfree23@gmail.com>",
+  "author": "失落泪 <2258650676@qq.com>",
   "scripts": {
     "dev": "vue-cli-service serve",
     "build:prod": "vue-cli-service build",

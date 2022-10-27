@@ -7,12 +7,14 @@
     />
 
     <breadcrumb class="breadcrumb-container" />
-
+    <span class="fullscreen" @click="handleFullScreen">
+      <i style="fontSize:20px;cursor:pointer" class="el-icon-full-screen"></i>
+       </span>
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img :src="$FileServe + avatar" class="user-avatar" />
-          <i class="el-icon-caret-bottom" />
+          <i  class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
           <router-link to="/">
@@ -53,6 +55,7 @@ export default {
       objectId: "",
       client: "",
       queryParams: {},
+      fullscreen: false,
     };
   },
   computed: {
@@ -82,13 +85,47 @@ export default {
   },
 
   methods: {
+    // 全屏事件
+    //原文链接：https://blog.csdn.net/weixin_39550080/article/details/124823420
+    handleFullScreen() {
+      let element = document.documentElement;
+      // 判断是否已经是全屏
+      // 如果是全屏，退出
+      if (this.fullscreen) {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitCancelFullScreen) {
+          document.webkitCancelFullScreen();
+        } else if (document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+        }
+        console.log("已还原！");
+      } else {
+        // 否则，进入全屏
+        if (element.requestFullscreen) {
+          element.requestFullscreen();
+        } else if (element.webkitRequestFullScreen) {
+          element.webkitRequestFullScreen();
+        } else if (element.mozRequestFullScreen) {
+          element.mozRequestFullScreen();
+        } else if (element.msRequestFullscreen) {
+          // IE11
+          element.msRequestFullscreen();
+        }
+        console.log("已全屏！");
+      }
+      // 改变当前全屏状态
+      this.fullscreen = !this.fullscreen;
+    },
     async queryData() {
       let params = {
-        type:'Dashboard'
-      }
+        type: "Dashboard",
+      };
       const { dashboard = {} } = await getDlinkJson(params);
-      let list = []
-      list.push(dashboard[1])
+      let list = [];
+      list.push(dashboard[1]);
       this.queryParams = list;
       // setTimeout(() => {
       //     this.queryParams.forEach((e) => {
@@ -96,8 +133,8 @@ export default {
       //       this.loadingConfig[`${key}`] = true
       //     })
       //   }, 1240)
-      const Startdashboardid = "32511dbfe5";
-      await Startdashboard(Startdashboardid,this.queryParams );
+      // const Startdashboardid = "32511dbfe5";
+      // await Startdashboard(Startdashboardid, this.queryParams);
     },
     async Mqtt(md5Info) {
       const { VUE_APP_URL, NODE_ENV } = process.env;
@@ -120,7 +157,8 @@ export default {
         router: md5Info.router,
       };
       // console.groupEnd();
-      client = mqtt.connect(`ws://${ip}:8083/mqtt`, this.option); //47.118.69.187
+      let head = this.option.isSSL ? 'wss':'ws'
+      client = mqtt.connect(`${head}://${ip}:${this.option.port}/mqtt`, this.option); //47.118.69.187
       this.mqttMsg();
       // dgiotlogger.info("MqttConnect", this.option);
       await this.$dgiotBus.$emit("MqttConnect", this.option);
@@ -139,7 +177,7 @@ export default {
       });
       client.on("message", (topic, message) => {
         console.log("收到来自", topic, "的消息", message);
-        _this.$dgiotBus.$emit('send',message)
+        _this.$dgiotBus.$emit("send", message);
       });
       client.on("reconnect", (error) => {
         console.log("正在重连", error);
@@ -181,7 +219,11 @@ export default {
   position: relative;
   background: #fff;
   box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
-
+  .fullscreen{
+    position: absolute;
+    right: 100px;
+    top: 14px;
+  }
   .hamburger-container {
     line-height: 46px;
     height: 100%;

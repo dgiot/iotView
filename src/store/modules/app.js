@@ -37,7 +37,10 @@ const actions = {
   },
   toggleDevice({ commit }, device) {
     commit('TOGGLE_DEVICE', device)
-  }
+  },
+  // updateRealCard(state, payload) {
+  //   state.realCard = payload
+  // },
 }
 
 export default {

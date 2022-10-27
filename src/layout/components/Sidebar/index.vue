@@ -25,6 +25,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { getNavigation } from "@/api/Navigation/index";
 import Logo from "./Logo";
 import SidebarItem from "./SidebarItem";
 import variables from "@/styles/variables.scss";
@@ -36,36 +37,38 @@ export default {
   },
   data() {
     return {
-      routeslist: [
+      routeslist: JSON.parse(localStorage.getItem('routes')) || []
+    };
+  },
+  async mounted() {
+    // const res = await getNavigation();
+    console.log("路由", localStorage.getItem('routes'));
+    // localStorage.setItem("routes", res.results);
+    return 
+    this.routeslist = [
         {
           path: "/",
-          component: Layout,
+          // component: Layout,
           redirect: "/dashboard",
           children: [
             {
               path: "dashboard",
               name: "Dashboard",
-              component: () => import("@/views/dashboard/index"),
+              // component: () => import("@/views/dashboard/index"),
               meta: { title: "首页", icon: "dashboard" },
             },
           ],
         },
         {
-          path: "/order",
-          component: Layout,
-          redirect: "/amis/theme",
-          name: "Amis",
-          children: [
-            {
-              path: "/amis/View/c13e05f354",
-              name: "zz",
-              component: () => import("@/views/CloudOc/AmisPage/index"),
-              meta: {
-                title: "订单管理",
-                icon: "el-icon-eleme",
-              },
-            },
-          ],
+          path: "/amis/View/63aeba715c",
+          name: "zz",
+          component: () => import("@/views/CloudOc/AmisPage/index"),
+          hidden: true,
+          meta: {
+            title: "职务管理",
+            icon: "plus",
+            // amisComponent: "/amis/tabs",
+          },
         },
         {
           path: "/work",
@@ -73,7 +76,7 @@ export default {
           redirect: "/amis/theme",
           name: "Amis",
           meta: {
-            title: "人员管理",
+            title: "云工厂",
             icon: "form",
             // amisComponent: "/amis/tabs",
           },
@@ -88,14 +91,14 @@ export default {
                 // amisComponent: "/amis/tabs",
               },
             },
-             {
-              path: "/amis/View/09f15f657b",
+
+            {
+              path: "/amis/View/c13e05f354",
               name: "zz",
-              component: () => import("@/views/CloudOc/AmisPage/index"),
+              // component: () => import("@/views/CloudOc/AmisPage/index"),
               meta: {
-                title: "职务管理",
-                icon: "plus",
-                // amisComponent: "/amis/tabs",
+                title: "订单管理",
+                icon: "el-icon-eleme",
               },
             },
           ],
@@ -140,8 +143,22 @@ export default {
         //   component: () => import('@/views/CloudOc/AmisPage/index'),
         //   meta: { title: '测试导航栏', icon: 'form' }
         // },
-      ],
-    };
+      ];
+  },
+  methods: {
+    // filterAsyncRoutes(routes, roles) {
+    //   const res = [];
+    //   routes.forEach((route) => {
+    //     const tmp = { ...route };
+    //     if (hasPermission(roles, tmp)) {
+    //       if (tmp.children) {
+    //         tmp.children = filterAsyncRoutes(tmp.children, roles);
+    //       }
+    //       res.push(tmp);
+    //     }
+    //   });
+    //   return res;
+    // },
   },
   computed: {
     ...mapGetters(["sidebar"]),
