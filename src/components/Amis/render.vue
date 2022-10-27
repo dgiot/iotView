@@ -186,7 +186,7 @@ export default {
                   // );
                   // 如果有默认值,就使用默认值进行替换。
                   if (headers?.amisdefault?.length) {
-                    console.log("amisdefault", headers.amisdefault);
+                    // console.log("amisdefault", headers.amisdefault);
                   }
                   url = headers?.amisdefault?.length
                     ? ""
@@ -202,7 +202,7 @@ export default {
           }
           if (url.indexOf("null") == -1 || url.indexOf("undefined") == -1) {
             // throw new Error(`url请求参数不正确${url}`)
-            console.log(url);
+            // console.log(url);
             // topo 以下处理了 请求参数替换不正确时页面报错的情况
             url = url.replace("/null", "/").replace("/undefined", "/");
           }

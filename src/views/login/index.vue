@@ -88,7 +88,7 @@ export default {
     };
     const validatePassword = (rule, value, callback) => {
       if (value.length < 4) {
-        callback(new Error("The password can not be less than 4 digits"));
+        callback(new Error("密码不能少于4位"));
       } else {
         callback();
       }
@@ -99,9 +99,10 @@ export default {
         password: "",
       },
       loginRules: {
-        username: [{ required: true, trigger: "blur",message: '请输入账号' }],
+        username: [{ required: true, trigger: "blur", message: '请输入账号' }],
         password: [
-          { required: true, trigger: "blur", validator: validatePassword,message: '请输入密码' },
+          // validatePassword
+          { required: true, trigger: "blur", message: '请输入密码' },
         ],
       },
       loading: false,
@@ -278,10 +279,10 @@ $light_gray: #eee;
   // background-size: "100% 100%" !important;
   .login-form {
     position: absolute;
-    left: 60%;
+    left: 55%;
     top: 30%;
     background-color: #002d55;
-    width: 520px;
+    width: 400px;
     max-width: 100%;
     padding: 40px 35px 0;
     margin: 0 auto;
