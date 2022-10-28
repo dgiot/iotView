@@ -18,10 +18,9 @@ DGIoT是国内首款轻量级工业物联网开源平台，我们致力于为5�
 ## 平台快速体验与技术交流微信群
 | 微信技术支持群 |官网 https://www.dgiotcloud.cn/| [QQ技术支持群](https://jq.qq.com/?_wv=1027&k=LipWZvDe)： 346566935   | 
 |:---:|:---:|:---:|
-|<img src="https://prod.dgiotcloud.cn/dgiot_file/website/wx.jpg" width = "60%" /> |**平台体验网址**</br><br/>https://prod.dgiotcloud.cn<br/></br><br/>**账号密码按体验类型已默认填写**</br>|<img src="http://dgiot-1253666439.cos.ap-shanghai-fsi.myqcloud.com/shuwa_tech/zh/QQ%E6%8A%80%E6%9C%AF%E7%BE%A4%E4%BA%8C%E7%BB%B4%E7%A0%81.png" width = "60%" /> |
+|<img src="https://dgiot-web-1306242080.cos.ap-nanjing.myqcloud.com/wechat.png" width = "60%" /> |**平台体验网址**</br><br/>https://prod.dgiotcloud.cn<br/></br><br/>**账号密码按体验类型已默认填写**</br>|<img src="http://dgiot-1253666439.cos.ap-shanghai-fsi.myqcloud.com/shuwa_tech/zh/QQ%E6%8A%80%E6%9C%AF%E7%BE%A4%E4%BA%8C%E7%BB%B4%E7%A0%81.png" width = "60%" /> |
 
 ## 特色功能
-+ 可视化组态编辑器
 + 低代码快速开发
 
   
@@ -35,65 +34,49 @@ dgiot 前端框架
 
 | 源码平台 | 源码地址                                                                                      |
 | -------- | --------------------------------------------------------------------------------------------- |
-| github   | [https://github.com/dgiot/dgiot-dashboard](https://github.com/dgiot/dgiot-dashboard?from=git) |
-| gitee    | [https://gitee.com/dgiiot/dgiot-dashboard](https://gitee.com/dgiiot/dgiot-dashboard?from=git) |
+| github   | [https://github.com/dgiot/dgiot_lowcode](https://github.com/dgiot/dgiot_lowcode?from=git) |
+
   
-## 小程序体验 
-
-  <img src="http://dgiot-1253666439.cos.ap-shanghai-fsi.myqcloud.com/dgiot_release/dgiot_wechat.jpg" width = "20%" />
-## 开发环境
-
-[下载 dgiot_develop_tools](https://dgiot-dev-1306147891.cos.ap-nanjing.myqcloud.com/msys64/msys64.zip)
-
 ## 安装使用
 
 - 获取项目代码
 
 ```bash
-git clone -b master https://github.com.cnpmjs.org/dgiot/dgiot-dashboard.git
+git clone -b master https://github.com/dgiot/dgiot_lowcode.git
 ```
 
 - 安装依赖
 
 ```bash
-cd dgiot-dashboard
 
 npm i -g pnpm --registry=https://registry.npmmirror.com
 
 pnpm config set registry https://registry.npmmirror.com
 
-pnpm -v
 
-pnpm install
+npm install
 ```
 
 - 运行
 
 ```bash
-pnpm dev
+npm run dev
 ```
 
 - 运行成功
   ![b65e47b3-afcf-9bf4-4190-ab6c557ef217.png](https://dgiot-1253666439.cos.ap-shanghai-fsi.myqcloud.com/shuwa_tech/zh/frontend/web/b65e47b3-afcf-9bf4-4190-ab6c557ef217.png)
 
-- [本地预览](http://localhost/)
 
 - 登录
 
   | 用户名      | 密码        |
   | ----------- | ----------- |
   | dgiot_admin | dgiot_admin |
-- 系统首页
-![](https://prod.dgiotcloud.cn/dgiot_file/website/head.png)
-- 设备组态预览
-![](https://prod.dgiotcloud.cn/dgiot_file/website/konva.png)
-- 设备详情实时数据查看
-  ![](https://prod.dgiotcloud.cn/dgiot_file/website/realcard.png)
-- [项目预览](https://tech.iotn2n.com/zh/frontend/web/#%E9%A1%B9%E7%9B%AE%E9%A2%84%E8%A7%88)
+
 - 打包
 
 ```bash
-pnpm build
+npm run build:prod
 ```
 
 
