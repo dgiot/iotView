@@ -1,128 +1,99 @@
-# amis-vue-template
-
-> 这是根据花裤衩大神的vue-admin-template极简管理后台搭建的，里面仅仅集成amis低代码开发最基本的依赖，可以支持vue+amis混合开发，在对原项目入侵最小的情况下实现amis代码开发渲染。其构建和运行完全遵照vue-admin-template，需要说明的是跳转amis低代码开发的页面时，仅需在路由元信息配置以下一个参数，如下：
-
-```javasrcipt
-
-  {
-    path: '/amis',
-    component: Layout,
-    redirect: '/amis/theme',
-    name: 'Amis',
-    meta: {
-      title: 'Amis',
-      icon: 'nested'
-    },
-    children: [
-      {
-        path: '/tabs',
-        name: 'tabs',
-        component: () => import('@/views/amis/index'),
-        meta: { title: 'tabs', icon: 'form', amisComponent: '/amis/tabs' }
-      },
-      {
-        path: '/table',
-        name: 'table',
-        component: () => import('@/views/amis/index'),
-        meta: { title: 'table', icon: 'form', amisComponent: '/amis/table' }
-      }
-    ]
-  },
-
-```
-
-我们在路由元信息meta中添加了amisComponent参数，用于指向amis低代码开发的.json文件，该文件应当位于目录views下，可以和.vue文件放在一起，也可以单独新建目录存放，但必须在目录views下。路径的末尾应当指向.json文件，但不用添加文件扩展名.json
-
-想深入了解vue-admin-template，请可以继续往下阅读，或者移步[作者主页](https://github.com/PanJiaChen)
-
-[线上地址](http://panjiachen.github.io/vue-admin-template)
-
-[国内访问](https://panjiachen.gitee.io/vue-admin-template)
-
-目前版本为 `v4.0+` 基于 `vue-cli` 进行构建，若你想使用旧版本，可以切换分支到[tag/3.11.0](https://github.com/PanJiaChen/vue-admin-template/tree/tag/3.11.0)，它不依赖 `vue-cli`。
-
+# dgiot-dashboard 轻量级工业物联网平台
 <p align="center">
-  <b>SPONSORED BY</b>
-</p>
-<p align="center">
-   <a href="https://finclip.com?from=vue_element" title="FinClip" target="_blank">
-      <img height="200px" src="https://gitee.com/panjiachen/gitee-cdn/raw/master/vue%E8%B5%9E%E5%8A%A9.png" title="FinClip">
-   </a>
-</p>
+  <img src="https://img.shields.io/github/commit-activity/m/dgiot/dgiot-dashboard" alt="ommit-activity">
+	<img src="https://badgen.net/badge/package/%40dgiot%2Fdgiot-dashboard/blue"
+	alt="package" maxretrytimes="3" class="m-1 transition-all duration-1000">
+  <img src="https://img.shields.io/github/release/dgiot/dgiot-dashboard?color=brightgreen" alt="release">
 
-## Extra
 
-如果你想要根据用户角色来动态生成侧边栏和 router，你可以使用该分支[permission-control](https://github.com/PanJiaChen/vue-admin-template/tree/permission-control)
+  
+  ## DGIoT平台简介
+DGIoT是国内首款轻量级工业物联网开源平台，我们致力于为5类客户提供物联网解决方案：
++ **国企/研究院**：平台代码开源，无版权产权困扰，国产无“卡脖”之忧
++ **系统集成商**：通用设备海量接入、定制设备二次开发、30分钟一键式私有化快速部署，低成本（降90%成本）
++ **工业设备制造商**：海量设备上线运维，不受公有云限制，低成本，短周期自建平台，私有化部署，数据安全
++ **开源平台开发者**：一键式开发环境，集成和兼容各种最优开源工具，快速承接物联网项目
++ **垂直领域物联网平台**：快速部署私有化平台，千万级承载，运营级底座，全开放扩展
 
-## 相关项目
+## 平台快速体验与技术交流微信群
+| 微信技术支持群 |官网 https://www.dgiotcloud.cn/| [QQ技术支持群](https://jq.qq.com/?_wv=1027&k=LipWZvDe)： 346566935   | 
+|:---:|:---:|:---:|
+|<img src="https://prod.dgiotcloud.cn/dgiot_file/website/wx.jpg" width = "60%" /> |**平台体验网址**</br><br/>https://prod.dgiotcloud.cn<br/></br><br/>**账号密码按体验类型已默认填写**</br>|<img src="http://dgiot-1253666439.cos.ap-shanghai-fsi.myqcloud.com/shuwa_tech/zh/QQ%E6%8A%80%E6%9C%AF%E7%BE%A4%E4%BA%8C%E7%BB%B4%E7%A0%81.png" width = "60%" /> |
 
-- [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)
+## 特色功能
++ 可视化组态编辑器
++ 低代码快速开发
 
-- [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
+  
+![微服务架构图_02.png](https://dgiot-1253666439.cos.ap-shanghai-fsi.myqcloud.com/shuwa_tech/zh/frontend/web/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E5%9B%BE_02.png)
 
-- [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template)
+dgiot 前端框架
 
-- [awesome-project](https://github.com/PanJiaChen/vue-element-admin/issues/2312)
 
-写了一个系列的教程配套文章，如何从零构建后一个完整的后台项目:
 
-- [手摸手，带你用 vue 撸后台 系列一(基础篇)](https://juejin.im/post/59097cd7a22b9d0065fb61d2)
-- [手摸手，带你用 vue 撸后台 系列二(登录权限篇)](https://juejin.im/post/591aa14f570c35006961acac)
-- [手摸手，带你用 vue 撸后台 系列三 (实战篇)](https://juejin.im/post/593121aa0ce4630057f70d35)
-- [手摸手，带你用 vue 撸后台 系列四(vueAdmin 一个极简的后台基础模板,专门针对本项目的文章,算作是一篇文档)](https://juejin.im/post/595b4d776fb9a06bbe7dba56)
-- [手摸手，带你封装一个 vue component](https://segmentfault.com/a/1190000009090836)
+## 相关源码地址项目源码
 
-## Build Setup
+| 源码平台 | 源码地址                                                                                      |
+| -------- | --------------------------------------------------------------------------------------------- |
+| github   | [https://github.com/dgiot/dgiot-dashboard](https://github.com/dgiot/dgiot-dashboard?from=git) |
+| gitee    | [https://gitee.com/dgiiot/dgiot-dashboard](https://gitee.com/dgiiot/dgiot-dashboard?from=git) |
+  
+## 小程序体验 
 
-```bash
-# 克隆项目
-git clone https://github.com/PanJiaChen/vue-admin-template.git
+  <img src="http://dgiot-1253666439.cos.ap-shanghai-fsi.myqcloud.com/dgiot_release/dgiot_wechat.jpg" width = "20%" />
+## 开发环境
 
-# 进入项目目录
-cd vue-admin-template
+[下载 dgiot_develop_tools](https://dgiot-dev-1306147891.cos.ap-nanjing.myqcloud.com/msys64/msys64.zip)
 
-# 安装依赖
-npm install
+## 安装使用
 
-# 建议不要直接使用 cnpm 安装以来，会有各种诡异的 bug。可以通过如下操作解决 npm 下载速度慢的问题
-npm install --registry=https://registry.npm.taobao.org
-
-# 启动服务
-npm run dev
-```
-
-浏览器访问 [http://localhost:9528](http://localhost:9528)
-
-## 发布
+- 获取项目代码
 
 ```bash
-# 构建测试环境
-npm run build:stage
-
-# 构建生产环境
-npm run build:prod
+git clone -b master https://github.com.cnpmjs.org/dgiot/dgiot-dashboard.git
 ```
 
-## 其它
+- 安装依赖
 
 ```bash
-# 预览发布环境效果
-npm run preview
+cd dgiot-dashboard
 
-# 预览发布环境效果 + 静态资源分析
-npm run preview -- --report
+npm i -g pnpm --registry=https://registry.npmmirror.com
 
-# 代码格式检查
-npm run lint
+pnpm config set registry https://registry.npmmirror.com
 
-# 代码格式检查并自动修复
-npm run lint -- --fix
+pnpm -v
+
+pnpm install
 ```
 
-更多信息请参考 [使用文档](https://panjiachen.github.io/vue-element-admin-site/zh/)
+- 运行
 
-## License
+```bash
+pnpm dev
+```
 
-[MIT](https://github.com/PanJiaChen/vue-admin-template/blob/master/LICENSE) license.
+- 运行成功
+  ![b65e47b3-afcf-9bf4-4190-ab6c557ef217.png](https://dgiot-1253666439.cos.ap-shanghai-fsi.myqcloud.com/shuwa_tech/zh/frontend/web/b65e47b3-afcf-9bf4-4190-ab6c557ef217.png)
 
-Copyright (c) 2017-present PanJiaChen
+- [本地预览](http://localhost/)
+
+- 登录
+
+  | 用户名      | 密码        |
+  | ----------- | ----------- |
+  | dgiot_admin | dgiot_admin |
+- 系统首页
+![](https://prod.dgiotcloud.cn/dgiot_file/website/head.png)
+- 设备组态预览
+![](https://prod.dgiotcloud.cn/dgiot_file/website/konva.png)
+- 设备详情实时数据查看
+  ![](https://prod.dgiotcloud.cn/dgiot_file/website/realcard.png)
+- [项目预览](https://tech.iotn2n.com/zh/frontend/web/#%E9%A1%B9%E7%9B%AE%E9%A2%84%E8%A7%88)
+- 打包
+
+```bash
+pnpm build
+```
+
+
