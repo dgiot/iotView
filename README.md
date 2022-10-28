@@ -18,7 +18,7 @@ DGIoT是国内首款轻量级工业物联网开源平台，我们致力于为5�
 ## 平台快速体验与技术交流微信群
 | 微信技术支持群 |官网 https://www.dgiotcloud.cn/| [QQ技术支持群](https://jq.qq.com/?_wv=1027&k=LipWZvDe)： 346566935   | 
 |:---:|:---:|:---:|
-|<img src="https://dgiot-web-1306242080.cos.ap-nanjing.myqcloud.com/wechat.png" width = "60%" /> |**平台体验网址**</br><br/>https://prod.dgiotcloud.cn<br/></br><br/>**账号密码按体验类型已默认填写**</br>|<img src="http://dgiot-1253666439.cos.ap-shanghai-fsi.myqcloud.com/shuwa_tech/zh/QQ%E6%8A%80%E6%9C%AF%E7%BE%A4%E4%BA%8C%E7%BB%B4%E7%A0%81.png" width = "60%" /> |
+|<img src="https://dgiot-web-1306242080.cos.ap-nanjing.myqcloud.com/wechat.png" width = "60%" /> |**平台体验网址**</br><br/>https://prod.dgiotcloud.cn<br/></br><br/></br>|<img src="http://dgiot-1253666439.cos.ap-shanghai-fsi.myqcloud.com/shuwa_tech/zh/QQ%E6%8A%80%E6%9C%AF%E7%BE%A4%E4%BA%8C%E7%BB%B4%E7%A0%81.png" width = "60%" /> |
 
 ## 特色功能
 + 低代码快速开发
@@ -63,8 +63,9 @@ npm install
 npm run dev
 ```
 
-- 运行成功
-  ![b65e47b3-afcf-9bf4-4190-ab6c557ef217.png](https://dgiot-1253666439.cos.ap-shanghai-fsi.myqcloud.com/shuwa_tech/zh/frontend/web/b65e47b3-afcf-9bf4-4190-ab6c557ef217.png)
+- 效果展示
+<br/>
+<img src="https://www.dgiotcloud.cn/wp-content/uploads/2022102808590871.png" width = "60%" /> 
 
 
 - 登录
