@@ -73,7 +73,7 @@
 
 <script>
 import { validUsername } from "@/utils/validate";
-import { getNavigation } from "@/api/Navigation/index";
+import { getNavigation } from "@/api/Navigation";
 import { mapMutations } from "vuex"; //mapMutations，mapGetters
 import Cookies from "js-cookie";
 export default {
@@ -174,7 +174,7 @@ export default {
                 }
               });
               let routes = this.initRoutes(list);
-              console.log("路由", routes);
+              // console.log("路由", routes);
               localStorage.setItem("routes", JSON.stringify(routes));
               // let
               //  this.$store.commit("setRoutes", res.results);
@@ -192,10 +192,14 @@ export default {
       });
     },
     initRoutes(routes) {
+      console.log('routes',routes);
       routes.forEach((item) => {
         item.path = item.url;
         if (item.children) {
           this.initRoutes(item.children);
+        }
+        if(item.meta&&item.children){
+          item.meta.icon = 'el-icon-menu'
         }
       });
       return routes;
@@ -279,10 +283,10 @@ $light_gray: #eee;
   // background-size: "100% 100%" !important;
   .login-form {
     position: absolute;
-    left: 55%;
+    right: 10%;
     top: 30%;
     background-color: #002d55;
-    width: 400px;
+    width: 375px;
     max-width: 100%;
     padding: 40px 35px 0;
     margin: 0 auto;

@@ -46,12 +46,13 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(res => {
         console.log('response',res);
-        const { sessionToken,name,tag,objectId } = res
+        const { sessionToken,name,tag,objectId,roles } = res
         localStorage.setItem('avatar',tag.userinfo.avatar)
         commit('SET_NAME', name)
         localStorage.setItem('name',name)
         commit('SET_OBJECTID', objectId)  //用户唯一标识
         localStorage.setItem('objectId',objectId)
+        localStorage.setItem('deptId', roles[0].objectId)
         commit('SET_AVATAR', tag.userinfo.avatar)
         commit('SET_TOKEN', sessionToken)
         setToken(sessionToken)

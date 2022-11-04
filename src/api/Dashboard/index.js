@@ -1,18 +1,33 @@
 import request from '@/utils/request'
+import axios from 'axios'
+import { getToken } from '@/utils/auth'
 // export async function getView(ObjectId) {
 //   return get_object('View', ObjectId)
 // }
-export function getDlinkJson(params) {
+export function getDlinkJson(data) {
   return request({
     url: `/dlinkjson`,
     method: 'get',
-    params
+    params: {
+      type: data
+    }
   })
 }
-export function Startdashboard(dashboardId,data) {
-  return request({
-    url: `/dashboard?dashboardId=${dashboardId}`,
+export async function Startdashboard(dashboardId,data) {
+  // console.log('window',window.location.origin);
+  let ip = window.location.origin
+  if(ip.indexOf('localhost'>=0)){
+    ip = 'http://192.168.1.9:5080'
+  }
+  return axios({
+    url: `${ip}/iotapi/dashboard`,
     method: 'post',
-    data
+    data: data,
+    params: {
+      dashboardId: dashboardId
+    },
+    headers: {
+      "sessionToken": getToken()
+    }
   })
 }

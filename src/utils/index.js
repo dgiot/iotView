@@ -115,3 +115,11 @@ export function param2Obj(url) {
   })
   return obj
 }
+export function utc2beijing(utc_datetime) {
+  // 转为正常的时间格式 年-月-日 时:分:秒
+  var date = new Date(+new Date(utc_datetime) + 8 * 3600 * 1000)
+    .toISOString()
+    .replace(/T/g, ' ')
+    .replace(/\.[\d]{3}Z/, '')
+  return date // 2017-03-31 16:02:06
+}

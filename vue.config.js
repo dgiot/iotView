@@ -13,7 +13,7 @@ const name = defaultSettings.title || 'Amis Vue Template' // page title
 // For example, Mac: sudo npm run
 // You can change the port by the following methods:
 // port = 9528 npm run dev OR npm run dev --port = 9528
-const port = process.env.port || process.env.npm_config_port || 9528 // dev port
+const port = process.env.port || process.env.npm_config_port || 82 // dev port
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
   /**
@@ -38,10 +38,10 @@ module.exports = {
     proxy: {
       '/iotapi': {
         //代理api
-        target: 'http://oa57.jeenor.com:82' , //代理接口(注意只要域名就够了) // https://www.bossupi.com    jb http://43.138.215.206
+        target: 'http://192.168.1.9:5080' , //代理接口(注意只要域名就够了) // https://www.bossupi.com    jb http://43.138.215.206
         secure: 'true',
         changeOrigin: true, //是否跨域
-        // ws: true, // proxy websockets
+        ws: true, // proxy websockets
         pathRewrite: {
           //重写路径
           '^/iotapi': '/iotapi'  //代理路径

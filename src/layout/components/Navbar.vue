@@ -8,13 +8,16 @@
 
     <breadcrumb class="breadcrumb-container" />
     <span class="fullscreen" @click="handleFullScreen">
-      <i style="fontSize:20px;cursor:pointer" class="el-icon-full-screen"></i>
-       </span>
+      <i
+        style="fontsize: 20px; cursor: pointer"
+        class="el-icon-full-screen"
+      ></i>
+    </span>
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img :src="$FileServe + avatar" class="user-avatar" />
-          <i  class="el-icon-caret-bottom" />
+          <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
           <router-link to="/">
@@ -58,6 +61,24 @@ export default {
       fullscreen: false,
     };
   },
+  watch: {
+    $route: {
+      handler(route) {
+        console.log("route", route, Cookies.get("sidebarStatus"));
+        // this.activeMenu = handleActivePath(route);
+        if (
+          route.fullPath.indexOf("/dashboard") >= 0 &&
+          Cookies.get("sidebarStatus") == 1
+        ) {
+          this.$store.dispatch("app/toggleSideBar");
+        }
+        // route.fullPath.indexOf("/index") >= 0
+        //   ? (this.isDeptShow = false)
+        //   : (this.isDeptShow = true);
+      },
+      immediate: true,
+    },
+  },
   computed: {
     ...mapGetters(["sidebar", "token", "name"]),
   },
@@ -80,7 +101,7 @@ export default {
       console.log("接收消息", data);
     });
     await this.Mqtt(md5Info);
-    this.queryData();
+    // this.queryData();
     // console.log(md5Info);
   },
 
@@ -123,7 +144,7 @@ export default {
       let params = {
         type: "Dashboard",
       };
-      const { dashboard = {} } = await getDlinkJson(params);
+      const { dashboard = {} } = await getDlinkJson("Dashboard");
       let list = [];
       list.push(dashboard[1]);
       this.queryParams = list;
@@ -139,7 +160,7 @@ export default {
     async Mqtt(md5Info) {
       const { VUE_APP_URL, NODE_ENV } = process.env;
       const { hostname, protocol } = location;
-      console.log(location);
+      // console.log(location);
       const ip =
         NODE_ENV == "development"
           ? VUE_APP_URL.split("//")[1].split(":")[0]
@@ -157,8 +178,11 @@ export default {
         router: md5Info.router,
       };
       // console.groupEnd();
-      let head = this.option.isSSL ? 'wss':'ws'
-      client = mqtt.connect(`${head}://${ip}:${this.option.port}/mqtt`, this.option); //47.118.69.187
+      let head = this.option.isSSL ? "wss" : "ws";
+      client = mqtt.connect(
+        `${head}://${ip}:${this.option.port}/mqtt`,
+        this.option
+      ); //47.118.69.187
       this.mqttMsg();
       // dgiotlogger.info("MqttConnect", this.option);
       await this.$dgiotBus.$emit("MqttConnect", this.option);
@@ -177,7 +201,14 @@ export default {
       });
       client.on("message", (topic, message) => {
         console.log("收到来自", topic, "的消息", message);
-        _this.$dgiotBus.$emit("send", message);
+        let sendtopic = topic.split("/");
+        console.log(sendtopic);
+        let sendTopic = `/${sendtopic[sendtopic.length - 3]}/${
+          sendtopic[sendtopic.length - 2]
+        }/${sendtopic[sendtopic.length - 1]}`;
+        // return
+        console.log(sendTopic);
+        _this.$dgiotBus.$emit(sendTopic, message);
       });
       client.on("reconnect", (error) => {
         console.log("正在重连", error);
@@ -187,6 +218,7 @@ export default {
       });
     },
     toggleSideBar() {
+      console.log("1");
       this.$store.dispatch("app/toggleSideBar");
     },
     async logout() {
@@ -219,7 +251,7 @@ export default {
   position: relative;
   background: #fff;
   box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
-  .fullscreen{
+  .fullscreen {
     position: absolute;
     right: 100px;
     top: 14px;

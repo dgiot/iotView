@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Cookies from 'js-cookie'
+import { Base64 } from "js-base64";
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
 import ElementUI from 'element-ui'
@@ -11,6 +12,8 @@ import '@/styles/index.scss' // global css
 import App from './App'
 import store from './store'
 import router from './router'
+
+import VCharts from 'v-charts'
 
 import '@/icons' // icon
 import '@/permission' // permission control
@@ -37,7 +40,9 @@ if (process.env.NODE_ENV === 'production') {
 }
 Vue.prototype.$_ = require("lodash")
 Vue.prototype.$Cookies = Cookies
-Vue.prototype.$dgiotBus =  new Vue();
+Vue.prototype.$Base64 = Base64
+window.Base64 = Vue.prototype.$Base64
+Vue.prototype.$dgiotBus = new Vue();
 window.dgiotBus = Vue.prototype.$dgiotBus
 Vue.prototype.$FileServe = ''
 window.Vue = Vue
@@ -46,6 +51,7 @@ window.Vue = Vue
 // Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
 Vue.use(ElementUI)
+Vue.use(VCharts)
 
 Vue.config.productionTip = false
 
