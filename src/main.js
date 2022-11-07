@@ -20,11 +20,13 @@ import '@/permission' // permission control
 
 import '@dgiot/dgiot-component'
 
-import 'amis/lib/themes/cxd.css'
-import 'amis/lib/themes/ang.css'
-import 'amis/lib/themes/default.css'
+// import 'amis/lib/themes/cxd.css'
+// import 'amis/lib/themes/ang.css'
+// import 'amis/lib/themes/default.css'
 // import 'amis/lib/helper.css'
-import 'amis/sdk/sdk.css'
+// import 'amis/sdk/sdk.css'
+// import "amis/lib/themes/antd.css";
+
 // import 'amis-editor/dist/style.css'
 /**
  * If you don't want to use mock-server

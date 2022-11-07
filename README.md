@@ -65,7 +65,7 @@ npm run dev
 
 - 效果展示
 <br/>
-<img src="https://www.dgiotcloud.cn/wp-content/uploads/2022102808590871.png" width = "60%" /> 
+<img src="http://dgiot-1253666439.cos.ap-shanghai-fsi.myqcloud.com/shuwa_tech/zh/frontend/dgiottopo/dgiot_lowcode.png" width = "60%" /> 
 
 
 - 登录

@@ -1,40 +1,7 @@
 <template>
   <div class="dashboard-container">
-    <!-- <div class="dashboard-text">name: {{ name }}</div> -->
-    <!-- <div
-      style="
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 96px 0 8px 0;
-      "
-    >
-      <span style="font-size: 32px; font-weight: bold"
-        >浙江保舒康新材料有限公司</span
-      >
-    </div>
-    <div
-      style="
-        width: 100%;
-        text-align: center;
-        color: rgba(0, 0, 0, 0.45);
-        margin-bottom: 40;
-        font-size: 20px;
-      "
-    >
-      浙江保舒康新材料有限公司经营范围为新型材料的技术开发、技术咨询、技术服务、成果转让；家用纺织制成品制造；产业用纺织制成品制造；非金属矿物制品制造；第一类医疗器械生产；第一类医疗器械销售；产业用纺织制成品销售
-      <br />
-      <h4>
-        我们致力于为客户提供更专业的产品、更具竞争力的价格、更全面完善的服务。我们用我们的行动为地球的环保做出最大的努力。
-      </h4>
-    </div> -->
-    <!-- <amis
-      style="height: 100%"
-      modal-append-to-body
-      :schema="viewData"
-      :show-help="false"
-    /> -->
     <div id="container"></div>
+
     <div v-if="vueFlag">
       <div
         v-for="(comp, index) in vueComponents"
@@ -65,6 +32,14 @@
             height: comp.height + 'px',
           }"
         />
+        <!-- 直播 -->
+        <dgiot-aliplayer
+          v-else-if="comp.type == 'liveboard'"
+          :style="{
+            width: comp.width + 'px',
+            height: comp.height + 'px',
+          }"
+        />
         <!-- <screen-realcard
           v-else-if="comp.type == 'line'"
           :comp="comp"
@@ -90,7 +65,7 @@
             height: comp.height + 'px',
           }"
         />
-         <!-- 告警列表 -->
+        <!-- 告警列表 -->
         <work-order
           v-else-if="comp.type == 'list' && comp.id == 'workorder_list'"
           :comp="comp"
@@ -119,10 +94,28 @@
         />
       </div>
     </div>
+    <div v-if="amisFlag">
+      <amis
+        modal-append-to-body
+        v-for="(comp, index) in amisComponents"
+        :key="index"
+        class="vue_component"
+        :style="{
+          left: comp.x + 'px',
+          top: comp.y + 'px',
+          width: comp.width + 'px',
+          height: comp.height + 'px',
+        }"
+        :schema="comp.viewData"
+        :show-help="false"
+      />
+    </div>
   </div>
 </template>
 
 <script>
+// import VueAliplayerV2 from 'vue-aliplayer-v2';
+import DgiotAliplayer from "./component/DgiotAliplayer.vue";
 import TopoCard from "./component/TopoCard.vue"; //卡片
 import TopoPie from "./component/TopoPie.vue"; //饼图
 import TopoCaltable from "./component/TopoCaltable.vue"; //告警列表
@@ -130,7 +123,8 @@ import ScreenDevice from "./component/ScreenDevice.vue"; //设备列表
 import WorkOrder from "./component/WorkOrder.vue"; //工单列表
 import ScreenRealcard from "./component/ScreenRealcard.vue"; //告警列表
 import { mapGetters } from "vuex";
-import Amis from "@/components/Amis/index.vue";
+import Amis from "@/components/Amis/index.vue"; //amis 组件
+import { getView } from "@/api/View/index";
 import { queryRelation } from "@/api/Relation";
 import { getDlinkJson, Startdashboard } from "@/api/Dashboard";
 export default {
@@ -144,6 +138,7 @@ export default {
     ScreenDevice,
     ScreenRealcard,
     WorkOrder,
+    DgiotAliplayer,
   },
   data() {
     return {
@@ -151,16 +146,18 @@ export default {
       layer: "",
       stage: "",
       vueComponents: [],
+      amisComponents: [],
       vueFlag: false,
+      amisFlag: false,
       viewData: {},
       queryParams: [],
+      dashboardId: "",
     };
   },
   computed: {
     ...mapGetters(["name"]),
   },
   async mounted() {
-    this.queryData();
     // console.log("layer", this.layer);
     var width = window.innerWidth;
     var height = window.innerHeight;
@@ -179,8 +176,10 @@ export default {
       results.forEach((item) => {
         if (item.type == "Dashboard") {
           this.json = item.data.konva.Stage;
+          this.dashboardId = item.objectId;
         }
       });
+      this.queryData();
       // this.commandInfo.dialog = true;
       // this.loading = false;
       // this.commandInfo.data = results;
@@ -204,7 +203,9 @@ export default {
     this.handleInitKonva();
   },
   methods: {
-    handleInitKonva() {
+    async handleInitKonva() {
+      let list = []; //vuecomponent 组件列表
+      let amislist = []; // amiscomponent 组件列表
       this.stage.find("Label").forEach((node) => {
         // info["Label"] = stage.find("Label");
         node.setAttrs({
@@ -216,7 +217,7 @@ export default {
           draggable: false,
         });
       });
-      let list = [];
+
       this.stage.find("Image").forEach((node) => {
         node.setAttrs({
           draggable: false,
@@ -232,7 +233,8 @@ export default {
           });
           image.src = node.attrs.src;
           this.layer.add(node);
-          this.stage.add(this.layer);
+          this.layer.batchDraw();
+          // this.stage.add(this.layer);
           console.log("this.stage", this.stage);
         }
       });
@@ -243,10 +245,25 @@ export default {
         if (node.attrs.name == "vuecomponent") {
           let item = node.attrs;
           list.push(item);
+        } else if (node.attrs.name == "amiscomponent") {
+          let item = node.attrs;
+          amislist.push(item);
         }
       });
+      // this.layer.draw();
+      // this.layer.batchDraw();
       this.vueComponents = list;
       this.vueFlag = true;
+      this.amisComponents = amislist;
+      for (let index = 0; index < this.amisComponents.length; index++) {
+        let res = await getView(this.amisComponents[index].id);
+        console.log("查看", this.amisComponents[index]);
+        this.amisComponents[index].viewData = res.data;
+      }
+      console.log("this.amisComponents", this.amisComponents);
+
+      this.amisFlag = true;
+      // this.layer.batchDraw();
     },
     async queryData() {
       const { dashboard = {} } = await getDlinkJson("Dashboard");
@@ -260,7 +277,7 @@ export default {
       // if (this.queryParams[0].dataType == "map") {
       //   this.queryParams.splice(0, 5);
       // }
-      const Startdashboardid = "8263c928d5";
+      const Startdashboardid = this.dashboardId; // "8263c928d5";
       await Startdashboard(Startdashboardid, {});
     },
   },
@@ -275,6 +292,11 @@ export default {
   background: url("../../assets/bg/pageBg.png") no-repeat 100% 100%;
   background-size: cover;
   .vue_component {
+    position: absolute;
+    z-index: 99;
+    // background-color: #0077b8;
+  }
+  .amis_component {
     position: absolute;
     z-index: 99;
     // background-color: #0077b8;

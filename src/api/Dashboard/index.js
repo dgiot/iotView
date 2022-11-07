@@ -17,7 +17,7 @@ export async function Startdashboard(dashboardId,data) {
   // console.log('window',window.location.origin);
   let ip = window.location.origin
   if(ip.indexOf('localhost'>=0)){
-    ip = 'http://192.168.1.9:5080'
+    ip = 'http://dev.iotn2n.com'
   }
   return axios({
     url: `${ip}/iotapi/dashboard`,

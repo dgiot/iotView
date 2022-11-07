@@ -17,7 +17,12 @@
 <script>
 import "amis/lib/themes/default.css";
 import "amis/lib/themes/antd.css";
-import "amis/lib/themes/cxd.css";
+import 'amis/lib/themes/cxd.css'
+import 'amis/lib/themes/ang.css'
+import 'amis/lib/helper.css'
+import 'amis/sdk/sdk.css'
+
+// import 'amis-editor/dist/style.css'
 
 import AmisRender from "./render.vue";
 // import DrawCode from '../DgiotDrawerCode'

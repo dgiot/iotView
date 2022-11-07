@@ -20,7 +20,7 @@
                             "horizontal": {
                                 "leftFixed": "xs"
                             },
-                            "api": "http://192.168.1.9:5080/amis/api/mock2/form/saveForm?waitSeconds=2",
+                            "api": "http://dev.iotn2n.com/amis/api/mock2/form/saveForm?waitSeconds=2",
                             "actions": [
                                 {
                                     "type": "submit",

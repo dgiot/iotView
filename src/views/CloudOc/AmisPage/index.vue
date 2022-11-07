@@ -8,19 +8,20 @@
 * @DocumentLink: https://dev.iotn2n.com
 * @github: https://github.com/dgiot/dgiot-dashboard.git
 * @name: index
+https://www.dgiotcloud.cn/wp-content/uploads/2022102808590871.png
 -->
 <template>
   <div ref="custom-table" v-loading="loading" class="index-container">
     <div v-show="dialog" class="dialog_wrap">
-       <!-- <amis :schema="viewData" /> -->
-       <amis modal-append-to-body :schema="viewData" :show-help="false" />
+      <!-- <amis :schema="viewData" /> -->
+      <amis modal-append-to-body :schema="viewData" :show-help="false" />
       <!-- <dgiot-amis modal-append-to-body :schema="viewData" :show-help="false" /> -->
     </div>
   </div>
 </template>
 
 <script>
-import Amis from '@/components/Amis/index.vue'
+import Amis from "@/components/Amis/index.vue";
 // import DgiotAmis from "@/components/DgiotAmis/index.vue"
 import { getView } from "@/api/View/index";
 export default {
@@ -28,7 +29,7 @@ export default {
   props: {},
   components: {
     // DgiotAmis:DgiotAmis,
-    amis:Amis
+    amis: Amis,
   },
   data() {
     return {
@@ -68,10 +69,10 @@ export default {
     //   ''
     // localStorage.setItem('parse_name', name)
     // localStorage.setItem('parse_deptid', destId)
-  //        this.$dgiotBus.$on('MqttConnect',(data)=>{
-  //   console.log('接收消息amis页面',data);
-  //  })
-    let viewid = location.hash.split('/')[location.hash.split('/').length - 1]
+    //        this.$dgiotBus.$on('MqttConnect',(data)=>{
+    //   console.log('接收消息amis页面',data);
+    //  })
+    let viewid = location.hash.split("/")[location.hash.split("/").length - 1];
     const { data = {} } = await getView(viewid);
     this.viewData = data;
     console.log("view表单", data);
@@ -93,9 +94,9 @@ export default {
 <style lang="scss" scoped>
 .index-container {
   width: 100%;
-  height: 100vh;
+  height: 95vh;
   .dialog_wrap {
-    height: 100vh;
+    height: 100%;
     width: 100%;
     overflow: scroll;
   }
