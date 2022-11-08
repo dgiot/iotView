@@ -137,7 +137,7 @@ export default {
   },
   mounted() {
     this.topic = `/${this.comp.type}/${this.comp.id}/report`;
-    console.log(this.topic);
+    // console.log(this.topic);
     //  this.$dgiotBus.$off(this.topic);
     this.$dgiotBus.$off(this.topic);
     this.$dgiotBus.$on(this.topic, (e) => {

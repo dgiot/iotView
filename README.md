@@ -1,4 +1,4 @@
-# dgiot-dashboard 轻量级工业物联网平台
+# dgiot-amis-dashboard 轻量级工业物联网平台
 <p align="center">
   <img src="https://img.shields.io/github/commit-activity/m/dgiot/dgiot-dashboard" alt="ommit-activity">
 	<img src="https://badgen.net/badge/package/%40dgiot%2Fdgiot-dashboard/blue"

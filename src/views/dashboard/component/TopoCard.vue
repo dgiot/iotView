@@ -56,18 +56,15 @@ export default {
     return {
       value: 0,
       topic: "",
-      label:'',
+      label: "",
     };
   },
-  created() {
-    
-  },
+  created() {},
   mounted() {
-    this.label = this.comp
-    .text;
+    this.label = this.comp.text;
     // $dg/user/konva
     this.topic = `/${this.comp.type}/${this.comp.id}/report`;
-    console.log(this.topic);
+    // console.log(this.topic);
     //  this.$dgiotBus.$off(this.topic);
     this.$dgiotBus.$off(this.topic);
     this.$dgiotBus.$on(this.topic, (e) => {
@@ -78,8 +75,8 @@ export default {
       console.log("接收到了数据", receive);
       // this.value = e;
       // this.receive.lable = receive.lable;
-      this.text = receive.lable
-      this.value = receive.value
+      this.text = receive.lable;
+      this.value = receive.value;
     });
   },
   destroyed() {

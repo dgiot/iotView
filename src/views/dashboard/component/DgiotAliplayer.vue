@@ -28,9 +28,9 @@
         "
         >现场画面</span
       >
-      <span @click="play()">播放</span>
-      <span @click="pause()">暂停</span>
-      <span @click="getCurrentTime()">刷新</span>
+      <span @click="play()" class="custom-btn btn-14">播放</span>
+      <span @click="pause()" class="custom-btn btn-14 red">暂停</span>
+      <!-- <span @click="getCurrentTime()">刷新</span> -->
     </div>
 
     <div style="margin: 10px auto; width: 90%; height: calc(100% - 35px)">
@@ -173,26 +173,6 @@ export default {
     margin: 20px;
   }
 }
-.player-btns {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  span {
-    margin: 0 auto;
-    display: inline-block;
-    padding: 5px 10px;
-    width: 150px;
-    height: 40px;
-    line-height: 40px;
-    border: 1px solid #eee;
-    background: #e1e1e1;
-    border-radius: 10px;
-    text-align: center;
-    margin: 5px;
-    cursor: pointer;
-  }
-}
 .source-box {
   // padding: 5px 10px;
   // margin-bottom: 20px;
@@ -210,5 +190,60 @@ export default {
     width: 80%;
     border: 1px solid #ccc;
   }
+}
+/* 14 */
+.custom-btn {
+  width: 60px;
+  line-height: 30px;
+  text-align: center;
+  color: #fff;
+  border-radius: 5px;
+  margin-left: 10px;
+  // padding: 10px 25px;
+  // font-family: "Lato", sans-serif;
+  font-weight: 500;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+  box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5);
+
+  outline: none;
+}
+.btn-14 {
+  // background: rgb(14, 22, 56);
+  border: none;
+  z-index: 1;
+}
+
+.red {
+  background: rgb(234, 0, 0);
+}
+.btn-14:after {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 0;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  border-radius: 5px;
+  background-color: #bf9204;
+  // background-image: linear-gradient(315deg, #0e1638 0%, #304156 74%);
+  box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5),
+    7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(255, 0, 0, 0.1);
+  // transition: all 0.3s ease;
+}
+.btn-14:hover {
+  color: #0e1638;
+}
+.btn-14:hover:after {
+  top: auto;
+  bottom: 0;
+  height: 100%;
+}
+.btn-14:active {
+  top: 2px;
 }
 </style>

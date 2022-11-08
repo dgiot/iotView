@@ -177,7 +177,7 @@ export default {
       await getMaintenance(params)
         .then((res) => {
           const { results = [], count = 0 } = res;
-          console.log("工单", results);
+          // console.log("工单", results);
           this.orderList = results;
           this.total = count;
           // loading.close()
@@ -235,11 +235,11 @@ export default {
       }, 20);
     },
     handlemouseOver() {
-      console.log("11111");
+      // console.log("11111");
       clearInterval(this.timer[this.comp.id]);
     },
     handlemouseLeave() {
-      console.log("222");
+      // console.log("222");
       this.scroll();
     },
     utc2beijing(date) {

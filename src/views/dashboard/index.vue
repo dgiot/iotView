@@ -99,7 +99,7 @@
         modal-append-to-body
         v-for="(comp, index) in amisComponents"
         :key="index"
-        class="vue_component"
+        class="amis_component"
         :style="{
           left: comp.x + 'px',
           top: comp.y + 'px',
@@ -222,9 +222,15 @@ export default {
         node.setAttrs({
           draggable: false,
         });
-        if (node.attrs.type == "konvaimage") {
+        if (
+          node.attrs.type == "konvaimage" ||
+          node.attrs.name == "vuecomponent"
+        ) {
           let item = node.attrs;
           list.push(item);
+        } else if (node.attrs.name == "amiscomponent") {
+          let item = node.attrs;
+          amislist.push(item);
         } else {
           // if (node.attrs.type == "staticimage")
           let image = new Image();
@@ -235,7 +241,6 @@ export default {
           this.layer.add(node);
           this.layer.batchDraw();
           // this.stage.add(this.layer);
-          console.log("this.stage", this.stage);
         }
       });
       this.stage.find("Rect").forEach((node) => {
@@ -257,10 +262,8 @@ export default {
       this.amisComponents = amislist;
       for (let index = 0; index < this.amisComponents.length; index++) {
         let res = await getView(this.amisComponents[index].id);
-        console.log("查看", this.amisComponents[index]);
         this.amisComponents[index].viewData = res.data;
       }
-      console.log("this.amisComponents", this.amisComponents);
 
       this.amisFlag = true;
       // this.layer.batchDraw();
@@ -298,7 +301,7 @@ export default {
   }
   .amis_component {
     position: absolute;
-    z-index: 99;
+    z-index: 98;
     // background-color: #0077b8;
   }
 }

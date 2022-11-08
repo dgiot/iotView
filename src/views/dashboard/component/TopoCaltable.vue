@@ -121,7 +121,7 @@ export default {
       const { results = [], count = 0 } = await queryNotification(
         this.queryPayload
       );
-      console.log("告警列表", results);
+      // console.log("告警列表", results);
       this.warnList = results;
     },
     scroll() {
@@ -153,11 +153,11 @@ export default {
       }, 20);
     },
     handlemouseOver() {
-      console.log("11111");
+      // console.log("11111");
       clearInterval(this.timer[this.comp.id]);
     },
     handlemouseLeave() {
-      console.log("222");
+      // console.log("222");
       this.scroll();
     },
     utc2beijing(date) {

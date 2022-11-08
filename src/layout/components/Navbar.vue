@@ -64,7 +64,7 @@ export default {
   watch: {
     $route: {
       handler(route) {
-        console.log("route", route, Cookies.get("sidebarStatus"));
+        // console.log("route", route, Cookies.get("sidebarStatus"));
         // this.activeMenu = handleActivePath(route);
         if (
           route.fullPath.indexOf("/dashboard") >= 0 &&
