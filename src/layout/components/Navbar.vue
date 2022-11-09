@@ -57,6 +57,7 @@ export default {
       avatar: "",
       objectId: "",
       client: "",
+      option:{},
       queryParams: {},
       fullscreen: false,
     };
@@ -66,9 +67,14 @@ export default {
       handler(route) {
         // console.log("route", route, Cookies.get("sidebarStatus"));
         // this.activeMenu = handleActivePath(route);
+        console.log(
+          'Cookies.get("sidebarStatus") ',
+          Cookies.get("sidebarStatus")
+        );
         if (
           route.fullPath.indexOf("/dashboard") >= 0 &&
-          Cookies.get("sidebarStatus") == 1
+          (Cookies.get("sidebarStatus") == 1 ||
+            Cookies.get("sidebarStatus") == undefined)
         ) {
           this.$store.dispatch("app/toggleSideBar");
         }
@@ -211,14 +217,15 @@ export default {
         _this.$dgiotBus.$emit(sendTopic, message);
       });
       client.on("reconnect", (error) => {
-        console.log("正在重连", error);
+        // console.log("正在重连", client)
+        client.end()
+        // mqtt.client.disconnect();
       });
       client.on("error", (error) => {
         console.log("连接失败", error);
       });
     },
     toggleSideBar() {
-      console.log("1");
       this.$store.dispatch("app/toggleSideBar");
     },
     async logout() {

@@ -35,6 +35,7 @@
         <!-- 直播 -->
         <dgiot-aliplayer
           v-else-if="comp.type == 'liveboard'"
+          :comp="comp"
           :style="{
             width: comp.width + 'px',
             height: comp.height + 'px',

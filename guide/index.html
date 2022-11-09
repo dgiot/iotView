@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%;" id="first">
+
+<head>
+  <title>物联网开发平台</title>
+  <meta charset="utf-8">
+  <meta name="viewport"
+    content="target-densitydpi=device-dpi, width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+  <!-- https://unpkg.com/vue@v2/dist/vue.js -->
+  <script src="./js/vue.js"></script>
+  <!-- https://unpkg.com/axios/dist/axios.min.js -->
+  <script src="./js/axios.min.js"></script>
+  <style>
+    @import url('./css/style/guide.css');
+
+    .title {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 0.7em 1em;
+      /* font-size: 1.5em; */
+      text-align: center;
+      border-radius: 0.2em;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      z-index: 9999;
+      /* box-shadow: 0.1em 0.05em 0.05em 0.1em #ccc; */
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div class="bg">
+      <!-- 原文链接：https://blog.csdn.net/chengqige/article/details/122643867 -->
+      <!-- https://res-mp.usr.cn/video/experience-video.mp4  http://www.dgiotcloud.cn/wp-content/uploads/2022090709555048.mp4-->
+      <video autoplay class="bg_video" loop muted="muted" playsinline preload="auto"
+        src="http://www.dgiotcloud.cn/wp-content/uploads/2022090710055845.mp4" tabindex="-1"></video>
+      <div class="bg_wrap">
+        <div class="bg_top">
+          <div class="btn_back" @click="handleIn">
+            <div class="btn_back_in">官网</div>
+          </div>
+        </div>
+        <div class="bg_content">
+          <div class="bg_content_left">
+            <div v-for="(item, index) in typeList" :key="index" class="bg_content_left_item" :class="
+                index == currentIndex
+                  ? 'experience-left-hover'
+                  : 'experience-left'
+              " @click="handleChoose(item, index)">
+              <div>{{ item.name }}</div>
+            </div>
+          </div>
+          <!-- v-infinite-scroll -->
+          <div class="bg_content_right">
+            <div v-for="(o, i) in progList" :key="i" class="bg_content_right_item" @click="handleChooseProgram(o)">
+              <img class="bg_content_right_item_img" :src="o.img" />
+              <div class="bg_content_right_item_name">{{ o.name }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <script src="./js/require.min.js" type="module"></script> -->
+  <!-- <script src="https://cdn.bootcdn.net/ajax/libs/require.js/2.3.6/require.min.js"></script> -->
+  <script>
+    //  import smart from '../../assets/net/smart.png'
+    //  import agr from '../../assets/net/agr.jpg'
+    //  import park from '../../assets/net/park.png'
+    //  import mes from '../../assets/net/mes.jpg'
+    new Vue({
+      el: '#app',
+      data: {
+        flag: false,
+        tips: {},
+        progList: [], //选中方案列表
+        currentIndex: 0,
+        typeList: [
+          {
+            id: 0,
+            name: '全部',
+          },
+          // {
+          //   id: 1,
+          //   name: '设备运维',
+          // },
+          {
+            id: 2,
+            name: '智慧园区',
+          },
+          {
+            id: 3,
+            name: '智慧工厂',
+          },
+          // {
+          //   id: 4,
+          //   name: '智慧能源',
+          // },
+          {
+            id: 9,
+            name: '智慧农业',
+          },
+          // {
+          //   id: 5,
+          //   name: '智慧物流',
+          // },
+          // {
+          //   id: 6,
+          //   name: '边缘主机',
+          // },
+          // {
+          //   id: 7,
+          //   name: '云检测',
+          // },
+          // {
+          //   id: 8,
+          //   name: '云压测',
+          // },
+        ],
+        programList: [
+          {
+            img: 'http://www.dgiotcloud.cn/wp-content/uploads/2022090901575769.png',
+            name: '智慧厕所',
+            type: 2,
+            username: 'dgiot_st',
+            password: 'dgiot_st',
+            url: '/amis/#/login',
+          },
+          {
+            img: 'http://www.dgiotcloud.cn/wp-content/uploads/2022092307512790.jpg',
+            name: '智慧农业',
+            type: 9,
+            username: 'dgiot_agr',
+            password: 'dgiot_agr',
+            url: '/amis/#/login',
+          },
+          // {
+          //   img: 'https://www.dgiotcloud.cn/wp-content/uploads/2022080511362579.jpg',
+          //   name: '工业设备租赁一体化运维平台',
+          //   type: 1,
+          //   username: 'dgiot_dl',
+          //   password: 'dgiot_dl',
+          // },
+          {
+            img: 'https://www.dgiotcloud.cn/wp-content/uploads/2022080512380157.png',
+            name: '智慧园区/智慧场馆数字驾驶舱',
+            type: 2,
+            username: 'dgiot_spark',
+            password: 'dgiot_spark',
+            url: '/amis/#/login',
+          },
+          // {
+          //   img: 'https://www.dgiotcloud.cn/wp-content/uploads/202208221014537.png',
+          //   name: '智慧监控-海康',
+          //   type: 2,
+          //   username: 'dgiot_smonitor',
+          //   password: 'dgiot_smonitor',
+          // },
+          // {
+          //   img: 'https://www.dgiotcloud.cn/wp-content/uploads/2022082210305987.png',
+          //   name: '弱电动环-浦洛斯',
+          //   type: 2,
+          //   username: 'dgiot_welec',
+          //   password: 'dgiot_welec',
+          // },
+          // {
+          //   img: 'https://www.dgiotcloud.cn/wp-content/uploads/2022082210005721.png',
+          //   name: '高配动环',
+          //   type: 2,
+          //   username: 'dgiot_helec',
+          //   password: 'dgiot_helec',
+          // },
+          // {
+          //   img: 'https://www.dgiotcloud.cn/wp-content/uploads/2022082210453148.png',
+          //   name: '能耗电表-正泰',
+          //   type: 2,
+          //   username: 'dgiot_emater',
+          //   password: 'dgiot_emater',
+          // },
+          // {
+          //   img: 'https://www.dgiotcloud.cn/wp-content/uploads/2022082210453148.png',
+          //   name: '能耗采集器-正泰',
+          //   type: 2,
+          //   username: 'dgiot_ecollect',
+          //   password: 'dgiot_ecollect',
+          // },
+          // {
+          //   img: 'https://www.dgiotcloud.cn/wp-content/uploads/2022082209463162.png',
+          //   name: '智慧广播-sonbs',
+          //   type: 2,
+          //   username: 'dgiot_sradio',
+          //   password: 'dgiot_sradio',
+          // },
+          {
+            img: 'https://www.dgiotcloud.cn/wp-content/uploads/2022082608530468.jpg',
+            name: '数字工厂MES系统',
+            type: 3,
+            username: 'dgiot_fac',
+            password: 'dgiot_fac',
+            url: '/amis/#/login',
+          },
+          // {
+          //   img: 'https://www.dgiotcloud.cn/wp-content/uploads/2022080910110444.png',
+          //   name: '水泵远程检测平台',
+          //   type: 3,
+          // },
+          // {
+          //   img: 'https://www.dgiotcloud.cn/wp-content/uploads/2022080910554595.png',
+          //   name: '多型太阳能板远程管控和多屏运维系统',
+          //   type: 4,
+          // },
+          // {
+          //   img: 'https://www.dgiotcloud.cn/wp-content/uploads/2022080511492543.png',
+          //   name: '千万级Zetag物流标签压测',
+          //   type: 5,
+          // },
+          // {
+          //   img: 'https://www.dgiotcloud.cn/wp-content/uploads/2022082512160365.png',
+          //   name: '边缘主机',
+          //   type: 6,
+          // },
+          // {
+          //   img: 'https://www.dgiotcloud.cn/wp-content/uploads/2022080910155274.png',
+          //   name: '水泵远程质量检测与质量对比系统',
+          //   type: 7,
+          // },
+          // {
+          //   img: 'https://www.dgiotcloud.cn/wp-content/uploads/202208051146353.png',
+          //   name: 'dgiot云压测',
+          //   type: 8,
+          // },
+          // {
+          //   img: 'https://www.dgiotcloud.cn/wp-content/uploads/2022080511413072.png',
+          //   name: '三千万电表集抄压测',
+          //   type: 8,
+          // },
+          // {
+          //   img: 'https://www.dgiotcloud.cn/wp-content/uploads/2022080511492543.png',
+          //   name: '千万级Zetag物流标签压测',
+          //   type: 8,
+          // },
+        ], //方案列表
+      },
+      mounted() {
+        this.progList = this.programList
+      },
+      methods: {
+        handleIn() {
+          window.open('https://www.dgiotcloud.cn/')
+        },
+        handleChoose(item, index) {
+          this.currentIndex = index
+          let list = []
+          if (item.id == 0) {
+            this.progList = this.programList
+          } else {
+            this.programList.forEach((o) => {
+              if (o.type == item.id) {
+                list.push(o)
+              }
+            })
+            this.progList = list
+          }
+        },
+        proceImg(src) {
+          return require(src)
+        },
+        handleChooseProgram(o) {
+          console.log(o);
+          if (o.url) {
+            window.location.href = `${o.url}?username=${o.username}&password=${o.password}`
+            return
+          }
+          this.form = {
+            username: o.username || '',
+            password: o.password || '',
+          }
+        },
+      },
+    })
+
+  </script>
+
+</body>
+
+</html>

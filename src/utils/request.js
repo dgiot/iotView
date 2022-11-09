@@ -1,8 +1,9 @@
 import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
-import { getToken } from '@/utils/auth'
+import { getToken, setToken } from '@/utils/auth'
 import route from '../router/index'
+// import router from '../router/index'
 
 // create an axios instance
 const service = axios.create({
@@ -45,6 +46,8 @@ service.interceptors.response.use(
    */
   response => {
     const res = response
+    // route.replace({path:'/login'})
+    //  route.push({ path: "/login" });
     // console.log('response', res);
     // if the custom code is not 20000, it is judged as an error.
     if (res.status != 200) {
@@ -69,7 +72,7 @@ service.interceptors.response.use(
           type: 'error',
           duration: 5 * 1000
         })
-        route.replace({ path: "/login" });
+
         // MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
         //   confirmButtonText: 'Re-Login',
         //   cancelButtonText: 'Cancel',
@@ -86,14 +89,27 @@ service.interceptors.response.use(
     }
   },
   error => {
-    console.log('异常错误' + error.message) // for debug
+
     Message({
       message: error.message,
       type: 'error',
       duration: 5 * 1000
     })
-    if (error.message.indexOf('401')) {
-      route.replace({ path: "/login" });
+    if (error.message.indexOf('401') >= 0) {
+      console.log('异常错误', error.message) // for debug
+      setToken()
+      store.dispatch('user/resetToken').then(() => {
+        location.reload()
+      })
+      // router.push({
+      //   path: '/login',
+      //   replace: true,
+      // })
+      // window.location.href = 'login'
+      // history.push("/login");
+      // router.push({ path: '/login' })
+      // route.replace({ path: "/login" });
+      // router.push({ path: "/login" });
     }
     return Promise.reject(error)
   }

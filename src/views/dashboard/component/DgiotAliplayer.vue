@@ -76,13 +76,15 @@
     <!-- <div class="source-box">
       <span class="source-label">输入播放源(支持动态切换):</span>
       <input class="source-input" type="text" v-model="source" />
-    </div> -->
-  </div>
-</template>
-<link
+    </div>
+    <link
   rel="stylesheet"
   href="https://g.alicdn.com/de/prismplayer/2.9.3/skins/default/aliplayer-min.css"
 />
+     -->
+  </div>
+</template>
+
 <script
   type="text/javascript"
   charset="utf-8"
@@ -94,6 +96,16 @@ import VueAliplayerV2 from "vue-aliplayer-v2";
 export default {
   name: "Live-Demo",
   components: { VueAliplayerV2: VueAliplayerV2.Player },
+  props: {
+    comp: {
+      type: Object,
+      default: () => ({
+        type: "videolive",
+        width: 400,
+        hieght: 72,
+      }),
+    },
+  },
   data() {
     return {
       liveSrc: [
@@ -119,7 +131,9 @@ export default {
   },
   mounted() {
     this.source =
+      this.comp.text ||
       "http://219.151.31.38/liveplay-kk.rtxapp.com/live/program/live/hnwshd/4000000/mnf.m3u8";
+
     // setTimeout(() => {
     //   this.play();
     // }, 5000);
@@ -150,6 +164,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+@import "https://g.alicdn.com/de/prismplayer/2.9.3/skins/default/aliplayer-min.css";
 .liveapp {
   position: relative;
   width: 100%;
