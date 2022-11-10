@@ -21,6 +21,7 @@ https://www.dgiotcloud.cn/wp-content/uploads/2022102808590871.png
 </template>
 
 <script>
+import { Base64 } from "js-base64";
 import Amis from "@/components/Amis/index.vue";
 // import DgiotAmis from "@/components/DgiotAmis/index.vue"
 import { getView } from "@/api/View/index";
@@ -86,6 +87,49 @@ export default {
       //   'dgiot-hey-message-error'
       // )
     }
+    // E:\work\project\doc\dgiot_doc\i18n\zh-cn\docusaurus-plugin-content-docs\current\developer_guid\docs\front_end\dgiot_topo.md
+    this.$dgiotBus.$off("$dg/user/devicestate");
+    this.$dgiotBus.$on("$dg/user/devicestate", (e) => {
+      console.log("接收消息11111", e);
+      let str = String.fromCharCode.apply(null, new Uint8Array(e));
+      console.log('解码',str);
+      let args = {};
+      const parseString = JSON.parse(str);
+      if (parseString) {
+        const topicsKeys = Object.keys(parseString);
+        args.key = topicsKeys[0];
+        args.parseString = parseString[topicsKeys[0]];
+        let currentIndex = 0; //第几行修改定义变量
+        let changedeviceid = args.key;
+        for (
+          let index = 1;
+          index < document.getElementsByClassName("dgiotobjectId").length - 1;
+          index++
+        ) {
+          console.log(111);
+          let objectId = document
+            .getElementsByClassName("dgiotobjectId")
+            [index].getElementsByClassName("antd-PlainField")[0].innerHTML;
+          if (objectId == changedeviceid) {
+            currentIndex = index; //找到是第几行
+            break; //退出循环
+          }
+        }
+        document
+          .getElementsByClassName(`dgiotaddress`)
+          [currentIndex].getElementsByClassName(
+            "antd-PlainField"
+          )[0].innerHTML = args.parseString.address;
+        let status = document
+          .getElementsByClassName(`dgiotstatus`)
+          [currentIndex].getElementsByClassName(`label`)[0].parentNode;
+        if (args.parseString.status == "ONLINE") {
+          status.innerHTML = "<span class='label label-success'>在线</span>";
+        } else if (args.parseString.status == "OFFLINE") {
+          status.innerHTML = "<span class='label label-danger'>离线</span>";
+        }
+      }
+    });
   },
   destroyed() {},
 };

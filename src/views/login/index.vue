@@ -234,9 +234,19 @@ export default {
           if (item.meta.title.indexOf("工厂") >= 0) {
             item.meta.icon = "el-icon-school";
           }
-          if (item.meta.title.indexOf("人") >= 0) {
+          if (
+            item.meta.title.indexOf("人") >= 0 ||
+            item.meta.title.indexOf("员工") >= 0
+          ) {
             item.meta.icon = "el-icon-user-solid";
+          } else if (item.meta.title.indexOf("工序") >= 0) {
+            item.meta.icon = "el-icon-s-operation";
+          } else if (item.meta.title.indexOf("场景") >= 0) {
+            item.meta.icon = "el-icon-picture-outline";
+          } else if (item.meta.title.indexOf("质检") >= 0) {
+            item.meta.icon = "el-icon-circle-check";
           }
+
           // console.log("mata", item.meta);
           // el-icon-cloudy
         }

@@ -111,7 +111,8 @@ export default {
     // console.log(md5Info);
   },
   beforeDestroy() {
-    console.log("关闭了tabbar");
+    console.log("关闭了mqtt");
+    // client.disconnect();
     client.end();
   },
   methods: {
@@ -193,7 +194,6 @@ export default {
         this.option
       ); //47.118.69.187
       this.mqttMsg();
-      // dgiotlogger.info("MqttConnect", this.option);
       await this.$dgiotBus.$emit("MqttConnect", this.option);
       // this.$dgiotBus.$emit('MqttSubscribe', {
       //   router: md5(this.$route.fullPath),
@@ -217,10 +217,13 @@ export default {
         }/${sendtopic[sendtopic.length - 1]}`;
         // return
         console.log(sendTopic);
+        if (topic.indexOf("$dg/user/devicestate") >= 0) {
+          sendTopic = "$dg/user/devicestate";
+        }
         _this.$dgiotBus.$emit(sendTopic, message);
       });
       client.on("reconnect", (error) => {
-        // console.log("正在重连", client)
+        console.log("正在重连", client);
         // client.end();
         // mqtt.client.disconnect();
       });
