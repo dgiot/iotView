@@ -57,7 +57,7 @@ export default {
       avatar: "",
       objectId: "",
       client: "",
-      option:{},
+      option: {},
       queryParams: {},
       fullscreen: false,
     };
@@ -110,7 +110,10 @@ export default {
     // this.queryData();
     // console.log(md5Info);
   },
-
+  beforeDestroy() {
+    console.log("关闭了tabbar");
+    client.end();
+  },
   methods: {
     // 全屏事件
     //原文链接：https://blog.csdn.net/weixin_39550080/article/details/124823420
@@ -218,7 +221,7 @@ export default {
       });
       client.on("reconnect", (error) => {
         // console.log("正在重连", client)
-        client.end()
+        // client.end();
         // mqtt.client.disconnect();
       });
       client.on("error", (error) => {

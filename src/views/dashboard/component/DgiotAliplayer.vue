@@ -41,6 +41,7 @@
           ref="VueAliplayerV2"
           :options="options"
           :autoplay="true"
+          :rePlay="true"
         />
       </template>
     </div>
@@ -123,6 +124,7 @@ export default {
         // source:'//player.alicdn.com/video/aliyunmedia.mp4',
         isLive: true, //切换为直播流的时候必填（true-直播状态，false-普通模式，播放器普通视频）
         // format: "m3u8",
+        rePlay: true,
       },
       source: "",
       show: true,
@@ -133,6 +135,9 @@ export default {
     this.source =
       this.comp.text ||
       "http://219.151.31.38/liveplay-kk.rtxapp.com/live/program/live/hnwshd/4000000/mnf.m3u8";
+    if (this.comp.text.indexOf("m3u8") < 0) {
+      this.options.isLive = false;
+    }
 
     // setTimeout(() => {
     //   this.play();

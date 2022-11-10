@@ -99,10 +99,10 @@ export default {
         password: "",
       },
       loginRules: {
-        username: [{ required: true, trigger: "blur", message: '请输入账号' }],
+        username: [{ required: true, trigger: "blur", message: "请输入账号" }],
         password: [
           // validatePassword
-          { required: true, trigger: "blur", message: '请输入密码' },
+          { required: true, trigger: "blur", message: "请输入密码" },
         ],
       },
       loading: false,
@@ -112,9 +112,9 @@ export default {
   },
   mounted() {
     console.log(this.$route);
-    if(this.$route.query){
-      this.loginForm.username = this.$route.query.username || ''
-      this.loginForm.password = this.$route.query.password || ''
+    if (this.$route.query) {
+      this.loginForm.username = this.$route.query.username || "";
+      this.loginForm.password = this.$route.query.password || "";
     }
     this.$nextTick(async () => {
       await this.defaultSet();
@@ -154,13 +154,13 @@ export default {
               let list = [];
               let item = {
                 path: "/",
-                url:'/',
+                url: "/",
                 // component: Layout,
                 redirect: "/dashboard",
                 children: [
                   {
                     path: "dashboard",
-                    url:'dashboard',
+                    url: "dashboard",
                     name: "Dashboard",
                     // component: () => import("@/views/dashboard/index"),
                     meta: { title: "首页", icon: "dashboard" },
@@ -169,7 +169,7 @@ export default {
               };
               list.push(item);
               res.results.forEach((item) => {
-                if (item.url != "/"&&item.url != "/roles") {
+                if (item.url != "/" && item.url != "/roles") {
                   list.push(item);
                 }
               });
@@ -192,14 +192,53 @@ export default {
       });
     },
     initRoutes(routes) {
-      console.log('routes',routes);
+      // console.log('routes',routes);
       routes.forEach((item) => {
         item.path = item.url;
         if (item.children) {
           this.initRoutes(item.children);
         }
-        if(item.meta&&item.children){
-          item.meta.icon = 'el-icon-menu'
+        if (item.meta) {
+          if (item.meta.title.indexOf("云") >= 0) {
+            item.meta.icon = "el-icon-cloudy";
+          }
+          if (item.meta.title.indexOf("管理") >= 0) {
+            item.meta.icon = "el-icon-s-management";
+          }
+
+          if (item.meta.title.indexOf("设备") >= 0) {
+            item.meta.icon = "el-icon-monitor";
+          }
+          if (item.meta.title.indexOf("运维") >= 0) {
+            item.meta.icon = "el-icon-setting";
+          }
+          if (item.meta.title.indexOf("工单") >= 0) {
+            item.meta.icon = "el-icon-s-order";
+          }
+          if (item.meta.title.indexOf("系统") >= 0) {
+            item.meta.icon = "el-icon-s-help";
+          }
+          if (item.meta.title.indexOf("告警") >= 0) {
+            item.meta.icon = "el-icon-bell";
+          }
+          if (item.meta.title.indexOf("数据") >= 0) {
+            item.meta.icon = "el-icon-s-data";
+          }
+          if (item.meta.title.indexOf("日志") >= 0) {
+            item.meta.icon = "el-icon-notebook-1";
+          }
+          if (item.meta.title.indexOf("园区") >= 0) {
+            item.meta.icon = "el-icon-office-building";
+          }
+
+          if (item.meta.title.indexOf("工厂") >= 0) {
+            item.meta.icon = "el-icon-school";
+          }
+          if (item.meta.title.indexOf("人") >= 0) {
+            item.meta.icon = "el-icon-user-solid";
+          }
+          // console.log("mata", item.meta);
+          // el-icon-cloudy
         }
       });
       return routes;

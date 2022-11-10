@@ -1,5 +1,12 @@
 <template>
-  <div class="dashboard-container">
+  <div
+    class="dashboard-container"
+    :style="{
+      backgroundImage: 'url(' + bgSrc + ')',
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: '100% 100%',
+    }"
+  >
     <div id="container"></div>
 
     <div v-if="vueFlag">
@@ -115,6 +122,7 @@
 </template>
 
 <script>
+import backgroundImage from "../../assets/bg/pageBg.png";
 // import VueAliplayerV2 from 'vue-aliplayer-v2';
 import DgiotAliplayer from "./component/DgiotAliplayer.vue";
 import TopoCard from "./component/TopoCard.vue"; //卡片
@@ -146,6 +154,7 @@ export default {
       json: {},
       layer: "",
       stage: "",
+      bgSrc: backgroundImage,
       vueComponents: [],
       amisComponents: [],
       vueFlag: false,
@@ -223,6 +232,10 @@ export default {
         node.setAttrs({
           draggable: false,
         });
+        if (node.attrs.id == "bg") {
+          console.log(node.attrs);
+          this.bgSrc = node.attrs.src;
+        }
         if (
           node.attrs.type == "konvaimage" ||
           node.attrs.name == "vuecomponent"
@@ -232,7 +245,7 @@ export default {
         } else if (node.attrs.name == "amiscomponent") {
           let item = node.attrs;
           amislist.push(item);
-        } else {
+        } else if (node.attrs.id != "bg") {
           // if (node.attrs.type == "staticimage")
           let image = new Image();
           node.setAttrs({
@@ -293,7 +306,7 @@ export default {
   height: 94vh;
   // width: 100%;
   margin: 0 !important;
-  background: url("../../assets/bg/pageBg.png") no-repeat 100% 100%;
+  // background: url("../../assets/bg/pageBg.png") no-repeat 100% 100%;
   background-size: cover;
   .vue_component {
     position: absolute;
