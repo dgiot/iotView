@@ -189,7 +189,6 @@ export default {
       };
       // console.groupEnd();
       let head = this.option.isSSL ? "wss" : "ws";
-      return
       client = mqtt.connect(
         `${head}://${ip}:${this.option.port}/mqtt`,
         this.option

@@ -4,10 +4,10 @@
     <div class="table_content">
       <div class="backround">
         <div class="toptitle">
-          <div class="item">设备编号</div>
+          <div class="item">设备名称</div>
           <div class="item">报警时间</div>
           <div class="item">状态</div>
-          <div class="item">产品名称</div>
+          <div class="item">告警内容</div>
         </div>
         <!-- <vue-seamless-scroll
           class="seamless-warp"
@@ -25,7 +25,7 @@
               :key="index"
               class="table-item"
             >
-              <td class="table-item-content">{{ item.devaddr }}</td>
+              <td class="table-item-content">{{ item.devicename }}</td>
               <td class="table-item-content">
                 {{ utc2beijing(item.createdAt) }}
               </td>
@@ -39,7 +39,7 @@
                 </el-tag>
                 <el-tag v-else size="medium" type="success">告警恢复</el-tag>
               </td>
-              <td class="table-item-content">{{ item.productname }}</td>
+              <td class="table-item-content">{{ item.desc }}</td>
             </tr>
           </table>
         </div>
@@ -72,10 +72,14 @@ export default {
       listData: [],
       warnList: [],
       queryPayload: {
-        limit: 10,
+        // limit: 10,
         order: "-createdAt",
-        skip: 0,
+        // skip: 0,
+        // count: "objectId",
+        page: 1,
+        perPage: 10,
         count: "objectId",
+        // order: -createdAt,
       },
       timer: {},
     };
@@ -118,11 +122,16 @@ export default {
       //       $regex: this.$route.query.productid,
       //     },
       //   }
-      const { results = [], count = 0 } = await queryNotification(
+      const res = await queryNotification(
         this.queryPayload
       );
+      console.log('hfahajfs',res);
       // console.log("告警列表", results);
-      this.warnList = results;
+      res.data.items.forEach(element => {
+        element.devicename = element.devicename  || element.content?.devicename  || ''
+        element.desc = element.desc  || element.content?.errorname  || ''
+      });
+      this.warnList = res.data.items;
     },
     scroll() {
       let _this = this;
@@ -217,7 +226,7 @@ background-color: #2472ea;
     overflow: hidden;
     ::v-deep .toptitle {
       background-color: #071753;
-      width: 100%;
+      width: 99%;
       display: flex;
       // background-color: gainsboro;
       // margin-bottom: 10px;
@@ -240,7 +249,7 @@ background-color: #2472ea;
       height: calc(100% - 50px);
       display: flex;
       overflow-y: scroll;
-      width:100%;
+      width: 100%;
     }
     .table_warning {
       height: 80%;

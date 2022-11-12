@@ -4,7 +4,7 @@ import request from '@/utils/request'
 // }
 export function queryNotification(params) {
   return request({
-    url: `/classes/Notification`,
+    url: `/amis/Notification`,
     method: 'get',
     params
   })
