@@ -156,6 +156,7 @@ export default {
           let item = parent.scrollTop;
           parent.scrollTop++;
           if (item == parent.scrollTop) {
+            // parent.animate({scrollTop:0},500);
             parent.scrollTop = 0;
           }
         }

@@ -72,7 +72,7 @@ export default {
       let str = String.fromCharCode.apply(null, new Uint8Array(e));
 
       let receive = JSON.parse(Base64.decode(str));
-      console.log("接收到了数据", receive);
+      // console.log("接收到了数据", receive);
       // this.value = e;
       // this.receive.lable = receive.lable;
       this.text = receive.lable;

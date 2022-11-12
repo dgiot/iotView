@@ -300,7 +300,27 @@ export default {
   },
 };
 </script>
-
+<style>
+/*里面的代码可以根据自己需求去进行更改*/
+/* 设置滚动条的样式 */
+::-webkit-scrollbar {
+  width: 12px;
+}
+/* 滚动槽 */
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: rgba(255,255,255 0);
+  -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.5);
+}
+/* ::-webkit-scrollbar-thumb:window-inactive {
+background-color: #2472ea;
+} */
+</style>
 <style lang="scss" scoped>
 .dashboard-container {
   height: 94vh;
