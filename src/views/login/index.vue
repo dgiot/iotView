@@ -179,7 +179,7 @@ export default {
               // let
               //  this.$store.commit("setRoutes", res.results);
               //  this.$store.commit("SET_NAME",'111');
-              this.$router.push({ path: this.redirect || "/" });
+              this.$router.push({ path: "/" }); //path: this.redirect ||
               this.loading = false;
             })
             .catch(() => {

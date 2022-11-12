@@ -245,7 +245,7 @@ export default {
         } else if (node.attrs.name == "amiscomponent") {
           let item = node.attrs;
           amislist.push(item);
-        } else if (node.attrs.id != "bg") {
+        } else if (node.attrs.id != "bg"&& node.attrs.id != "不删除") {
           // if (node.attrs.type == "staticimage")
           let image = new Image();
           node.setAttrs({

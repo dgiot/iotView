@@ -37,10 +37,11 @@ export default {
   },
   data() {
     return {
-      routeslist: JSON.parse(localStorage.getItem('routes')) || []
+      routeslist: JSON.parse(localStorage.getItem("routes")) || [],
     };
   },
   async mounted() {
+    this.routeslist = JSON.parse(localStorage.getItem("routes")) || [];
     // const res = await getNavigation();
     // console.log("路由", localStorage.getItem('routes'));
     // localStorage.setItem("routes", res.results);

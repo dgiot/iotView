@@ -143,9 +143,9 @@ export default {
       this.listLoading = false;
       // const loading = this.$baseColorfullLoading()
       let params = {
-        limit: args.limit,
-        order: args.order,
-        skip: args.skip,
+        limit: 10,
+        order: '-createdAt',
+        skip: 0,
         count: "objectId",
         where: {
           user: this.objectid,

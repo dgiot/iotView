@@ -13,10 +13,10 @@ export function getDlinkJson(data) {
     }
   })
 }
-export async function Startdashboard(dashboardId,data) {
-  // console.log('window',window.location.origin);
+export async function Startdashboard(dashboardId, data) {
+  console.log('window', window.location.origin);
   let ip = window.location.origin
-  if(ip.indexOf('localhost'>=0)){
+  if (ip.indexOf('localhost') >= 0) {
     ip = 'http://dev.iotn2n.com'
   }
   return axios({
