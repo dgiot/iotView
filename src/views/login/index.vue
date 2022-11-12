@@ -227,7 +227,10 @@ export default {
           if (item.meta.title.indexOf("日志") >= 0) {
             item.meta.icon = "el-icon-notebook-1";
           }
-          if (item.meta.title.indexOf("园区") >= 0) {
+          if (
+            item.meta.title.indexOf("园区") >= 0 ||
+            item.meta.title.indexOf("建筑") >= 0
+          ) {
             item.meta.icon = "el-icon-office-building";
           }
 
@@ -245,6 +248,30 @@ export default {
             item.meta.icon = "el-icon-picture-outline";
           } else if (item.meta.title.indexOf("质检") >= 0) {
             item.meta.icon = "el-icon-circle-check";
+          } else if (item.meta.title.indexOf("监控") >= 0) {
+            item.meta.icon = "el-icon-camera";
+          } else if (item.meta.title.indexOf("票") >= 0) {
+            item.meta.icon = "el-icon-s-ticket";
+          } else if (item.meta.title.indexOf("信息") >= 0) {
+            item.meta.icon = "el-icon-info";
+          } else if (item.meta.title.indexOf("系统") >= 0) {
+            item.meta.icon = "el-icon-data-analysis";
+          } else if (item.meta.title.indexOf("控制") >= 0) {
+            item.meta.icon = "el-icon-eleme";
+          } else if (item.meta.title.indexOf("光") >= 0) {
+            item.meta.icon = "el-icon-cpu";
+          } else if (item.meta.title.indexOf("照明") >= 0) {
+            item.meta.icon = "el-icon-s-opportunity";
+          } else if (item.meta.title.indexOf("环") >= 0) {
+            item.meta.icon = "el-icon-help";
+          } else if (item.meta.title.indexOf("空调") >= 0) {
+            item.meta.icon = "el-icon-receiving";
+          } else if (item.meta.title.indexOf("能耗") >= 0) {
+            item.meta.icon = "el-icon-magic-stick";
+          } else if (item.meta.title.indexOf("机械") >= 0) {
+            item.meta.icon = "material";
+          }else if (item.meta.title.indexOf("停车") >= 0) {
+            item.meta.icon = "stop";
           }
 
           // console.log("mata", item.meta);
