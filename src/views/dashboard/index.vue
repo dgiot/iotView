@@ -245,7 +245,10 @@ export default {
         } else if (node.attrs.name == "amiscomponent") {
           let item = node.attrs;
           amislist.push(item);
-        } else if (node.attrs.id != "bg"&& node.attrs.id != "不删除") {
+        } else if (
+          node.attrs.id.indexOf("不") < 0 &&
+          node.attrs.id.indexOf("bg") < 0
+        ) {
           // if (node.attrs.type == "staticimage")
           let image = new Image();
           node.setAttrs({
@@ -314,7 +317,7 @@ export default {
 /* 滚动条滑块 */
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  background: rgba(255,255,255 0);
+  background: rgba(255, 255, 255 0);
   -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.5);
 }
 /* ::-webkit-scrollbar-thumb:window-inactive {
