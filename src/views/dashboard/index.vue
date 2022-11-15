@@ -221,17 +221,22 @@ export default {
         node.setAttrs({
           draggable: false,
         });
+        node = this.initScale(node);
       });
       this.stage.find("Text").forEach((node) => {
         node.setAttrs({
           draggable: false,
         });
+        node = this.initScale(node);
       });
 
       this.stage.find("Image").forEach((node) => {
-        node.setAttrs({
-          draggable: false,
-        });
+        // node.setAttrs({
+        //   draggable: false,
+        // });
+        this.initSize(node)
+        // node = this.initScale(node);
+
         if (node.attrs.id == "bg") {
           console.log(node.attrs);
           this.bgSrc = node.attrs.src;
@@ -261,9 +266,14 @@ export default {
         }
       });
       this.stage.find("Rect").forEach((node) => {
-        node.setAttrs({
-          draggable: false,
-        });
+        // node.setAttrs({
+        //   draggable: false,
+        // });
+        this.initSize(node);
+        console.log("nodechange", node.attrs.x);
+        // node = this.initScale(node);
+        // console.log("nownode", nownode);
+
         if (node.attrs.name == "vuecomponent") {
           let item = node.attrs;
           list.push(item);
@@ -272,18 +282,35 @@ export default {
           amislist.push(item);
         }
       });
-      // this.layer.draw();
-      // this.layer.batchDraw();
+      this.layer.draw();
+      this.layer.batchDraw();
       this.vueComponents = list;
       this.vueFlag = true;
       this.amisComponents = amislist;
+      // 获取到低代码页面
       for (let index = 0; index < this.amisComponents.length; index++) {
         let res = await getView(this.amisComponents[index].id);
         this.amisComponents[index].viewData = res.data;
       }
-
       this.amisFlag = true;
-      // this.layer.batchDraw();
+    },
+    // 按比例初始化大小 -
+    initSize(node) {
+      node.setAttrs({
+        draggable: false,
+        x: (node.attrs.x * document.body.clientWidth) / 1920,
+        y: (node.attrs.y * document.body.clientHeight) / 940,
+        width: (node.attrs.width * document.body.clientWidth) / 1920,
+        height: (node.attrs.height * document.body.clientHeight) / 940,
+      });
+    },
+    initScale(node) {
+      node.attrs.x = (node.attrs.x * document.body.clientWidth) / 1920;
+      node.attrs.width = (node.attrs.width * document.body.clientWidth) / 1920;
+      node.attrs.y = (node.attrs.y * document.body.clientHeight) / 940;
+      node.attrs.height =
+        (node.attrs.height * document.body.clientHeight) / 940;
+      return node;
     },
     async queryData() {
       const { dashboard = {} } = await getDlinkJson("Dashboard");
@@ -294,9 +321,6 @@ export default {
       //     this.loadingConfig[`${key}`] = true;
       //   });
       // }, 1240);
-      // if (this.queryParams[0].dataType == "map") {
-      //   this.queryParams.splice(0, 5);
-      // }
       const Startdashboardid = this.dashboardId; // "8263c928d5";
       await Startdashboard(Startdashboardid, {});
     },

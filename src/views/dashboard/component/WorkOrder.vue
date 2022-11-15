@@ -299,7 +299,7 @@ background-color: #2472ea;
     overflow: hidden;
     ::v-deep .toptitle {
       background-color: #071753;
-      width: 100%;
+      width: 98.5%;
       display: flex;
       // background-color: gainsboro;
       // margin-bottom: 10px;
