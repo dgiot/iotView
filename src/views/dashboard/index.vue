@@ -210,12 +210,26 @@ export default {
       });
       this.layer.draw();
     });
+    console.log(this.stage);
     this.handleInitKonva();
+    window.onresize = () => {
+      return (() => {
+        this.layer = Konva.Node.create(this.json, "container").findOne("Layer");
+        this.stage = new Konva.Stage({
+          container: "container",
+          width: width,
+          height: height,
+        });
+        this.stage.add(this.layer);
+        this.handleInitKonva();
+      })();
+    };
   },
   methods: {
     async handleInitKonva() {
       let list = []; //vuecomponent 组件列表
       let amislist = []; // amiscomponent 组件列表
+      this.amisFlag = false;
       this.stage.find("Label").forEach((node) => {
         // info["Label"] = stage.find("Label");
         node.setAttrs({
@@ -229,12 +243,11 @@ export default {
         });
         node = this.initScale(node);
       });
-
       this.stage.find("Image").forEach((node) => {
         // node.setAttrs({
         //   draggable: false,
         // });
-        this.initSize(node)
+        this.initSize(node);
         // node = this.initScale(node);
 
         if (node.attrs.id == "bg") {
