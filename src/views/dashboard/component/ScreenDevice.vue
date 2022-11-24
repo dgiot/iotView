@@ -176,11 +176,6 @@ export default {
           item.address == "" || item.address == undefined
             ? "---"
             : item.address;
-        // item.detail = item?.detail ? item.detail : {}
-        // item.detail.address =
-        //   item?.detail && item?.detail?.address ? item.detail.address : '---'
-        // item.isEdit = false
-        // item.oldName = item.name
       });
       this.deviceList = list;
       this.total = total;

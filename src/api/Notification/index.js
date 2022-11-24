@@ -10,3 +10,12 @@ export function queryNotification(params) {
   })
 }
 
+export function getNotification(params) {
+  return request({
+    url: `/classes/Notification`,
+    method: 'get',
+    params
+  })
+}
+
+

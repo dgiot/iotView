@@ -1,10 +1,22 @@
 <template>
-  <div class="login-container">
+  <div
+    class="login-container"
+    :style="{
+      backgroundImage: 'url(' + backgroundImage + ')',
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: '100% 100%',
+    }"
+  >
+    <div class="bg_top">
+      <div class="btn_back" @click="handleIn">
+        <div class="btn_back_in">返回</div>
+      </div>
+    </div>
     <el-form
       ref="loginForm"
       :model="loginForm"
       :rules="loginRules"
-      class="login-form"
+      :class="isPC ? 'login-form' : 'login-move'"
       auto-complete="on"
       label-position="left"
     >
@@ -74,6 +86,7 @@
 <script>
 import { validUsername } from "@/utils/validate";
 import { getNavigation } from "@/api/Navigation";
+import { isPC } from "@/utils/index";
 import { mapMutations } from "vuex"; //mapMutations，mapGetters
 import Cookies from "js-cookie";
 export default {
@@ -94,6 +107,10 @@ export default {
       }
     };
     return {
+      isPC: true,
+      backgroundImage:
+        "/dgiot_dashboard/public/assets/images/platform/assets/login_images/background.jpg",
+      url: "",
       loginForm: {
         username: "",
         password: "",
@@ -111,6 +128,8 @@ export default {
     };
   },
   mounted() {
+    this.isPC = isPC();
+    console.log("是否为PC端", this.isPC);
     console.log(this.$route);
     if (this.$route.query) {
       this.loginForm.username = this.$route.query.username || "";
@@ -118,6 +137,7 @@ export default {
     }
     this.$nextTick(async () => {
       await this.defaultSet();
+      this.backgroundImage = this.url + this.backgroundImage;
       // await this.init()
     });
   },
@@ -209,7 +229,7 @@ export default {
           if (item.meta.title.indexOf("设备") >= 0) {
             item.meta.icon = "el-icon-monitor";
           }
-          if (item.meta.title.indexOf("运维") >= 0) {
+          if (item.meta.title.indexOf("运维") >= 0 || item.meta.title.indexOf("设置") >= 0) {
             item.meta.icon = "el-icon-setting";
           }
           if (item.meta.title.indexOf("工单") >= 0) {
@@ -270,8 +290,19 @@ export default {
             item.meta.icon = "el-icon-magic-stick";
           } else if (item.meta.title.indexOf("机械") >= 0) {
             item.meta.icon = "material";
-          }else if (item.meta.title.indexOf("停车") >= 0) {
+          } else if (item.meta.title.indexOf("停车") >= 0) {
             item.meta.icon = "stop";
+          }
+          if(item.meta.title.indexOf("对战") >= 0){
+            item.meta.icon = "fight";
+          }else if(item.meta.title.indexOf("射击") >= 0){
+            item.meta.icon = "shooting";
+          }else if(item.meta.title.indexOf("跑") >= 0){
+            item.meta.icon = "run";
+          }else if(item.meta.title.indexOf("跳") >= 0){
+            item.meta.icon = "jump";
+          }else if(item.meta.title.indexOf("投") >= 0){
+            item.meta.icon = "throw";
           }
 
           // console.log("mata", item.meta);
@@ -291,6 +322,12 @@ export default {
           : location.origin;
       console.log("url", url);
       Cookies.set("fileServer", url, { expires: 60 * 1000 * 30 });
+      this.url = url;
+      // console.log('这是路径',url);
+    },
+    handleIn() {
+      // console.log(window.location);
+      window.location.href = window.location.origin;
     },
   },
 };
@@ -312,6 +349,34 @@ $cursor: #fff;
 
 /* reset element-ui css */
 .login-container {
+  position: relative;
+  .bg_top {
+    position: absolute;
+    width: 100%;
+    height: 60px;
+    /* z-index: 100; */
+    /* box-sizing: border-box; */
+  }
+  /* // 新样式 */
+  .btn_back {
+    width: 150px;
+    height: 48px;
+    position: absolute;
+    right: 20px;
+    padding: 4px;
+    top: 48px;
+    background: url("../../assets/bg/experience-back.png") no-repeat;
+    background-size: 100% 100%;
+    text-align: center;
+    font-size: 20px;
+    line-height: 48px;
+    color: #caf2ff;
+    font-weight: 600;
+    cursor: pointer;
+    box-sizing: border-box;
+    /* // margin-top: 48px; */
+    /* // margin-left: 20px; */
+  }
   .el-input {
     display: inline-block;
     height: 47px;
@@ -353,14 +418,29 @@ $light_gray: #eee;
   width: 100%;
   // background-color: $bg;
   // overflow: hidden;
-  background: url("../../assets/static/background.jpg") no-repeat 100% 100%;
-  background-size: cover;
+  // /dgiot_dashboard/public/assets/images/platform/assets/login_images/background.jpg
+  // background: url("http://dev.iotn2n.com/dgiot_dashboard/public/assets/images/platform/assets/login_images/background.jpg")
+  //   no-repeat 100% 100%;
+  // background-size: cover;
   // background-repeat: "no-repeat" !important;
   // background-size: "100% 100%" !important;
   .login-form {
     position: absolute;
     right: 10%;
     top: 30%;
+    background-color: #002d55;
+    width: 375px;
+    max-width: 100%;
+    padding: 40px 35px 0;
+    margin: 0 auto;
+    overflow: hidden;
+    box-shadow: 1px 1px 12px 2px rgba(5, 106, 190, 0.5);
+  }
+  .login-move {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     background-color: #002d55;
     width: 375px;
     max-width: 100%;

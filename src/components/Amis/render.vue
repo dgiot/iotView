@@ -16,7 +16,7 @@ import { mapGetters } from "vuex";
 import { alert, confirm, render as renderSchema, toast } from 'amis'
 import ReactDOM from 'react-dom'
 
-import element from 'element-ui/lib/theme-chalk/index.css'
+// import element from 'element-ui/lib/theme-chalk/index.css'
 import qs from 'qs'
 import axios from 'axios'
 import copy from "copy-to-clipboard";
@@ -126,8 +126,8 @@ export default {
             platform: "amis",
             departmentToken: this.departmentToken,
             sessionToken: this.token,
-            author: "h7ml",
-            email: "h7ml@qq.com",
+            author: "xxb",
+            email: "258650676@qq.com",
           });
           if (method === "get" && data) {
             config.params = data;
@@ -227,14 +227,14 @@ export default {
           const { path } = this.$route;
           // 解决设计界面弹出提示问题
           console.log(path.indexOf("design"), path);
-          // if (!path.indexOf('design')) {
+          if (!path.indexOf('design')) {
           Message({
             type: type,
             message: msg,
             duration: 2000,
             showClose: true,
           });
-          // }
+          }
         },
         confirm,
         copy: (contents, options = {}) => {

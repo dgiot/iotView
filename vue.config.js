@@ -13,7 +13,7 @@ const name = defaultSettings.title || 'Amis Vue Template' // page title
 // For example, Mac: sudo npm run
 // You can change the port by the following methods:
 // port = 9528 npm run dev OR npm run dev --port = 9528
-const port = process.env.port || process.env.npm_config_port || 82 // dev port
+const port = process.env.port || process.env.npm_config_port || 3333 // dev port
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
   /**
@@ -36,9 +36,9 @@ module.exports = {
       errors: true
     },
     proxy: {
-      '/iotapi': {
+      '/iotapi/': {
         //代理api
-        target: 'http://dev.iotn2n.com' , //代理接口(注意只要域名就够了) // https://www.bossupi.com    jb http://43.138.215.206
+        target: 'http://dev.iotn2n.com/' , //代理接口(注意只要域名就够了) // https://www.bossupi.com    jb http://43.138.215.206
         secure: 'true',
         changeOrigin: true, //是否跨域
         ws: true, // proxy websockets
@@ -48,7 +48,7 @@ module.exports = {
         }
       }
     },
-    before: require('./mock/mock-server.js')
+    // before: require('./mock/mock-server.js')
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that

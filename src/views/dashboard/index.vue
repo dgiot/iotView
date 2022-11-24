@@ -32,7 +32,23 @@
           -->
         <!-- 数据卡片/产品数-设备数-在线数-离线数 -->
         <topo-card
-          v-if="comp.type == 'counter'"
+          v-if="comp.type == 'counter' && comp.id != 'all_countervalue'"
+          :comp="comp"
+          :style="{
+            width: comp.width + 'px',
+            height: comp.height + 'px',
+          }"
+        />
+        <screen-headcounter
+          v-else-if="comp.type == 'count' && comp.id == 'all_countvalue'"
+          :comp="comp"
+          :style="{
+            width: comp.width + 'px',
+            height: comp.height + 'px',
+          }"
+        />
+        <screen-headitem
+          v-else-if="comp.type == 'count'"
           :comp="comp"
           :style="{
             width: comp.width + 'px',
@@ -67,6 +83,15 @@
         <!-- 告警列表 -->
         <topo-caltable
           v-else-if="comp.type == 'list' && comp.id == 'warning_list'"
+          :comp="comp"
+          :style="{
+            width: comp.width + 'px',
+            height: comp.height + 'px',
+          }"
+        />
+        <!-- 设备地图 -->
+        <screen-baidumap
+          v-else-if="comp.type == 'map' && comp.id == 'baidumap'"
           :comp="comp"
           :style="{
             width: comp.width + 'px',
@@ -122,7 +147,7 @@
 </template>
 
 <script>
-import backgroundImage from "../../assets/bg/pageBg.png";
+import backgroundImage from "../../assets/bg/pageBg1.png";
 // import VueAliplayerV2 from 'vue-aliplayer-v2';
 import DgiotAliplayer from "./component/DgiotAliplayer.vue";
 import TopoCard from "./component/TopoCard.vue"; //卡片
@@ -131,6 +156,9 @@ import TopoCaltable from "./component/TopoCaltable.vue"; //告警列表
 import ScreenDevice from "./component/ScreenDevice.vue"; //设备列表
 import WorkOrder from "./component/WorkOrder.vue"; //工单列表
 import ScreenRealcard from "./component/ScreenRealcard.vue"; //告警列表
+import ScreenBaidumap from "./component/ScreenBaidumap.vue"; //百度地图
+import ScreenHeadcounter from "./component/ScreenHeadcount.vue"; //卡片组
+import ScreenHeaditem from "./component/ScreenHeaditem.vue"; //卡片组
 import { mapGetters } from "vuex";
 import Amis from "@/components/Amis/index.vue"; //amis 组件
 import { getView } from "@/api/View/index";
@@ -147,6 +175,9 @@ export default {
     ScreenDevice,
     ScreenRealcard,
     WorkOrder,
+    ScreenBaidumap,
+    ScreenHeadcounter,
+    ScreenHeaditem,
     DgiotAliplayer,
   },
   data() {
@@ -186,6 +217,7 @@ export default {
       results.forEach((item) => {
         if (item.type == "Dashboard") {
           this.json = item.data.konva.Stage;
+          console.log("json", this.json);
           this.dashboardId = item.objectId;
         }
       });
@@ -203,7 +235,7 @@ export default {
     this.stage.add(this.layer);
     this.$dgiotBus.$on("/konva", () => {
       this.stage.find("Text").forEach((node) => {
-        console.log("node", node);
+        // console.log("node", node);
         node.setAttrs({
           text: "改变",
         });
@@ -232,6 +264,7 @@ export default {
       this.amisFlag = false;
       this.stage.find("Label").forEach((node) => {
         // info["Label"] = stage.find("Label");
+        // this.initSize(node)
         node.setAttrs({
           draggable: false,
         });
@@ -247,6 +280,7 @@ export default {
         // node.setAttrs({
         //   draggable: false,
         // });
+        // console.log("node", node);
         this.initSize(node);
         // node = this.initScale(node);
 
@@ -259,6 +293,9 @@ export default {
           node.attrs.name == "vuecomponent"
         ) {
           let item = node.attrs;
+          if (item.type == "count") {
+            // console.log("item11111", item);
+          }
           list.push(item);
         } else if (node.attrs.name == "amiscomponent") {
           let item = node.attrs;
@@ -273,8 +310,8 @@ export default {
             image: image,
           });
           image.src = node.attrs.src;
-          this.layer.add(node);
-          this.layer.batchDraw();
+          // this.layer.add(node);
+          // this.layer.batchDraw();
           // this.stage.add(this.layer);
         }
       });
@@ -283,7 +320,7 @@ export default {
         //   draggable: false,
         // });
         this.initSize(node);
-        console.log("nodechange", node.attrs.x);
+        // console.log("nodechange", node.attrs.x);
         // node = this.initScale(node);
         // console.log("nownode", nownode);
 
@@ -295,8 +332,11 @@ export default {
           amislist.push(item);
         }
       });
-      this.layer.draw();
+      // this.layer.draw();
       this.layer.batchDraw();
+      setTimeout(() => {
+        this.layer.batchDraw();
+      }, 1500);
       this.vueComponents = list;
       this.vueFlag = true;
       this.amisComponents = amislist;
@@ -309,20 +349,21 @@ export default {
     },
     // 按比例初始化大小 -
     initSize(node) {
+      // console.log(node.attrs.height, document.body.clientHeight);
       node.setAttrs({
         draggable: false,
         x: (node.attrs.x * document.body.clientWidth) / 1920,
-        y: (node.attrs.y * document.body.clientHeight) / 940,
+        y: (node.attrs.y * document.body.clientHeight) / 900,
         width: (node.attrs.width * document.body.clientWidth) / 1920,
-        height: (node.attrs.height * document.body.clientHeight) / 940,
+        height: (node.attrs.height * document.body.clientHeight) / 900,
       });
     },
     initScale(node) {
       node.attrs.x = (node.attrs.x * document.body.clientWidth) / 1920;
       node.attrs.width = (node.attrs.width * document.body.clientWidth) / 1920;
-      node.attrs.y = (node.attrs.y * document.body.clientHeight) / 940;
+      node.attrs.y = (node.attrs.y * document.body.clientHeight) / 900;
       node.attrs.height =
-        (node.attrs.height * document.body.clientHeight) / 940;
+        (node.attrs.height * document.body.clientHeight) / 900;
       return node;
     },
     async queryData() {
@@ -343,22 +384,19 @@ export default {
 <style>
 /*里面的代码可以根据自己需求去进行更改*/
 /* 设置滚动条的样式 */
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   width: 12px;
-}
+} */
 /* 滚动槽 */
 ::-webkit-scrollbar-track {
   -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.3);
   border-radius: 10px;
 }
 /* 滚动条滑块 */
-::-webkit-scrollbar-thumb {
+/* ::-webkit-scrollbar-thumb {
   border-radius: 10px;
   background: rgba(255, 255, 255 0);
   -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.5);
-}
-/* ::-webkit-scrollbar-thumb:window-inactive {
-background-color: #2472ea;
 } */
 </style>
 <style lang="scss" scoped>
@@ -370,7 +408,7 @@ background-color: #2472ea;
   background-size: cover;
   .vue_component {
     position: absolute;
-    z-index: 99;
+    // z-index: 99;
     // background-color: #0077b8;
   }
   .amis_component {

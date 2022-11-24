@@ -4,6 +4,9 @@ import { getToken } from '@/utils/auth'
 // export async function getView(ObjectId) {
 //   return get_object('View', ObjectId)
 // }
+
+const server = 'http://dev.iotn2n.com'
+
 export function getDlinkJson(data) {
   return request({
     url: `/dlinkjson`,
@@ -14,10 +17,10 @@ export function getDlinkJson(data) {
   })
 }
 export async function Startdashboard(dashboardId, data) {
-  console.log('window', window.location.origin);
+  // console.log('window', window.location.origin);
   let ip = window.location.origin
   if (ip.indexOf('localhost') >= 0) {
-    ip = 'http://dev.iotn2n.com'
+    ip = server
   }
   return axios({
     url: `${ip}/iotapi/dashboard`,
@@ -29,5 +32,27 @@ export async function Startdashboard(dashboardId, data) {
     headers: {
       "sessionToken": getToken()
     }
+  })
+}
+// export async function sendTopic(data) {
+//   // console.log('window', window.location.origin);
+//   let ip = window.location.origin
+//   if (ip.indexOf('localhost') >= 0) {
+//     ip = server
+//   }
+//   return axios({
+//     url: `${ip}/iotapi/topic`,
+//     method: 'post',
+//     data: data,
+//     headers: {
+//       "sessionToken": getToken()
+//     }
+//   })
+// }
+export function sendTopic(data) {
+  return request({
+    url: `/topic`,
+    method: 'post',
+    data
   })
 }

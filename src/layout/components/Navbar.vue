@@ -219,6 +219,8 @@ export default {
         console.log(sendTopic);
         if (topic.indexOf("$dg/user/devicestate") >= 0) {
           sendTopic = "$dg/user/devicestate";
+        } else if (topic.indexOf("$dg/user/realtimecard") >= 0) {
+          sendTopic = "$dg/user/realtimecard";
         }
         _this.$dgiotBus.$emit(sendTopic, message);
       });

@@ -62,17 +62,6 @@ export default {
     // console.log('是否是pc端', this.$ispc())
   },
   async mounted() {
-    // let destId =
-    //   JSON.parse(Base64.decode(localStorage.getItem('role')))?.vuexinfo[0]
-    //     ?.objectId || ''
-    // let name =
-    //   JSON.parse(Base64.decode(localStorage.getItem('username')))?.vuexinfo ||
-    //   ''
-    // localStorage.setItem('parse_name', name)
-    // localStorage.setItem('parse_deptid', destId)
-    //        this.$dgiotBus.$on('MqttConnect',(data)=>{
-    //   console.log('接收消息amis页面',data);
-    //  })
     let viewid = location.hash.split("/")[location.hash.split("/").length - 1];
     const { data = {} } = await getView(viewid);
     this.viewData = data;
@@ -90,9 +79,8 @@ export default {
     // E:\work\project\doc\dgiot_doc\i18n\zh-cn\docusaurus-plugin-content-docs\current\developer_guid\docs\front_end\dgiot_topo.md
     this.$dgiotBus.$off("$dg/user/devicestate");
     this.$dgiotBus.$on("$dg/user/devicestate", (e) => {
-      console.log("接收消息11111", e);
       let str = String.fromCharCode.apply(null, new Uint8Array(e));
-      console.log("解码", str);
+      console.log("解码接收消息", str);
       let args = {};
       const parseString = JSON.parse(str);
       if (parseString) {
@@ -108,7 +96,7 @@ export default {
             index < document.getElementsByClassName("dgiotobjectId").length - 1;
             index++
           ) {
-            console.log(111);
+            // console.log(111);
             let objectId = document
               .getElementsByClassName("dgiotobjectId")
               [index].getElementsByClassName("antd-PlainField")[0].innerHTML;
@@ -137,7 +125,12 @@ export default {
   destroyed() {},
 };
 </script>
-
+<style>
+/* th{
+    background-color: #133950 !important;
+    color: #fff  !important;
+} */
+</style>
 <style lang="scss" scoped>
 .index-container {
   width: 100%;
@@ -147,5 +140,6 @@ export default {
     width: 100%;
     overflow: scroll;
   }
+  
 }
 </style>
