@@ -314,13 +314,14 @@ export default {
       }),
     },
   },
+  emits:['initScreen'],
   data() {
     return {
       avator: avator,
       dialogDeviceVisible: false,
       dialogTopoVisible: false, //组态
       ak: "S7pehghn5BdQeSGZAcpEk4bLQSQ8czvi",
-      sizeZoom: 11,
+      sizeZoom: 12,
       mapFlag: false,
       center: {
         lng: 120.260545,
@@ -347,11 +348,12 @@ export default {
     this.mapFlag = true;
     this.$dgiotBus.$off("$dg/user/realtimecard");
     this.$dgiotBus.$on("$dg/user/realtimecard", (e) => {
-      console.log(e);
-      let receive = e;
-      // let str = String.fromCharCode.apply(null, new Uint8Array(e));
-      // let receive = JSON.parse(Base64.decode(str));
-      // console.log("转化", receive);
+      // console.log(e);
+      // let receive = e;
+      let str = String.fromCharCode.apply(null, new Uint8Array(e));
+      // console.log("转化", str);
+      let receive = JSON.parse(Base64.decode(str));
+      console.log("转化", receive);
       this.cardList = this.renderCard(receive.data);
     });
   },
@@ -361,6 +363,7 @@ export default {
       this.amisFlag = false;
       this.vueFlag = false;
       this.dialogTopoVisible = false;
+      this.$emit('initScreen')
     },
     // 打开组态弹窗
     async handleOpenTopo(deviceInfo) {
@@ -393,9 +396,6 @@ export default {
       const result = await getTopo(param);
       // console.log("组态渲染", result);
       this.devicetopo = result.data.Stage;
-      // console.log(this.);
-      // this.cardList = this.renderCard(res.data);
-      // console.log("thiscardList", this.cardList);
       let data = {
         topic: `$dg/user/konva/${deviceInfo.objectId}/report`,
       };
@@ -403,21 +403,10 @@ export default {
       this.dialogTopoVisible = true;
 
       console.log("this.deviceInfo", this.deviceInfo);
-      // this.devicelayer = Konva.Node.create(
-      //   this.devicetopo,
-      //   "devicetopo"
-      // ).findOne("Layer");
       this.sendTopic(data);
       setTimeout(() => {
         this.initDeviceKonva();
       }, 2000);
-
-      // this.devicestage = new Konva.Stage({
-      //   container: "devicetopo",
-      //   width: this.devicetopo.attrs.width,
-      //   height: this.devicetopo.attrs.height,
-      // });
-      // this.stage.add(this.devicelayer);
     },
     initDeviceKonva() {
       //
@@ -441,11 +430,10 @@ export default {
       this.devicestage.add(this.devicelayer);
       this.$dgiotBus.$off("$dg/user/konva");
       this.$dgiotBus.$on("$dg/user/konva", (e) => {
-        // let str = String.fromCharCode.apply(null, new Uint8Array(e));
-
-        // let receive = JSON.parse(Base64.decode(str));
-        let receive = e;
-        receive.payloadString.konva.forEach((item) => {
+        let str = String.fromCharCode.apply(null, new Uint8Array(e));
+        let receive = JSON.parse(Base64.decode(str));
+        console.log(receive);
+        receive.konva.forEach((item) => {
           // console.log(item)
           var info = this.putNode(
             this.devicestage,
@@ -468,10 +456,11 @@ export default {
     },
     // 实时更新组态内容
     putNode(node, nodeid, text, type) {
-      console.log("组态修改", node, nodeid, text, type);
+      // console.log("组态修改", node, nodeid, text, type);
       if (type != "undefined") {
         let params = {};
         params[type] = text;
+        console.log(nodeid,text);
         node.find(`#${nodeid}`).forEach((item) => {
           console.log(item);
           item.setAttrs(params);
@@ -578,11 +567,10 @@ export default {
     },
     handlecloseDevice() {
       console.log("关闭实时数据弹窗");
+      this.$emit('initScreen')
     },
     async handleOpenRealCard(deviceInfo) {
       const res = await getDeviceRealCard(deviceInfo.objectId);
-      // console.log(res);
-
       this.cardList = this.renderCard(res.data);
       console.log("thiscardList", this.cardList);
       let data = {

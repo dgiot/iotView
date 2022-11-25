@@ -93,6 +93,7 @@
         <screen-baidumap
           v-else-if="comp.type == 'map' && comp.id == 'baidumap'"
           :comp="comp"
+          @initScreen="initScreen"
           :style="{
             width: comp.width + 'px',
             height: comp.height + 'px',
@@ -157,7 +158,7 @@ import ScreenDevice from "./component/ScreenDevice.vue"; //设备列表
 import WorkOrder from "./component/WorkOrder.vue"; //工单列表
 import ScreenRealcard from "./component/ScreenRealcard.vue"; //告警列表
 import ScreenBaidumap from "./component/ScreenBaidumap.vue"; //百度地图
-import ScreenHeadcounter from "./component/ScreenHeadcount.vue"; //卡片组
+// import ScreenHeadcounter from "./component/ScreenHeadcount.vue"; //卡片组
 import ScreenHeaditem from "./component/ScreenHeaditem.vue"; //卡片组
 import { mapGetters } from "vuex";
 import Amis from "@/components/Amis/index.vue"; //amis 组件
@@ -176,7 +177,7 @@ export default {
     ScreenRealcard,
     WorkOrder,
     ScreenBaidumap,
-    ScreenHeadcounter,
+    // ScreenHeadcounter,
     ScreenHeaditem,
     DgiotAliplayer,
   },
@@ -365,6 +366,10 @@ export default {
       node.attrs.height =
         (node.attrs.height * document.body.clientHeight) / 900;
       return node;
+    },
+    async initScreen() {
+      let Startdashboardid = this.dashboardId; // "8263c928d5";
+      await Startdashboard(Startdashboardid, {});
     },
     async queryData() {
       const { dashboard = {} } = await getDlinkJson("Dashboard");
