@@ -254,7 +254,7 @@ export default {
           : location.origin;
       // console.log("url", url);
       Cookies.set("fileServer", url, { expires: 60 * 1000 * 30 });
-      this.$fileServer = Cookies.get("fileServer") || "";
+      this.$FileServe = Cookies.get("fileServer") || "";
       this.avatar = localStorage.getItem("avatar") || "";
     },
   },

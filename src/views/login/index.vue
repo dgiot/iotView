@@ -12,11 +12,12 @@
         <div class="btn_back_in">返回</div>
       </div>
     </div>
+    <!--isPC ? 'login-form' : 'login-move' -->
     <el-form
       ref="loginForm"
       :model="loginForm"
       :rules="loginRules"
-      :class="isPC ? 'login-form' : 'login-move'"
+      class="login-form"
       auto-complete="on"
       label-position="left"
     >
@@ -77,7 +78,6 @@
           target="_blank"
           >amis</a
         >
-        <!-- <span> password: any</span> -->
       </div>
     </el-form>
   </div>
@@ -229,7 +229,10 @@ export default {
           if (item.meta.title.indexOf("设备") >= 0) {
             item.meta.icon = "el-icon-monitor";
           }
-          if (item.meta.title.indexOf("运维") >= 0 || item.meta.title.indexOf("设置") >= 0) {
+          if (
+            item.meta.title.indexOf("运维") >= 0 ||
+            item.meta.title.indexOf("设置") >= 0
+          ) {
             item.meta.icon = "el-icon-setting";
           }
           if (item.meta.title.indexOf("工单") >= 0) {
@@ -293,15 +296,15 @@ export default {
           } else if (item.meta.title.indexOf("停车") >= 0) {
             item.meta.icon = "stop";
           }
-          if(item.meta.title.indexOf("对战") >= 0){
+          if (item.meta.title.indexOf("对战") >= 0) {
             item.meta.icon = "fight";
-          }else if(item.meta.title.indexOf("射击") >= 0){
+          } else if (item.meta.title.indexOf("射击") >= 0) {
             item.meta.icon = "shooting";
-          }else if(item.meta.title.indexOf("跑") >= 0){
+          } else if (item.meta.title.indexOf("跑") >= 0) {
             item.meta.icon = "run";
-          }else if(item.meta.title.indexOf("跳") >= 0){
+          } else if (item.meta.title.indexOf("跳") >= 0) {
             item.meta.icon = "jump";
-          }else if(item.meta.title.indexOf("投") >= 0){
+          } else if (item.meta.title.indexOf("投") >= 0) {
             item.meta.icon = "throw";
           }
 
@@ -354,6 +357,7 @@ $cursor: #fff;
     position: absolute;
     width: 100%;
     height: 60px;
+
     /* z-index: 100; */
     /* box-sizing: border-box; */
   }
@@ -374,6 +378,10 @@ $cursor: #fff;
     font-weight: 600;
     cursor: pointer;
     box-sizing: border-box;
+    .btn_back_in {
+      margin-top: -4px;
+      text-shadow: 2px 3px 1px #000;
+    }
     /* // margin-top: 48px; */
     /* // margin-left: 20px; */
   }
@@ -419,37 +427,40 @@ $light_gray: #eee;
   // background-color: $bg;
   // overflow: hidden;
   // /dgiot_dashboard/public/assets/images/platform/assets/login_images/background.jpg
-  // background: url("http://dev.iotn2n.com/dgiot_dashboard/public/assets/images/platform/assets/login_images/background.jpg")
+  // background: url("http://127.0.0.1:5080/dgiot_dashboard/public/assets/images/platform/assets/login_images/background.jpg")
   //   no-repeat 100% 100%;
   // background-size: cover;
   // background-repeat: "no-repeat" !important;
   // background-size: "100% 100%" !important;
-  .login-form {
-    position: absolute;
-    right: 10%;
-    top: 30%;
-    background-color: #002d55;
-    width: 375px;
-    max-width: 100%;
-    padding: 40px 35px 0;
-    margin: 0 auto;
-    overflow: hidden;
-    box-shadow: 1px 1px 12px 2px rgba(5, 106, 190, 0.5);
+  @media screen and (min-width: 600px) {
+    .login-form {
+      position: absolute;
+      right: 10%;
+      top: 30%;
+      background-color: #002d55;
+      width: 375px;
+      max-width: 100%;
+      padding: 40px 35px 0;
+      margin: 0 auto;
+      overflow: hidden;
+      box-shadow: 1px 1px 12px 2px rgba(5, 106, 190, 0.5);
+    }
   }
-  .login-move {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #002d55;
-    width: 375px;
-    max-width: 100%;
-    padding: 40px 35px 0;
-    margin: 0 auto;
-    overflow: hidden;
-    box-shadow: 1px 1px 12px 2px rgba(5, 106, 190, 0.5);
+  @media screen and (max-width: 600px) {
+    .login-form {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #002d55;
+      width: 325px;
+      max-width: 100%;
+      padding: 40px 35px 0;
+      margin: 0 auto;
+      overflow: hidden;
+      box-shadow: 1px 1px 12px 2px rgba(5, 106, 190, 0.5);
+    }
   }
-
   .tips {
     font-size: 14px;
     color: #fff;

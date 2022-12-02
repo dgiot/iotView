@@ -117,10 +117,11 @@
             height: comp.height + 'px',
           }"
         />
-
+        <!-- node.attrs.src.includes("//") ? node.attrs.src : this.$FileServe +
+        node.attrs.src -->
         <img
           v-else-if="comp.type == 'konvaimage'"
-          :src="comp.src"
+          :src="comp.src.includes('//') ? comp.src : $FileServe + comp.src"
           :style="{
             width: comp.width + 'px',
             height: comp.height + 'px',
@@ -287,7 +288,9 @@ export default {
 
         if (node.attrs.id == "bg") {
           console.log(node.attrs);
-          this.bgSrc = node.attrs.src;
+          this.bgSrc = node.attrs.src.includes("//")
+            ? node.attrs.src
+            : this.$FileServe + node.attrs.src;
         }
         if (
           node.attrs.type == "konvaimage" ||
@@ -310,7 +313,9 @@ export default {
           node.setAttrs({
             image: image,
           });
-          image.src = node.attrs.src;
+          image.src = node.attrs.src.includes("//")
+            ? node.attrs.src
+            : this.$FileServe + node.attrs.src;
           // this.layer.add(node);
           // this.layer.batchDraw();
           // this.stage.add(this.layer);

@@ -16,6 +16,13 @@ export function getDevice(objectId) {
     method: 'get',
   })
 }
+export function putDevice(objectId, data) {
+  return request({
+    url: `/classes/Device/${objectId}`,
+    method: 'put',
+    data
+  })
+}
 export function getDeviceRealCard(objectId) {
   return request({
     url: `/devicecard/${objectId}`,

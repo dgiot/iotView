@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Cookies from 'js-cookie'
 import { Base64 } from "js-base64";
+import md5 from "js-md5";
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
 
@@ -42,6 +43,7 @@ if (process.env.NODE_ENV === 'production') {
   const { mockXHR } = require('../mock')
   mockXHR()
 }
+Vue.prototype.$md5 = md5
 Vue.prototype.$_ = require("lodash")
 Vue.prototype.$Cookies = Cookies
 Vue.prototype.$Base64 = Base64

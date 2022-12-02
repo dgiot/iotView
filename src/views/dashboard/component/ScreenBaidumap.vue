@@ -156,14 +156,6 @@
                   height: comp.height + 'px',
                 }"
               />
-              <!-- <screen-realcard
-          v-else-if="comp.type == 'line'"
-          :comp="comp"
-          :style="{
-            width: comp.width + 'px',
-            height: comp.height + 'px',
-          }"
-        /> -->
               <screen-device
                 v-else-if="comp.type == 'list' && comp.id == 'device_list'"
                 :comp="comp"
@@ -202,7 +194,9 @@
 
               <img
                 v-else-if="comp.type == 'konvaimage'"
-                :src="comp.src"
+                :src="
+                  comp.src.includes('//') ? comp.src : $FileServe + comp.src
+                "
                 :style="{
                   width: comp.width + 'px',
                   height: comp.height + 'px',
@@ -314,7 +308,7 @@ export default {
       }),
     },
   },
-  emits:['initScreen'],
+  emits: ["initScreen"],
   data() {
     return {
       avator: avator,
@@ -363,7 +357,7 @@ export default {
       this.amisFlag = false;
       this.vueFlag = false;
       this.dialogTopoVisible = false;
-      this.$emit('initScreen')
+      this.$emit("initScreen");
     },
     // 打开组态弹窗
     async handleOpenTopo(deviceInfo) {
@@ -378,7 +372,8 @@ export default {
           key: { $regex: deviceInfo.product.objectId },
         },
       };
-
+      this.vueComponents = [];
+      this.amisComponents = [];
       const res = await queryView(params);
       console.log("组态", res);
       // res.results.forEach(ele =>{
@@ -460,7 +455,7 @@ export default {
       if (type != "undefined") {
         let params = {};
         params[type] = text;
-        console.log(nodeid,text);
+        console.log(nodeid, text);
         node.find(`#${nodeid}`).forEach((item) => {
           console.log(item);
           item.setAttrs(params);
@@ -535,7 +530,10 @@ export default {
           node.setAttrs({
             image: image,
           });
-          image.src = node.attrs.src;
+          image.src = node.attrs.src.includes("//")
+            ? node.attrs.src
+            : this.$FileServe + node.attrs.src;
+          // image.src = node.attrs.src;
           // this.devicelayer.add(node);
           // this.devicelayer.batchDraw();
           // this.stage.add(this.layer);
@@ -567,7 +565,7 @@ export default {
     },
     handlecloseDevice() {
       console.log("关闭实时数据弹窗");
-      this.$emit('initScreen')
+      this.$emit("initScreen");
     },
     async handleOpenRealCard(deviceInfo) {
       const res = await getDeviceRealCard(deviceInfo.objectId);

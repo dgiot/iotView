@@ -81,16 +81,15 @@
     <link
   rel="stylesheet"
   href="https://g.alicdn.com/de/prismplayer/2.9.3/skins/default/aliplayer-min.css"
-/>
-     -->
-  </div>
-</template>
-
-<script
+/><script
   type="text/javascript"
   charset="utf-8"
   src="https://g.alicdn.com/de/prismplayer/2.9.3/aliplayer-min.js"
 ></script>
+     -->
+  </div>
+</template>
+
 <script>
 import VueAliplayerV2 from "vue-aliplayer-v2";
 
@@ -132,9 +131,15 @@ export default {
     };
   },
   mounted() {
-    this.source =
-      this.comp.text ||
-      "http://219.151.31.38/liveplay-kk.rtxapp.com/live/program/live/hnwshd/4000000/mnf.m3u8";
+    console.log("地址", this.$FileServe);
+    if (this.comp.text.includes("//")) {
+      this.source = this.comp.text;
+    } else {
+      this.source = this.$FileServe + this.comp.text;
+    }
+    // this.source =
+    //   this.comp.text ||
+    //   "http://219.151.31.38/liveplay-kk.rtxapp.com/live/program/live/hnwshd/4000000/mnf.m3u8";
     if (this.comp.text.indexOf("m3u8") < 0) {
       this.options.isLive = false;
     }
@@ -169,7 +174,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "https://g.alicdn.com/de/prismplayer/2.9.3/skins/default/aliplayer-min.css";
+@import "../../.././../public/resources/aliplayer-min.css";
 .liveapp {
   position: relative;
   width: 100%;

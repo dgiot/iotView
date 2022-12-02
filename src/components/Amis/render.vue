@@ -1,5 +1,5 @@
 <template>
-  <div :key="amisKey" ref="renderBox" class="box" className="box">12211</div>
+  <div :key="amisKey" ref="renderBox" class="box" className="box"></div>
 </template>
 
 <script>
