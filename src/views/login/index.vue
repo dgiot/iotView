@@ -427,7 +427,7 @@ $light_gray: #eee;
   // background-color: $bg;
   // overflow: hidden;
   // /dgiot_dashboard/public/assets/images/platform/assets/login_images/background.jpg
-  // background: url("http://127.0.0.1:5080/dgiot_dashboard/public/assets/images/platform/assets/login_images/background.jpg")
+  // background: url("http://192.168.1.211/dgiot_dashboard/public/assets/images/platform/assets/login_images/background.jpg")
   //   no-repeat 100% 100%;
   // background-size: cover;
   // background-repeat: "no-repeat" !important;

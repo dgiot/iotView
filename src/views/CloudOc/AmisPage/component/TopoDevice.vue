@@ -107,7 +107,7 @@ import WorkOrder from "../../../dashboard/component/WorkOrder.vue"; //工单列�
 import ScreenRealcard from "../../../dashboard/component/ScreenRealcard.vue"; //告警列表
 import Amis from "@/components/Amis/index.vue"; //amis 组件
 import { Base64 } from "js-base64";
-import { queryView, getTopo, getView } from "@/api/View";
+import { queryView, getTopo, getView, postAmis } from "@/api/View";
 import { sendTopic } from "@/api/Dashboard";
 export default {
   name: "TopoDevice",
@@ -268,7 +268,16 @@ export default {
               "parse_productid",
               this.deviceInfo.product.objectId
             );
-            let res = await getView(node.attrs.amis_id);
+            let params = {
+              viewid: node.attrs.amis_id,
+            };
+            let data = {
+              render: {
+                text: node.attrs.text.trim(),
+              },
+            };
+            let res = await postAmis(params, data);
+            // let res = await getView(node.attrs.amis_id);
             this.topoAmisData = res.data;
             this.dialogTopoAmisVisible = true;
             // amis_id
@@ -285,7 +294,17 @@ export default {
               "parse_productid",
               this.deviceInfo.product.objectId
             );
-            let res = await getView(node.attrs.amis_id);
+            let params = {
+              viewid: node.attrs.amis_id,
+            };
+            let data = {
+              render: {
+                text: node.attrs.text.trim(),
+              },
+            };
+            let res = await postAmis(params, data);
+            // console.log("res", res);
+            // let res = await getView(node.attrs.amis_id);
             this.topoAmisData = res.data;
             this.dialogTopoAmisVisible = true;
             // amis_id

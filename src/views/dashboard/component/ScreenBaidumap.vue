@@ -270,7 +270,7 @@ import avator from "@/assets/bg/avator.png";
 import { Base64 } from "js-base64";
 // import { queryProduct } from "@/api/Product";
 import { sendTopic } from "@/api/Dashboard";
-import { queryView, getTopo, getView } from "@/api/View";
+import { queryView, getTopo, getView, postAmis } from "@/api/View";
 export default {
   name: "ScreenBaidumap",
   components: {
@@ -490,7 +490,16 @@ export default {
               "parse_productid",
               this.deviceInfo.product.objectId
             );
-            let res = await getView(node.attrs.amis_id);
+            let params = {
+              viewid: node.attrs.amis_id,
+            };
+            let data = {
+              render: {
+                text: node.attrs.text.trim(),
+              },
+            };
+            let res = await postAmis(params, data);
+            // let res = await getView(node.attrs.amis_id);
             this.topoAmisData = res.data;
             this.dialogTopoAmisVisible = true;
             // amis_id
@@ -507,7 +516,16 @@ export default {
               "parse_productid",
               this.deviceInfo.product.objectId
             );
-            let res = await getView(node.attrs.amis_id);
+            let params = {
+              viewid: node.attrs.amis_id,
+            };
+            let data = {
+              render: {
+                text: node.attrs.text.trim(),
+              },
+            };
+            let res = await postAmis(params, data);
+            // let res = await getView(node.attrs.amis_id);
             this.topoAmisData = res.data;
             this.dialogTopoAmisVisible = true;
             // amis_id

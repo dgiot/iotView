@@ -5,7 +5,7 @@ import { getToken } from '@/utils/auth'
 //   return get_object('View', ObjectId)
 // }
 
-const server = 'http://127.0.0.1:5080'
+const server = 'http://192.168.1.211'
 
 export function getDlinkJson(data) {
   return request({

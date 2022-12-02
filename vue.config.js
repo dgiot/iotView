@@ -38,7 +38,7 @@ module.exports = {
     proxy: {
       '/iotapi': {
         //代理api
-        target: 'http://127.0.0.1:5080' , //代理接口(注意只要域名就够了) // https://www.bossupi.com    jb http://43.138.215.206
+        target: 'http://192.168.1.211' , //代理接口(注意只要域名就够了) // https://www.bossupi.com    jb http://43.138.215.206
         secure: 'true',
         changeOrigin: true, //是否跨域
         ws: true, // proxy websockets
