@@ -138,6 +138,8 @@ export default {
     };
   },
   mounted() {
+    this.vueComponents = [];
+    this.amisComponents = [];
     this.handleOpenTopo(this.deviceInfo);
   },
   methods: {
@@ -176,10 +178,11 @@ export default {
       // this.dialogTopoVisible = true;
 
       console.log("this.deviceInfo", this.deviceInfo);
-      this.sendTopic(data);
+
       setTimeout(() => {
         this.initDeviceKonva();
-      }, 2000);
+        this.sendTopic(data);
+      }, 500);
     },
     initDeviceKonva() {
       //
@@ -188,13 +191,6 @@ export default {
         this.devicetopo,
         "deviceTopo"
       ).findOne("Layer");
-      // this.devicestage = new Konva.Stage({
-      //   container: "deviceTopo",
-      //   width: this.devicetopo.attrs.width,
-      //   height: this.devicetopo.attrs.height,
-      // });
-      // this.devicestage.add(this.devicelayer);
-
       this.devicestage = new Konva.Stage({
         container: "deviceTopo",
         width: 1200,
@@ -348,8 +344,13 @@ export default {
       // this.layer.draw();
       this.devicelayer.batchDraw();
       setTimeout(() => {
+        console.log('第一次重绘');
         this.devicelayer.batchDraw();
-      }, 1500);
+      }, 500);
+       setTimeout(() => {
+        console.log('第二次重绘');
+        this.devicelayer.batchDraw();
+      }, 1000);
       this.vueComponents = list;
       this.vueFlag = true;
       this.amisComponents = amislist;
