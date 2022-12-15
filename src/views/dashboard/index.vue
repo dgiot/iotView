@@ -200,7 +200,12 @@ export default {
   computed: {
     ...mapGetters(["name"]),
   },
+
   async mounted() {
+    this.$store.dispatch("settings/changeSetting", {
+      key: "treeFlag",
+      value: false,
+    });
     // console.log("layer", this.layer);
     var width = window.innerWidth;
     var height = window.innerHeight;
@@ -246,6 +251,7 @@ export default {
     });
     console.log(this.stage);
     this.handleInitKonva();
+    // 监听界面
     window.onresize = () => {
       return (() => {
         this.layer = Konva.Node.create(this.json, "container").findOne("Layer");
@@ -265,12 +271,13 @@ export default {
       let amislist = []; // amiscomponent 组件列表
       this.amisFlag = false;
       this.stage.find("Label").forEach((node) => {
+        console.log("label", node);
         // info["Label"] = stage.find("Label");
-        // this.initSize(node)
+        this.initSize(node);
         node.setAttrs({
           draggable: false,
         });
-        node = this.initScale(node);
+        // node = this.initScale(node);
       });
       this.stage.find("Text").forEach((node) => {
         node.setAttrs({
@@ -284,7 +291,6 @@ export default {
         // });
         // console.log("node", node);
         this.initSize(node);
-        // node = this.initScale(node);
 
         if (node.attrs.id == "bg") {
           console.log(node.attrs);
@@ -359,17 +365,17 @@ export default {
       node.setAttrs({
         draggable: false,
         x: (node.attrs.x * document.body.clientWidth) / 1920,
-        y: (node.attrs.y * document.body.clientHeight) / 900,
+        y: (node.attrs.y * document.body.clientHeight) / 940,
         width: (node.attrs.width * document.body.clientWidth) / 1920,
-        height: (node.attrs.height * document.body.clientHeight) / 900,
+        height: (node.attrs.height * document.body.clientHeight) / 940,
       });
     },
     initScale(node) {
       node.attrs.x = (node.attrs.x * document.body.clientWidth) / 1920;
       node.attrs.width = (node.attrs.width * document.body.clientWidth) / 1920;
-      node.attrs.y = (node.attrs.y * document.body.clientHeight) / 900;
+      node.attrs.y = (node.attrs.y * document.body.clientHeight) / 940;
       node.attrs.height =
-        (node.attrs.height * document.body.clientHeight) / 900;
+        (node.attrs.height * document.body.clientHeight) / 940;
       return node;
     },
     async initScreen() {
@@ -379,12 +385,6 @@ export default {
     async queryData() {
       const { dashboard = {} } = await getDlinkJson("Dashboard");
       this.queryParams = dashboard;
-      // setTimeout(() => {
-      //   this.queryParams.forEach((e) => {
-      //     let key = e.vuekey;
-      //     this.loadingConfig[`${key}`] = true;
-      //   });
-      // }, 1240);
       const Startdashboardid = this.dashboardId; // "8263c928d5";
       await Startdashboard(Startdashboardid, {});
     },

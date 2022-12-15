@@ -32,13 +32,13 @@ module.exports = {
     port: port,
     open: true,
     overlay: {
-      warnings: false, 
+      warnings: false,
       errors: true
     },
     proxy: {
       '/iotapi': {
         //代理api
-        target: 'http://dev.iotn2n.com' , //代理接口(注意只要域名就够了) // https://www.bossupi.com    jb http://43.138.215.206
+        target: 'http://dev.iotn2n.com', //代理接口(注意只要域名就够了) // https://www.bossupi.com    jb http://43.138.215.206
         secure: 'true',
         changeOrigin: true, //是否跨域
         ws: true, // proxy websockets
@@ -99,7 +99,7 @@ module.exports = {
             .plugin('ScriptExtHtmlWebpackPlugin')
             .after('html')
             .use('script-ext-html-webpack-plugin', [{
-            // `runtime` must same as runtimeChunk name. default is `runtime`
+              // `runtime` must same as runtimeChunk name. default is `runtime`
               inline: /runtime\..*\.js$/
             }])
             .end()

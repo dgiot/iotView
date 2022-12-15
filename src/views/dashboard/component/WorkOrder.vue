@@ -262,7 +262,7 @@ export default {
 /* 滚动条滑块 */
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  background: #071753;
+  /* background: #071753; */
   -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.5);
 }
 /* ::-webkit-scrollbar-thumb:window-inactive {
@@ -271,7 +271,8 @@ background-color: #2472ea;
 </style>
 <style lang="scss" scoped>
 .topoCaltable {
-  background: url("../../../assets/bg/bg_warning.png") no-repeat;
+  border: 1px solid #fff;
+  // background: url("../../../assets/bg/bg_warning.png") no-repeat;
   background-size: 100% 100%;
   position: relative;
   .screen_right_bottom_top {
@@ -280,7 +281,7 @@ background-color: #2472ea;
     width: 100%;
     height: 40px;
     line-height: 40px;
-    padding-left: 50px;
+    padding-left: 10%;
     font-weight: bold;
     color: #fff;
   }
@@ -290,7 +291,7 @@ background-color: #2472ea;
     height: calc(100% - 50px);
     // margin-top: 35px;
     margin-left: 2%;
-    background-color: #0b2266;
+    // background-color: #0b2266;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -298,7 +299,7 @@ background-color: #2472ea;
     color: #fff;
     overflow: hidden;
     ::v-deep .toptitle {
-      background-color: #071753;
+      // background-color: #071753;
       width: 98.5%;
       display: flex;
       // background-color: gainsboro;
@@ -334,10 +335,10 @@ background-color: #2472ea;
       // border-bottom: 0.2px solid #ccc;
       // border-right: 0.2px solid #ccc;
       .table-item:nth-child(2n) {
-        background-color: #0b1b57;
+        // background-color: #0b1b57;
       }
       .table-item:nth-child(2n + 1) {
-        background-color: #071753;
+        // background-color: #071753;
       }
       .table-item {
         display: flex;
@@ -351,6 +352,7 @@ background-color: #2472ea;
         .table-item-content {
           flex: 1;
           height: 100%;
+          word-break: break-all;
           // border: 0.1px solid #fff;
           text-align: center;
           padding: 5px;
@@ -361,11 +363,11 @@ background-color: #2472ea;
     /* 表格内背景颜色 */
 
     ::v-deep .el-table .tableRowClassName:nth-child(2n) {
-      background-color: #001833 !important;
+      // background-color: #001833 !important;
       // border: 0.1px solid #fff !important;
     }
     ::v-deep .el-table .tableRowClassName:nth-child(2n + 1) {
-      background-color: #08223f !important;
+      // background-color: #08223f !important;
       // border: 0.1px solid #fff !important;
     }
     ::v-deep .el-table {

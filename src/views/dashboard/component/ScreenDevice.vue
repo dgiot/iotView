@@ -25,10 +25,14 @@
               v-for="(item, index) in deviceList"
               :key="index"
               class="table-item"
+              :class="
+                item.objectId == selectObjectId ? 'table-item-select' : ''
+              "
+              @click="handleCheckDevice(item)"
             >
               <td class="table-item-content">{{ item.name }}</td>
               <td class="table-item-content">{{ item.devaddr }}</td>
-              <td class="table-item-content" >{{ item.address }}</td>
+              <td class="table-item-content">{{ item.address }}</td>
               <td class="table-item-content">
                 <el-tag
                   v-if="item.status == 'OFFLINE'"
@@ -71,6 +75,7 @@ export default {
   },
   data() {
     return {
+      selectObjectId: "",
       status: false,
       listData: [],
       warnList: [],
@@ -114,6 +119,10 @@ export default {
     this.scroll();
   },
   methods: {
+    handleCheckDevice(item) {
+      this.selectObjectId = item.objectId;
+      this.$dgiotBus.$emit("device/transmit", item);
+    },
     scroll() {
       let _this = this;
       var parent = document.getElementsByClassName("table_parent")[0];
@@ -205,14 +214,14 @@ export default {
 }
 /* 滚动槽 */
 ::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0);
   border-radius: 10px;
 }
 /* 滚动条滑块 */
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  background: #071753;
-  -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.5);
+  /* background: #071753; */
+  -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0);
 }
 /* ::-webkit-scrollbar-thumb:window-inactive {
 background-color: #2472ea;
@@ -223,7 +232,8 @@ background-color: #2472ea;
   position: relative;
   width: 100%;
   height: 100%;
-  background: url("../../../assets/bg/bg_warning.png") no-repeat;
+  border: 1px solid #fff;
+  // background: url("../../../assets/bg/bg_warning.png") no-repeat;
   background-size: 100% 100%;
   .screen_right_bottom_top {
     background: url("../../../assets/bg/bg_title.png") no-repeat;
@@ -231,7 +241,7 @@ background-color: #2472ea;
     width: 100%;
     height: 40px;
     line-height: 40px;
-    padding-left: 50px;
+    padding-left: 10%;
     font-weight: bold;
     color: #fff;
   }
@@ -241,7 +251,7 @@ background-color: #2472ea;
     height: calc(100% - 50px);
     // margin-top: 2px;
     margin-left: 2%;
-    background-color: #0b2266;
+    // background-color: #0b2266;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -249,7 +259,7 @@ background-color: #2472ea;
     color: #fff;
     overflow: hidden;
     ::v-deep .toptitle {
-      background-color: #071753;
+      // background-color: #071753;
       width: 99%;
       display: flex;
       // background-color: gainsboro;
@@ -282,11 +292,14 @@ background-color: #2472ea;
       // overflow-y: scroll;
       flex-direction: column;
       width: 100%;
+      .table-item-select {
+        background-color: #20bfe1 !important;
+      }
       .table-item:nth-child(2n) {
-        background-color: #0b1b57;
+        // background-color: #0b1b57;
       }
       .table-item:nth-child(2n + 1) {
-        background-color: #071753;
+        // background-color: #071753;
       }
       .table-item {
         display: flex;
@@ -300,6 +313,7 @@ background-color: #2472ea;
         .table-item-content {
           flex: 1;
           height: 100%;
+          word-break: break-all;
           // border: 0.1px solid #fff;
           text-align: center;
           padding: 5px;
@@ -310,11 +324,11 @@ background-color: #2472ea;
     /* 表格内背景颜色 */
 
     ::v-deep .el-table .tableRowClassName:nth-child(2n) {
-      background-color: #001833 !important;
+      // background-color: #001833 !important;
       // border: 0.1px solid #fff !important;
     }
     ::v-deep .el-table .tableRowClassName:nth-child(2n + 1) {
-      background-color: #08223f !important;
+      // background-color: #08223f !important;
       // border: 0.1px solid #fff !important;
     }
     ::v-deep .el-table {

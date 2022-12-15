@@ -10,14 +10,28 @@ export function login(data) {
     }
   })
 }
-
-export function getInfo(token) {
+export function Roletree() {
   return request({
-    url: '/vue-admin-template/user/info',
+    url: '/roletree',
     method: 'get',
-    params: { token }
   })
 }
+export function getToken(params) {
+  return request({
+    url: '/token',
+    method: 'get',
+    params
+  })
+}
+
+
+// export function getInfo(token) {
+//   return request({
+//     url: '/vue-admin-template/user/info',
+//     method: 'get',
+//     params: { token }
+//   })
+// }
 
 export function logout() {
   return request({

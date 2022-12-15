@@ -7,6 +7,9 @@
     />
 
     <breadcrumb class="breadcrumb-container" />
+    <!-- <span class="treeflag_show" @click="handleChangeTree">
+      <svg-icon icon-class="deptchange" />
+    </span> -->
     <span class="fullscreen" @click="handleFullScreen">
       <i
         style="fontsize: 20px; cursor: pointer"
@@ -86,7 +89,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["sidebar", "token", "name"]),
+    ...mapGetters(["sidebar", "token", "name", "treeFlag"]),
   },
   created() {
     Vue.prototype.$FileServe = Cookies.get("fileServer") || "";
@@ -116,6 +119,13 @@ export default {
     client.end();
   },
   methods: {
+    //显示隐藏部门树
+    handleChangeTree() {
+      this.$store.dispatch("settings/changeSetting", {
+        key: "treeFlag",
+        value: !this.treeFlag,
+      });
+    },
     // 全屏事件
     //原文链接：https://blog.csdn.net/weixin_39550080/article/details/124823420
     handleFullScreen() {
@@ -221,7 +231,7 @@ export default {
           sendTopic = "$dg/user/devicestate";
         } else if (topic.indexOf("$dg/user/realtimecard") >= 0) {
           sendTopic = "$dg/user/realtimecard";
-        }else if (topic.indexOf("$dg/user/konva") >= 0) {
+        } else if (topic.indexOf("$dg/user/konva") >= 0) {
           sendTopic = "$dg/user/konva";
         }
         _this.$dgiotBus.$emit(sendTopic, message);
@@ -268,6 +278,11 @@ export default {
   position: relative;
   background: #fff;
   box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+  .treeflag_show {
+    position: absolute;
+    right: 140px;
+    top: 14px;
+  }
   .fullscreen {
     position: absolute;
     right: 100px;

@@ -340,6 +340,23 @@ export default {
   async mounted() {
     await this.queryDevice();
     this.mapFlag = true;
+    this.$dgiotBus.$off("device/transmit");
+    this.$dgiotBus.$on("device/transmit", (item) => {
+      console.log("接受了", item);
+      this.center = {
+        lng: item.location.longitude,
+        lat: item.location.latitude,
+      };
+      this.sizeZoom = 15;
+      for (let index = 0; index < this.deviceList.length; index++) {
+        if (this.deviceList[index].objectId == item.objectId) {
+          this.deviceInfo = this.deviceList[index];
+          this.deviceList[index].show = true;
+        } else {
+          this.deviceList[index].show = false;
+        }
+      }
+    });
     this.$dgiotBus.$off("$dg/user/realtimecard");
     this.$dgiotBus.$on("$dg/user/realtimecard", (e) => {
       // console.log(e);
@@ -372,6 +389,7 @@ export default {
           key: { $regex: deviceInfo.product.objectId },
         },
       };
+      localStorage.setItem("parse_objectId", deviceInfo.objectId);
       this.vueComponents = [];
       this.amisComponents = [];
       const res = await queryView(params);
@@ -569,8 +587,13 @@ export default {
       // this.layer.draw();
       this.devicelayer.batchDraw();
       setTimeout(() => {
+        console.log("第一次重绘");
         this.devicelayer.batchDraw();
-      }, 1500);
+      }, 500);
+      setTimeout(() => {
+        console.log("第二次重绘");
+        this.devicelayer.batchDraw();
+      }, 1000);
       this.vueComponents = list;
       this.vueFlag = true;
       this.amisComponents = amislist;

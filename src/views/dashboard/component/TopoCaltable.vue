@@ -122,14 +122,13 @@ export default {
       //       $regex: this.$route.query.productid,
       //     },
       //   }
-      const res = await queryNotification(
-        this.queryPayload
-      );
-      console.log('hfahajfs',res);
+      const res = await queryNotification(this.queryPayload);
+      console.log("hfahajfs", res);
       // console.log("告警列表", results);
-      res.data.items.forEach(element => {
-        element.devicename = element.devicename  || element.content?.devicename  || ''
-        element.desc = element.desc  || element.content?.errorname  || ''
+      res.data.items.forEach((element) => {
+        element.devicename =
+          element.devicename || element.content?.devicename || "";
+        element.desc = element.desc || element.content?.errorname || "";
       });
       this.warnList = res.data.items;
     },
@@ -184,13 +183,13 @@ export default {
 }
 /* 滚动槽 */
 ::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.3);
+  /* -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); */
   border-radius: 10px;
 }
 /* 滚动条滑块 */
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  background: #071753;
+  /* background: #071753; */
   -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.5);
 }
 /* ::-webkit-scrollbar-thumb:window-inactive {
@@ -199,7 +198,8 @@ background-color: #2472ea;
 </style>
 <style lang="scss" scoped>
 .topoCaltable {
-  background: url("../../../assets/bg/bg_warning.png") no-repeat;
+  border: 1px solid #fff;
+  // background: url("../../../assets/bg/bg_warning.png") no-repeat;
   background-size: 100% 100%;
   position: relative;
   .screen_right_bottom_top {
@@ -208,7 +208,7 @@ background-color: #2472ea;
     width: 100%;
     height: 40px;
     line-height: 40px;
-    padding-left: 50px;
+    padding-left: 10%;
     font-weight: bold;
     color: #fff;
   }
@@ -218,7 +218,7 @@ background-color: #2472ea;
     height: calc(100% - 50px);
     margin-top: 2px;
     margin-left: 2%;
-    background-color: #0b2266;
+    // background-color: #0b2266;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -226,7 +226,7 @@ background-color: #2472ea;
     color: #fff;
     overflow: hidden;
     ::v-deep .toptitle {
-      background-color: #071753;
+      // background-color: #071753;
       width: 99%;
       display: flex;
       // background-color: gainsboro;
@@ -262,10 +262,10 @@ background-color: #2472ea;
       // border-bottom: 0.2px solid #ccc;
       // border-right: 0.2px solid #ccc;
       .table-item:nth-child(2n) {
-        background-color: #0b1b57;
+        // background-color: #0b1b57;
       }
       .table-item:nth-child(2n + 1) {
-        background-color: #071753;
+        // background-color: #071753;
       }
       .table-item {
         display: flex;
@@ -279,6 +279,7 @@ background-color: #2472ea;
         .table-item-content {
           flex: 1;
           height: 100%;
+          word-break: break-all;
           // border: 0.1px solid #fff;
           text-align: center;
           padding: 5px;

@@ -93,11 +93,11 @@ export default {
   mounted() {},
   methods: {
     // 跳转页面
-    handleTo(){
-      if(this.comp.text)
-      this.$router.push({
-        path:this.comp.text
-      })
+    handleTo() {
+      if (this.comp.text)
+        this.$router.push({
+          path: this.comp.text,
+        });
     },
     async getMaintenance() {
       let params = {
@@ -223,6 +223,8 @@ export default {
   //   margin-left: 2%;
   // }
   .count_item {
+    // text-shadow: 1px 1px 1px #fff;
+    color: #52c7fd;
     height: 100%;
     flex: 1;
     display: flex;

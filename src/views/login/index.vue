@@ -87,6 +87,7 @@
 import { validUsername } from "@/utils/validate";
 import { getNavigation } from "@/api/Navigation";
 import { isPC } from "@/utils/index";
+import { Roletree } from "@/api/User/index";
 import { mapMutations } from "vuex"; //mapMutations，mapGetters
 import Cookies from "js-cookie";
 export default {
@@ -170,6 +171,7 @@ export default {
               console.log("成功");
               Vue.prototype.$FileServe = Cookies.get("fileServer") || "";
               const res = await getNavigation();
+
               // console.log("路由", res);
               let list = [];
               let item = {
@@ -177,13 +179,18 @@ export default {
                 url: "/",
                 // component: Layout,
                 redirect: "/dashboard",
+                meta: {
+                  title: "首页",
+                  icon: "dashboard",
+                  hidden: false,
+                },
                 children: [
                   {
-                    path: "dashboard",
-                    url: "dashboard",
+                    path: "/dashboard",
+                    url: "/dashboard",
                     name: "Dashboard",
                     // component: () => import("@/views/dashboard/index"),
-                    meta: { title: "首页", icon: "dashboard" },
+                    meta: { title: "首页", icon: "dashboard", hidden: false },
                   },
                 ],
               };
@@ -197,6 +204,12 @@ export default {
               // console.log("路由", routes);
               localStorage.setItem("routes", JSON.stringify(routes));
               // let
+              let roletree = await Roletree();
+              localStorage.setItem(
+                "dgiotroletree",
+                JSON.stringify(roletree.results)
+              );
+              console.log("树", roletree);
               //  this.$store.commit("setRoutes", res.results);
               //  this.$store.commit("SET_NAME",'111');
               this.$router.push({ path: "/" }); //path: this.redirect ||
