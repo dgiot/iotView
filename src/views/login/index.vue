@@ -221,12 +221,12 @@ export default {
               // 过滤admin 中的路由
               routes.forEach((element, index) => {
                 if (element.children) {
-                  // if (
-                  //   element.children[0].url.indexOf("amis") >= 0 ||
-                  //   element.children[0].name.indexOf("Dashboard") >= 0
-                  // ) {
+                  if (
+                    element.children[0].url.indexOf("amis") >= 0 ||
+                    element.children[0].name.indexOf("Dashboard") >= 0
+                  ) {
                     routelist.push(element);
-                  // }
+                  }
                 } else {
                   routelist.push(element);
                 }
