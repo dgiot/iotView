@@ -80,6 +80,19 @@
         >
       </div>
     </el-form>
+    <div
+      style="
+        position: absolute;
+        bottom: 1px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #fff;
+      "
+    >
+      <a href="https://beian.miit.gov.cn/" style="color: #fff" target="_blank">
+        Copyright © 2022 DGIOT All Rights Reserved 苏ICP备14050031号-4
+      </a>
+    </div>
   </div>
 </template>
 
@@ -88,8 +101,10 @@ import { validUsername } from "@/utils/validate";
 import { getNavigation } from "@/api/Navigation";
 import { isPC } from "@/utils/index";
 import { Roletree } from "@/api/User/index";
+import { postCookie } from "@/api/Dashboard/index";
 import { mapMutations } from "vuex"; //mapMutations，mapGetters
 import Cookies from "js-cookie";
+import { getToken } from "@/utils/auth";
 export default {
   name: "Login",
   data() {
@@ -131,7 +146,8 @@ export default {
   mounted() {
     this.isPC = isPC();
     console.log("是否为PC端", this.isPC);
-    console.log(this.$route);
+    localStorage.setItem('isPC',this.isPC)
+    // console.log(this.$route);
     if (this.$route.query) {
       this.loginForm.username = this.$route.query.username || "";
       this.loginForm.password = this.$route.query.password || "";
@@ -201,17 +217,38 @@ export default {
                 }
               });
               let routes = this.initRoutes(list);
-              // console.log("路由", routes);
-              localStorage.setItem("routes", JSON.stringify(routes));
-              // let
+              let routelist = [];
+              // 过滤admin 中的路由
+              routes.forEach((element, index) => {
+                if (element.children) {
+                  // if (
+                  //   element.children[0].url.indexOf("amis") >= 0 ||
+                  //   element.children[0].name.indexOf("Dashboard") >= 0
+                  // ) {
+                    routelist.push(element);
+                  // }
+                } else {
+                  routelist.push(element);
+                }
+              });
+              localStorage.setItem("routes", JSON.stringify(routelist)); //路由列表
               let roletree = await Roletree();
               localStorage.setItem(
                 "dgiotroletree",
                 JSON.stringify(roletree.results)
               );
-              console.log("树", roletree);
+              // console.log("树", roletree);
               //  this.$store.commit("setRoutes", res.results);
               //  this.$store.commit("SET_NAME",'111');
+
+              // 设置使用什么地图
+              let data = {
+                UserSession: getToken() || "",
+                cookie: {
+                  mapType: "baidu",
+                },
+              };
+              await postCookie(data);
               this.$router.push({ path: "/" }); //path: this.redirect ||
               this.loading = false;
             })
@@ -226,7 +263,7 @@ export default {
     },
     initRoutes(routes) {
       // console.log('routes',routes);
-      routes.forEach((item) => {
+      routes.forEach((item, i) => {
         item.path = item.url;
         if (item.children) {
           this.initRoutes(item.children);
@@ -328,21 +365,15 @@ export default {
       return routes;
     },
     async defaultSet() {
-      // this.backgroundImage = Cookies.get('startIframe')
-      //   ? 'https://s2.loli.net/2021/12/15/ciVTb7w62rxQ3a9.jpg'
-      //   : this.backgroundimage
-      console.log("环境", process.env.NODE_ENV, process.env.VUE_APP_BASE_API);
+      // console.log("环境", process.env.NODE_ENV, process.env.VUE_APP_BASE_API);
       const url =
         process.env.NODE_ENV === "development"
           ? process.env.VUE_APP_URL
           : location.origin;
-      console.log("url", url);
       Cookies.set("fileServer", url, { expires: 60 * 1000 * 30 });
       this.url = url;
-      // console.log('这是路径',url);
     },
     handleIn() {
-      // console.log(window.location);
       window.location.href = window.location.origin;
     },
   },
@@ -395,8 +426,6 @@ $cursor: #fff;
       margin-top: -4px;
       text-shadow: 2px 3px 1px #000;
     }
-    /* // margin-top: 48px; */
-    /* // margin-left: 20px; */
   }
   .el-input {
     display: inline-block;
@@ -440,7 +469,7 @@ $light_gray: #eee;
   // background-color: $bg;
   // overflow: hidden;
   // /dgiot_dashboard/public/assets/images/platform/assets/login_images/background.jpg
-  // background: url("http://dev.iotn2n.com/dgiot_dashboard/public/assets/images/platform/assets/login_images/background.jpg")
+  // background: url("http://pump.dgiotcloud.com/dgiot_dashboard/public/assets/images/platform/assets/login_images/background.jpg")
   //   no-repeat 100% 100%;
   // background-size: cover;
   // background-repeat: "no-repeat" !important;

@@ -45,7 +45,7 @@ export function parseTime(time, cFormat) {
   const time_str = format.replace(/{([ymdhisa])+}/g, (result, key) => {
     const value = formatObj[key]
     // Note: getDay() returns 0 on Sunday
-    if (key === 'a') { return ['日', '一', '二', '三', '四', '五', '六'][value ] }
+    if (key === 'a') { return ['日', '一', '二', '三', '四', '五', '六'][value] }
     return value.toString().padStart(2, '0')
   })
   return time_str
@@ -141,4 +141,27 @@ export function isPC() {
     }
   }
   return flag
+}
+function FormatTime(t) {
+  if (t < 10) return "0" + t;
+  return t;
+}
+export function getTime() {
+  var myDate = new Date();
+  let yy = myDate.getFullYear(); // 获取完整的年份(4位,1970-????)
+  let mm = myDate.getMonth() + 1; // 获取当前月份(0-11,0代表1月)
+  mm = FormatTime(mm);
+  let dd = myDate.getDate(); // 获取当前日(1-31)
+  dd = FormatTime(dd);
+  let hh = myDate.getHours(); // 获取当前小时数(0-23)
+  hh = FormatTime(hh);
+  let mt = myDate.getMinutes(); // 获取当前分钟数(0-59)
+  mt = FormatTime(mt);
+  let ss = myDate.getSeconds(); // 获取当前秒数(0-59)
+  ss = FormatTime(ss);
+  // let ms = myDate.getMilliseconds();
+  //2021-10-22T10:13:39.229Z
+  let currentTime =
+    yy + "-" + mm + "-" + dd + " " + hh + ":" + mt + ":" + ss;
+  return currentTime;
 }

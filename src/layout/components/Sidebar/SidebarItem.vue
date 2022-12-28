@@ -1,5 +1,5 @@
 <template>
-  <div v-if="item.meta && !item.meta.hidden">
+  <div v-if="item.meta && !item.meta.hidden" @click="handleBarClick(item)">
     <template
       v-if="
         hasOneShowingChild(item.children, item) &&
@@ -13,7 +13,6 @@
           :class="{ 'submenu-title-noDropdown': !isNest }"
         >
           <item
-            @click="handleBarClick1(item)"
             :icon="onlyOneChild.meta.icon || (item.meta && item.meta.icon)"
             :title="onlyOneChild.meta.title"
           />
@@ -78,33 +77,49 @@ export default {
     this.onlyOneChild = null;
     return {
       isJump: true,
+      isPC: localStorage.getItem("isPC") || "",
     };
   },
   methods: {
-    handleBarClick1(r) {
-      console.log("2222222222222");
-    },
     handleBarClick(item) {
-      setTimeout(() => {
-        if (this.isJump) {
-          console.log("1111111111111", item);
-          this.isJump = false;
-          if (item.children && item.children.length > 1) {
-            console.log("变化");
-            this.$dgiotBus.$emit("activePath", item.children[0]);
-            this.$router.push({
-              path: item.children[0].path,
-            });
+      if (this.isPC) {
+        if (item.children && item.children.length > 1) {
+          if (
+            JSON.stringify(item.children) != localStorage.getItem("dgiottopbar")
+          ) {
+            console.log("变化111111", item);
             localStorage.setItem("dgiottopbar", JSON.stringify(item.children));
-          } else {
-            localStorage.setItem("dgiottopbar", "[]");
+            this.$dgiotBus.$emit("activePath", item.children[0]);
+            let flag = true;
+            // 防止多层路由导航栏时无法点击跳转
+            item.children.forEach((item) => {
+              if (item.children && item.children.length >= 1) {
+                flag = false;
+              }
+            });
+            //
+            if (!flag) {
+              localStorage.setItem("dgiottopbar", "[]");
+              this.$dgiotBus.$emit("activePath", {});
+            }
+            if (flag && item.parent == "0") {
+              this.$router.push({
+                path: item.children[0].path,
+              });
+            }
           }
-          setTimeout(() => {
-            console.log("内层1111");
-            this.isJump = true;
-          }, 1500);
+        } else if (item.children && item.children.length == 1) {
+          // console.log("变化", item);
+          if (
+            JSON.stringify(item.children) != localStorage.getItem("dgiottopbar")
+          ) {
+            localStorage.setItem("dgiottopbar", "[]");
+            this.$dgiotBus.$emit("activePath", item.children[0]);
+          }
+        } else {
+          this.$dgiotBus.$emit("activePath", item);
         }
-      }, 500);
+      }
     },
     hasOneShowingChild(children = [], parent) {
       const showingChildren = children.filter((item) => {

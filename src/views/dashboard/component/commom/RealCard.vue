@@ -1,5 +1,5 @@
 <template>
-  <div class="wrap_card" v-infinite-scroll>
+  <div class="wrap_card" :style="{ height: height }" v-infinite-scroll>
     <div v-for="(value, index) in cardList" :key="index" style="height: auto">
       <h2>{{ value.name }}</h2>
       <div class="flex_col">
@@ -17,9 +17,20 @@
           </div>
           <div class="card_content">
             <el-avatar :size="50">
-              <img :src="item.imgurl ? item.imgurl : avator" />
+              <img
+                :src="
+                  item.imgurl
+                    ? item.imgurl.indexOf('//') >= 0
+                      ? item.imgurl
+                      : $FileServe + item.imgurl
+                    : avator
+                "
+              />
             </el-avatar>
-            <div class="card_content_number">
+            <div
+              class="card_content_number"
+              :style="{ 'font-size': fontsize || '28px' }"
+            >
               {{ item.number }} {{ item.unit }}
             </div>
           </div>
@@ -36,20 +47,29 @@
 <script>
 export default {
   name: "RealCard",
-  props:{
-    cardList:{
+  props: {
+    cardList: {
       type: Array,
-      default: () => ([]),
+      default: () => [],
     },
-    avator:{
-      type:String,
-    }
-  }
+    avator: {
+      type: String,
+    },
+    fontsize: {
+      type: String,
+    },
+    height: {
+      type: String,
+      default: () => {
+        return "700px";
+      },
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
- .wrap_card {
-  height: 700px;
+.wrap_card {
+  // height: 700px;
   // background-color: #12ae7b;
   width: 100%;
   overflow: auto;

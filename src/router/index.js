@@ -69,6 +69,18 @@ export const constantRoutes = [
         component: () => import('@/views/CloudOc/AmisPage/index'),
         meta: { title: 'amis', icon: 'form' }
       },
+      {
+        path: '/amis/Device/konva',
+        name: 'tabs',
+        component: () => import('@/views/Device/DeviceKonva/index'),
+        meta: { title: 'amis', icon: 'form' }
+      },
+      {
+        path: '/amis/Device/realcard',
+        name: 'tabs',
+        component: () => import('@/views/Device/DeviceRealCard/index'),
+        meta: { title: 'amis', icon: 'form' }
+      },
     ]
   },
   // 404 page must be placed at the end !!!

@@ -5,7 +5,7 @@ import { getToken } from '@/utils/auth'
 //   return get_object('View', ObjectId)
 // }
 
-const server = 'http://dev.iotn2n.com'
+const server = 'http://pump.dgiotcloud.com'
 
 export function getDlinkJson(data) {
   return request({
@@ -52,6 +52,13 @@ export async function Startdashboard(dashboardId, data) {
 export function sendTopic(data) {
   return request({
     url: `/topic`,
+    method: 'post',
+    data
+  })
+}
+export function postCookie(data) {
+  return request({
+    url: `/cookie`,
     method: 'post',
     data
   })

@@ -362,7 +362,6 @@ export default {
       // console.log(e);
       // let receive = e;
       let str = String.fromCharCode.apply(null, new Uint8Array(e));
-      // console.log("转化", str);
       let receive = JSON.parse(Base64.decode(str));
       console.log("转化", receive);
       this.cardList = this.renderCard(receive.data);

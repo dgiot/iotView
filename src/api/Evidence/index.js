@@ -43,5 +43,11 @@ export async function putEvidence(ObjectId, data) {
     data
   })
 }
-
+export async function postDrawxnqx(params) {
+  return request({
+    url: '/drawxnqx',
+    method: 'post',
+    data: params,
+  })
+}
 

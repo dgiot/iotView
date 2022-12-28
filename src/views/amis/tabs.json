@@ -20,7 +20,7 @@
                             "horizontal": {
                                 "leftFixed": "xs"
                             },
-                            "api": "http://dev.iotn2n.com/amis/api/mock2/form/saveForm?waitSeconds=2",
+                            "api": "http://pump.dgiotcloud.com/amis/api/mock2/form/saveForm?waitSeconds=2",
                             "actions": [
                                 {
                                     "type": "submit",

@@ -344,11 +344,11 @@ export default {
       // this.layer.draw();
       this.devicelayer.batchDraw();
       setTimeout(() => {
-        console.log('第一次重绘');
+        console.log("第一次重绘");
         this.devicelayer.batchDraw();
       }, 500);
-       setTimeout(() => {
-        console.log('第二次重绘');
+      setTimeout(() => {
+        console.log("第二次重绘");
         this.devicelayer.batchDraw();
       }, 1000);
       this.vueComponents = list;
@@ -370,8 +370,8 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.topo_wrap .topo_content {
-  position: relative;
+.topo_content {
+  position: relative !important;
 
   height: 700px;
   // background-color: #12ae7b;
@@ -379,6 +379,7 @@ export default {
   #deviceTopo {
     width: 100%;
     height: 100%;
+    position: relative;
   }
   .vue_component {
     position: absolute;

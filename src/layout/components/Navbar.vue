@@ -7,9 +7,9 @@
     />
 
     <breadcrumb class="breadcrumb-container" />
-    <!-- <span class="treeflag_show" @click="handleChangeTree">
+    <span class="treeflag_show" @click="handleChangeTree">
       <svg-icon icon-class="deptchange" />
-    </span> -->
+    </span>
     <span class="fullscreen" @click="handleFullScreen">
       <i
         style="fontsize: 20px; cursor: pointer"
@@ -106,6 +106,11 @@ export default {
       password: this.token,
       router: this.$route.fullPath,
     };
+    this.$dgiotBus.$off(`MqttPublish`);
+    this.$dgiotBus.$on(`MqttPublish`, (e) => {
+      console.log("publish111111", e.pubTopic, e.message);
+      client.publish(e.pubTopic, e.message);
+    });
     this.$dgiotBus.$on("MqttConnect", (data) => {
       console.log("接收消息", data);
     });

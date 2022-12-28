@@ -192,12 +192,11 @@ export default {
       // 订阅处理所有的设备
       // await this.subAllDevice()
     },
+    // 轮播
     handlemouseOver() {
-      console.log("11111");
       clearInterval(this.timer[this.comp.type]);
     },
     handlemouseLeave() {
-      console.log("222");
       this.scroll();
     },
     utc2beijing(date) {
@@ -214,14 +213,14 @@ export default {
 }
 /* 滚动槽 */
 ::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0);
+  /* -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0); */
   border-radius: 10px;
 }
 /* 滚动条滑块 */
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
   /* background: #071753; */
-  -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0);
+  /* -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0); */
 }
 /* ::-webkit-scrollbar-thumb:window-inactive {
 background-color: #2472ea;

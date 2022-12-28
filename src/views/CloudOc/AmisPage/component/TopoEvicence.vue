@@ -658,12 +658,6 @@ export default {
           message: "提交成功",
           showClose: true,
         });
-        // this.$baseMessage(
-        //   this.$translateTitle("alert.Data request successfully"),
-        //   "success",
-        //   "dgiot-hey-message-success"
-        // );
-        // loading.close();
       } catch (error) {
         console.log(error);
         this.$baseMessage(
@@ -691,15 +685,6 @@ export default {
         };
         const res = await putDevice(params.objectId, finish);
         this.auditDialog = false;
-        // this.$router.push({
-        //   path: "/cloudTest/review",
-        // });
-        // this.$baseMessage(
-        //   this.$translateTitle("alert.Data request successfully"),
-        //   "success",
-        //   "dgiot-hey-message-success"
-        // );
-        // loading.close();
       } catch (error) {
         this.$message(error);
       }
@@ -1005,7 +990,29 @@ export default {
         });
         evidenceList.push(node);
         node.on("touchend", async (e) => {
-          console.log("1111", node);
+         console.log("1111", node);
+          let row = {};
+          this.evidenceList.forEach((item) => {
+            if (node.attrs.id == item.success.evidence.attrs.id) {
+              row = item;
+            }
+            // console.log(item, node);
+          });
+          // return;
+          this.selectType = row; //上传类型
+          console.log(row, this.selectType);
+          const _params = {
+            order: "-createdAt",
+            skip: 0,
+            where: {
+              reportId: this.currentTopo.objectId, //view 视图 objectId
+              "original.controlid": row.success.evidence.attrs.id,
+            },
+          };
+          const { results = [] } = await queryEvidence(_params);
+          console.log(results);
+          this.evidences = results;
+          this.evidenceDialog = true;
         });
         /** */
         node.on("click", async (e) => {

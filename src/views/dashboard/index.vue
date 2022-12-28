@@ -202,6 +202,7 @@ export default {
   },
 
   async mounted() {
+    localStorage.setItem("dgiottopbar", "[]");
     this.$store.dispatch("settings/changeSetting", {
       key: "treeFlag",
       value: false,
@@ -332,10 +333,6 @@ export default {
         //   draggable: false,
         // });
         this.initSize(node);
-        // console.log("nodechange", node.attrs.x);
-        // node = this.initScale(node);
-        // console.log("nownode", nownode);
-
         if (node.attrs.name == "vuecomponent") {
           let item = node.attrs;
           list.push(item);
@@ -398,10 +395,10 @@ export default {
   width: 12px;
 } */
 /* 滚动槽 */
-::-webkit-scrollbar-track {
+/* ::-webkit-scrollbar-track {
   -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.3);
   border-radius: 10px;
-}
+} */
 /* 滚动条滑块 */
 /* ::-webkit-scrollbar-thumb {
   border-radius: 10px;
