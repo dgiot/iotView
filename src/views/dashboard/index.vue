@@ -64,14 +64,24 @@
             height: comp.height + 'px',
           }"
         />
-        <!-- <screen-realcard
+        <!-- <screen-line
           v-else-if="comp.type == 'line'"
           :comp="comp"
+          :viewtype="viewtype"
           :style="{
             width: comp.width + 'px',
             height: comp.height + 'px',
           }"
         /> -->
+         <screen-device-bar
+          v-else-if="comp.type == 'devicebar'"
+          :comp="comp"
+          :viewtype="viewtype"
+          :style="{
+            width: comp.width + 'px',
+            height: comp.height + 'px',
+          }"
+        />
         <screen-device
           v-else-if="comp.type == 'list' && comp.id == 'device_list'"
           :comp="comp"
@@ -153,12 +163,15 @@ import backgroundImage from "../../assets/bg/pageBg1.png";
 // import VueAliplayerV2 from 'vue-aliplayer-v2';
 import DgiotAliplayer from "./component/DgiotAliplayer.vue";
 import TopoCard from "./component/TopoCard.vue"; //卡片
+
 import TopoPie from "./component/TopoPie.vue"; //饼图
 import TopoCaltable from "./component/TopoCaltable.vue"; //告警列表
 import ScreenDevice from "./component/ScreenDevice.vue"; //设备列表
 import WorkOrder from "./component/WorkOrder.vue"; //工单列表
 import ScreenRealcard from "./component/ScreenRealcard.vue"; //告警列表
 import ScreenBaidumap from "./component/ScreenBaidumap.vue"; //百度地图
+import ScreenLine from "./component/ScreenLine.vue"; //历史折线图
+import ScreenDeviceBar from "./component/ScreenDeviceBar.vue"; //历史折线图
 // import ScreenHeadcounter from "./component/ScreenHeadcount.vue"; //卡片组
 import ScreenHeaditem from "./component/ScreenHeaditem.vue"; //卡片组
 import { mapGetters } from "vuex";
@@ -181,9 +194,12 @@ export default {
     // ScreenHeadcounter,
     ScreenHeaditem,
     DgiotAliplayer,
+    ScreenLine,
+    ScreenDeviceBar,
   },
   data() {
     return {
+      viewtype:"Dashboard",
       json: {},
       layer: "",
       stage: "",
@@ -224,6 +240,7 @@ export default {
     } else {
       results.forEach((item) => {
         if (item.type == "Dashboard") {
+          this.viewtype = item.type
           this.json = item.data.konva.Stage;
           console.log("json", this.json);
           this.dashboardId = item.objectId;

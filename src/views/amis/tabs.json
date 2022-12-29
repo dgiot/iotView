@@ -20,7 +20,7 @@
                             "horizontal": {
                                 "leftFixed": "xs"
                             },
-                            "api": "http://pump.dgiotcloud.com/amis/api/mock2/form/saveForm?waitSeconds=2",
+                            "api": "http://dev.dgiotcloud.cn/amis/api/mock2/form/saveForm?waitSeconds=2",
                             "actions": [
                                 {
                                     "type": "submit",

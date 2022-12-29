@@ -30,3 +30,10 @@ export function getDeviceRealCard(objectId) {
   })
 }
 
+export function getEchart(objectId,params) {
+  return request({
+    url: `/echart/${objectId}`,
+    method: 'get',
+    params
+  })
+}

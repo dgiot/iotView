@@ -711,6 +711,7 @@ export default {
       _this.collectionInfo = params;
       _this.CardDevice(params.parentId.objectId);
       _this.subRealtimedata(params);
+
       try {
         const thingcolumns = {};
         const items = [];
@@ -1016,13 +1017,13 @@ export default {
         this.visible = false;
         clearInterval(this.timer);
       }
+      const loading = this.$loading({
+        lock: true,
+        text: "Loading",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)",
+      });
       try {
-        const loading = this.$loading({
-          lock: true,
-          text: "Loading",
-          spinner: "el-icon-loading",
-          background: "rgba(0, 0, 0, 0.7)",
-        });
         if (!collectionInfo.profile.istcp) {
           await putDevice(collectionInfo.objectId, _profile);
         }
@@ -1033,6 +1034,7 @@ export default {
         loading.close();
       } catch (error) {
         console.log(error);
+        loading.close();
       }
     },
     renderCard(resData) {

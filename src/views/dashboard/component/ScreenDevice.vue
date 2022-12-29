@@ -43,7 +43,6 @@
                 </el-tag>
                 <el-tag v-else size="medium" type="success">在线</el-tag>
               </td>
-
               <td class="table-item-content">
                 {{ utc2beijing(item.updatedAt) }}
               </td>
@@ -122,6 +121,8 @@ export default {
     handleCheckDevice(item) {
       this.selectObjectId = item.objectId;
       this.$dgiotBus.$emit("device/transmit", item);
+      this.$dgiotBus.$emit("device/historylinedata", item);
+      this.$dgiotBus.$emit("device/historybardata", item);
     },
     scroll() {
       let _this = this;
@@ -186,6 +187,9 @@ export default {
             ? "---"
             : item.address;
       });
+      if (list.length > 0) {
+        this.selectObjectId = list[0].objectId;
+      }
       this.deviceList = list;
       this.total = total;
       this.listLoading = false;
@@ -231,8 +235,8 @@ background-color: #2472ea;
   position: relative;
   width: 100%;
   height: 100%;
-  border: 1px solid #fff;
-  // background: url("../../../assets/bg/bg_warning.png") no-repeat;
+  // border: 1px solid #fff;
+  background: url("../../../assets/bg/bg_warning.png") no-repeat;
   background-size: 100% 100%;
   .screen_right_bottom_top {
     background: url("../../../assets/bg/bg_title.png") no-repeat;
@@ -308,7 +312,7 @@ background-color: #2472ea;
         // border-bottom: 0.1px solid #ccc;
         // border-top: 0.1px solid #ccc;
         width: 100%;
-        // border-bottom: 0.2px solid #fff;
+        cursor: pointer;
         .table-item-content {
           flex: 1;
           height: 100%;

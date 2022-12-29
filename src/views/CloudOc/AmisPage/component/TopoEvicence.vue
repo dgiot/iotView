@@ -696,9 +696,9 @@ export default {
         type: "info",
       })
         .then(async () => {
+          let loadingInstance = Loading.service({ fullscreen: true });
           try {
             if (this.auditList?.length) {
-              let loadingInstance = Loading.service({ fullscreen: true });
               // const loading = this.$baseColorfullLoading();
               const finish = {
                 profile: _.merge(params.profile, {
@@ -722,6 +722,7 @@ export default {
               return;
             }
           } catch (error) {
+            loadingInstance.close();
             this.$message({
               type: "error",
               message: error,
@@ -990,7 +991,7 @@ export default {
         });
         evidenceList.push(node);
         node.on("touchend", async (e) => {
-         console.log("1111", node);
+          console.log("1111", node);
           let row = {};
           this.evidenceList.forEach((item) => {
             if (node.attrs.id == item.success.evidence.attrs.id) {

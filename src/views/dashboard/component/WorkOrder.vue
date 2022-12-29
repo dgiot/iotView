@@ -271,8 +271,8 @@ background-color: #2472ea;
 </style>
 <style lang="scss" scoped>
 .topoCaltable {
-  border: 1px solid #fff;
-  // background: url("../../../assets/bg/bg_warning.png") no-repeat;
+  // border: 1px solid #fff;
+  background: url("../../../assets/bg/bg_warning.png") no-repeat;
   background-size: 100% 100%;
   position: relative;
   .screen_right_bottom_top {

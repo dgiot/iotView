@@ -349,9 +349,14 @@ export default {
       };
       this.sizeZoom = 15;
       for (let index = 0; index < this.deviceList.length; index++) {
-        if (this.deviceList[index].objectId == item.objectId) {
+        if (
+          this.deviceList[index].objectId == item.objectId &&
+          item.address != "---"
+        ) {
           this.deviceInfo = this.deviceList[index];
+          console.log("amisthis.deviceInfo", this.deviceInfo);
           this.deviceList[index].show = true;
+          // break;
         } else {
           this.deviceList[index].show = false;
         }
