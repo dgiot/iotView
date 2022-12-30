@@ -116,7 +116,7 @@ export default {
         right: 0,
         bottom: 0,
         width: "96%",
-        height: "90%",
+        height: "80%",
       },
       dataZoom: [
         {

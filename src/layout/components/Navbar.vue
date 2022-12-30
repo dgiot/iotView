@@ -63,6 +63,7 @@ export default {
       option: {},
       queryParams: {},
       fullscreen: false,
+      clientcount: 0,
     };
   },
   watch: {
@@ -222,6 +223,7 @@ export default {
       let _this = this;
       client.on("connect", (e) => {
         console.log("连接成功", e);
+        // this.clientcount = 0;
       });
       client.on("message", (topic, message) => {
         console.log("收到来自", topic, "的消息", message);
@@ -243,6 +245,11 @@ export default {
       });
       client.on("reconnect", (error) => {
         console.log("正在重连", client);
+        this.clientcount++;
+        console.log(this.clientcount);
+        if (this.clientcount >= 10) {
+          client.end();
+        }
         // client.end();
         // mqtt.client.disconnect();
       });

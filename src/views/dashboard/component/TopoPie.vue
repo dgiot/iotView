@@ -6,7 +6,7 @@
       height: comp.height + 'px',
     }"
   >
-    <div class="screen_right_bottom_top">设备开关状况</div>
+    <div class="screen_right_bottom_top">设备状况占比</div>
     <ve-pie
       :data="chartData"
       :extend="extend"

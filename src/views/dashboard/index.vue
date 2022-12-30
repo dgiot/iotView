@@ -64,7 +64,7 @@
             height: comp.height + 'px',
           }"
         />
-        <!-- <screen-line
+        <screen-line
           v-else-if="comp.type == 'line'"
           :comp="comp"
           :viewtype="viewtype"
@@ -72,8 +72,8 @@
             width: comp.width + 'px',
             height: comp.height + 'px',
           }"
-        /> -->
-         <screen-device-bar
+        />
+        <screen-device-bar
           v-else-if="comp.type == 'devicebar'"
           :comp="comp"
           :viewtype="viewtype"
@@ -199,7 +199,7 @@ export default {
   },
   data() {
     return {
-      viewtype:"Dashboard",
+      viewtype: "Dashboard",
       json: {},
       layer: "",
       stage: "",
@@ -240,7 +240,7 @@ export default {
     } else {
       results.forEach((item) => {
         if (item.type == "Dashboard") {
-          this.viewtype = item.type
+          this.viewtype = item.type;
           this.json = item.data.konva.Stage;
           console.log("json", this.json);
           this.dashboardId = item.objectId;
