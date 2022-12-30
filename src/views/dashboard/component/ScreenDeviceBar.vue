@@ -1,5 +1,6 @@
 <template>
   <div class="topoBar" :style="{ width: '100%', height: '100%' }">
+    <div class="title">历史数据</div>
     <div class="line_top">
       <select
         class="select_time"
@@ -109,10 +110,9 @@ export default {
       },
       dataZoom: [
         {
-          type: "inside",//允许鼠标滚动缩放数据,数据为动态时关闭
+          type: "inside", //允许鼠标滚动缩放数据,数据为动态时关闭
         },
       ],
-      
     };
     return {
       couponSelected: "h",
@@ -221,6 +221,14 @@ select {
 .topoBar {
   background: url("../../../assets/bg/bg_warning.png") no-repeat;
   background-size: 100% 100%;
+  position: relative;
+  .title {
+    position: absolute;
+    top: 1px;
+    left: 50%;
+    color: #fff;
+    transform: translateX(-50%);
+  }
   .line_top {
     width: 100%;
     height: 40px;

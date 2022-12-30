@@ -1,5 +1,6 @@
 <template>
   <div class="topoLine" :style="{ width: '100%', height: '100%' }">
+    <div class="title">历史数据</div>
     <div class="line_top">
       <select
         class="select_time"
@@ -225,6 +226,14 @@ select {
 .topoLine {
   background: url("../../../assets/bg/bg_warning.png") no-repeat;
   background-size: 100% 100%;
+  position: relative;
+  .title {
+    position: absolute;
+    top: 1px;
+    left: 50%;
+    color: #fff;
+    transform: translateX(-50%);
+  }
   .line_top {
     width: 100%;
     height: 40px;

@@ -171,7 +171,7 @@ import WorkOrder from "./component/WorkOrder.vue"; //工单列表
 import ScreenRealcard from "./component/ScreenRealcard.vue"; //告警列表
 import ScreenBaidumap from "./component/ScreenBaidumap.vue"; //百度地图
 import ScreenLine from "./component/ScreenLine.vue"; //历史折线图
-import ScreenDeviceBar from "./component/ScreenDeviceBar.vue"; //历史折线图
+import ScreenDeviceBar from "./component/ScreenDeviceBar.vue"; //历史柱状图
 // import ScreenHeadcounter from "./component/ScreenHeadcount.vue"; //卡片组
 import ScreenHeaditem from "./component/ScreenHeaditem.vue"; //卡片组
 import { mapGetters } from "vuex";

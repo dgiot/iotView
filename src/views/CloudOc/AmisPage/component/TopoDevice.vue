@@ -30,6 +30,24 @@
             height: comp.height + 'px',
           }"
         />
+        <screen-line
+          v-else-if="comp.type == 'line'"
+          :comp="comp"
+          :selectdevice="deviceInfo"
+          :style="{
+            width: comp.width + 'px',
+            height: comp.height + 'px',
+          }"
+        />
+        <screen-device-bar
+          v-else-if="comp.type == 'devicebar'"
+          :comp="comp"
+          :selectdevice="deviceInfo"
+          :style="{
+            width: comp.width + 'px',
+            height: comp.height + 'px',
+          }"
+        />
         <!-- 告警列表 -->
         <topo-caltable
           v-else-if="comp.type == 'list' && comp.id == 'warning_list'"
@@ -105,6 +123,8 @@ import TopoCaltable from "../../../dashboard/component/TopoCaltable.vue"; //告�
 import ScreenDevice from "../../../dashboard/component/ScreenDevice.vue"; //设备列表
 import WorkOrder from "../../../dashboard/component/WorkOrder.vue"; //工单列表
 import ScreenRealcard from "../../../dashboard/component/ScreenRealcard.vue"; //告警列表
+import ScreenLine from "../../../dashboard/component/ScreenLine.vue"; //历史折线图
+import ScreenDeviceBar from "../../../dashboard/component/ScreenDeviceBar.vue"; //历史柱状图
 import Amis from "@/components/Amis/index.vue"; //amis 组件
 import { Base64 } from "js-base64";
 import { queryView, getTopo, getView, postAmis } from "@/api/View";
@@ -124,6 +144,8 @@ export default {
     WorkOrder,
     ScreenRealcard,
     Amis,
+    ScreenLine,
+    ScreenDeviceBar,
   },
   data() {
     return {
