@@ -7,10 +7,10 @@ const getDefaultState = () => {
   return {
     token: getToken(),
     departmentToken: Cookies.get('departmentToken') || '',
-    name: localStorage.getItem('name')||'',
+    name: localStorage.getItem('name') || '',
     avatar: '',
-    objectId:localStorage.getItem('objectId')||'',
-    routes:[],
+    objectId: localStorage.getItem('objectId') || '',
+    routes: [],
   }
 }
 
@@ -30,11 +30,11 @@ const mutations = {
     state.avatar = avatar
   },
   SET_OBJECTID: (state, objectId) => {
-    console.log('objectId',objectId);
+    console.log('objectId', objectId);
     state.objectId = objectId
   },
   setRoutes: (state, routes) => {
-    console.log('routes',routes);
+    console.log('routes', routes);
     state.routes = routes
   }
 }
@@ -45,13 +45,18 @@ const actions = {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(res => {
-        console.log('response',res);
-        const { sessionToken,name,tag,objectId,roles } = res
-        localStorage.setItem('avatar',tag.userinfo.avatar)
+        console.log('response', res);
+        const { sessionToken, name, tag, objectId, roles } = res
+        if (tag.userinfo && tag.userinfo.parse_deviceid) {
+          localStorage.setItem('parse_deviceid', tag.userinfo.parse_deviceid)
+        } else {
+          localStorage.removeItem('parse_deviceid')
+        }
+        localStorage.setItem('avatar', tag.userinfo.avatar)
         commit('SET_NAME', name)
-        localStorage.setItem('name',name)
+        localStorage.setItem('name', name)
         commit('SET_OBJECTID', objectId)  //用户唯一标识
-        localStorage.setItem('objectId',objectId)
+        localStorage.setItem('objectId', objectId)
         localStorage.setItem('deptId', roles[0].objectId)
         commit('SET_AVATAR', tag.userinfo.avatar)
         commit('SET_TOKEN', sessionToken)
@@ -87,14 +92,14 @@ const actions = {
   // user logout
   logout({ commit, state }) {
     // return new Promise((resolve, reject) => {
-      // logout(state.token).then(() => {
-        removeToken() // must remove  token  first
-        resetRouter()
-        commit('RESET_STATE')
-        // resolve()
-      // }).catch(error => {
-      //   reject(error)
-      // })
+    // logout(state.token).then(() => {
+    removeToken() // must remove  token  first
+    resetRouter()
+    commit('RESET_STATE')
+    // resolve()
+    // }).catch(error => {
+    //   reject(error)
+    // })
     // })
   },
 

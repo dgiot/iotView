@@ -213,9 +213,8 @@
             username: 'dgiot_shuiwu',
             password: 'dgiot_shuiwu',
             url: '/amis/#/login',
-            buy: 'https://item.taobao.com/item.htm?spm=a230r.7195193.1997079397.6.6c9e292byepfap&id=678475859925&abbucket=12'
+            buy: 'https://item.taobao.com/item.htm?spm=a21dvs.23580594.0.0.621e3d0d4tczIM&ft=t&id=696290438671'
           },
-
           // {
           //   img: 'https://www.dgiotcloud.cn/wp-content/uploads/202208221014537.png',
           //   name: '智慧监控-海康',
@@ -368,6 +367,7 @@
         },
         handleChooseProgram(o) {
           console.log(o);
+          localStorage.removeItem("sessionToken")
           if (o.url) {
             window.location.href = `${o.url}?username=${o.username}&password=${o.password}`
             return

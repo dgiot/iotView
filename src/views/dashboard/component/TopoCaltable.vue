@@ -82,6 +82,7 @@ export default {
         // order: -createdAt,
       },
       timer: {},
+      distance:"",
     };
   },
   computed: {
@@ -123,7 +124,6 @@ export default {
       //     },
       //   }
       const res = await queryNotification(this.queryPayload);
-      console.log("hfahajfs", res);
       // console.log("告警列表", results);
       res.data.items.forEach((element) => {
         element.devicename =
@@ -156,6 +156,11 @@ export default {
           parent.scrollTop++;
           if (item == parent.scrollTop) {
             // parent.animate({scrollTop:0},500);
+            _this.distance = parent.scrollTop;
+            // console.log("差距", _this.distance);
+            if (_this.distance < 20) {
+              clearInterval(_this.timer[_this.comp.id]);
+            }
             parent.scrollTop = 0;
           }
         }
@@ -199,11 +204,11 @@ background-color: #2472ea;
 <style lang="scss" scoped>
 .topoCaltable {
   // border: 1px solid #fff;
-  background: url("../../../assets/bg/bg_warning.png") no-repeat;
+  // background: url("../../../assets/bg/bg_warning.png") no-repeat;
   background-size: 100% 100%;
   position: relative;
   .screen_right_bottom_top {
-    background: url("../../../assets/bg/bg_title.png") no-repeat;
+    // background: url("../../../assets/bg/bg_title.png") no-repeat;
     background-size: 100% 100%;
     width: 100%;
     height: 40px;

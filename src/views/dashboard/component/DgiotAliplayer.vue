@@ -28,7 +28,7 @@
         "
         >现场画面</span
       >
-      <span @click="play()" class="custom-btn btn-14">播放</span>
+      <span @click="play()" class="custom-btn btn-14 blue">播放</span>
       <span @click="pause()" class="custom-btn btn-14 red">暂停</span>
       <!-- <span @click="getCurrentTime()">刷新</span> -->
     </div>
@@ -125,22 +125,26 @@ export default {
         // format: "m3u8",
         rePlay: true,
       },
-      source: "",
+      source:
+        "http://219.151.31.38/liveplay-kk.rtxapp.com/live/program/live/hnwshd/4000000/mnf.m3u8",
       show: true,
       isShowMultiple: false,
     };
   },
   mounted() {
     console.log("地址", this.$FileServe);
-    if (this.comp.text.includes("//")) {
-      this.source = this.comp.text;
-    } else {
-      this.source = this.$FileServe + this.comp.text;
+    if (this.comp.text) {
+      if (this.comp.text.includes("//")) {
+        this.source = this.comp.text;
+      } else {
+        this.source = this.$FileServe + this.comp.text;
+      }
     }
+
     // this.source =
     //   this.comp.text ||
     //   "http://219.151.31.38/liveplay-kk.rtxapp.com/live/program/live/hnwshd/4000000/mnf.m3u8";
-    if (this.comp.text.indexOf("m3u8") < 0) {
+    if (this.source.indexOf("m3u8") < 0) {
       this.options.isLive = false;
     }
 
@@ -179,7 +183,7 @@ export default {
   position: relative;
   width: 100%;
   height: 100%;
-  background: url("../../../assets/bg/bg_warning.png") no-repeat;
+  // background: url("../../../assets/bg/bg_warning.png") no-repeat;
   background-size: 100% 100%;
 }
 * {
@@ -188,8 +192,8 @@ export default {
 }
 .remove-text {
   text-align: center;
-  padding: 20px;
-  font-size: 24px;
+  padding: 1.25em;
+  font-size: 1.5em;
 }
 .show-multiple {
   display: flex;
@@ -202,8 +206,8 @@ export default {
   // padding: 5px 10px;
   // margin-bottom: 20px;
   .source-label {
-    margin-right: 20px;
-    font-size: 16px;
+    margin-right: 1.25em;
+    font-size: 1em;
     display: block;
   }
   #source {
@@ -222,8 +226,8 @@ export default {
   line-height: 30px;
   text-align: center;
   color: #fff;
-  border-radius: 5px;
-  margin-left: 10px;
+  border-radius: 0.3em;
+  margin-left: 0.7em;
   // padding: 10px 25px;
   // font-family: "Lato", sans-serif;
   font-weight: 500;
@@ -245,6 +249,9 @@ export default {
 .red {
   background: rgb(234, 0, 0);
 }
+.blue {
+  background: rgb(55, 71, 123);
+}
 .btn-14:after {
   position: absolute;
   content: "";
@@ -254,7 +261,7 @@ export default {
   left: 0;
   z-index: -1;
   border-radius: 5px;
-  background-color: #bf9204;
+  background-color: #51c9fa;
   // background-image: linear-gradient(315deg, #0e1638 0%, #304156 74%);
   box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5),
     7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(255, 0, 0, 0.1);

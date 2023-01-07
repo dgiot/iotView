@@ -8,7 +8,20 @@
     }"
   >
     <div id="container"></div>
-
+    <div class="dashboard_check" v-if="dashboardList.length > 1">
+      <div
+        class="screen_check_item"
+        style="font-size: 1em"
+        :class="
+          item.objectId == dashboardId ? 'screen_select' : 'screen_unselect'
+        "
+        v-for="(item, index) in dashboardList"
+        :key="item.objectId + index"
+        @click="handleToCheckout(item)"
+      >
+        {{ item.title }}
+      </div>
+    </div>
     <div v-if="vueFlag">
       <div
         v-for="(comp, index) in vueComponents"
@@ -85,14 +98,24 @@
         <screen-device
           v-else-if="comp.type == 'list' && comp.id == 'device_list'"
           :comp="comp"
+          @initScreen="initScreen"
           :style="{
             width: comp.width + 'px',
             height: comp.height + 'px',
           }"
         />
-        <!-- 告警列表 -->
+
+        <!-- 告警模板 -->
         <topo-caltable
           v-else-if="comp.type == 'list' && comp.id == 'warning_list'"
+          :comp="comp"
+          :style="{
+            width: comp.width + 'px',
+            height: comp.height + 'px',
+          }"
+        />
+        <dgiot-notification1
+          v-else-if="comp.type == 'list' && comp.id == 'warning_list1'"
           :comp="comp"
           :style="{
             width: comp.width + 'px',
@@ -109,7 +132,7 @@
             height: comp.height + 'px',
           }"
         />
-        <!-- 告警列表 -->
+        <!-- 告警模板 -->
         <work-order
           v-else-if="comp.type == 'list' && comp.id == 'workorder_list'"
           :comp="comp"
@@ -127,8 +150,18 @@
             height: comp.height + 'px',
           }"
         />
+        <!-- 实时时间展示 -->
+        <real-time
+          v-else-if="comp.type == 'realtime'"
+          :comp="comp"
+          :style="{
+            width: comp.width + 'px',
+            height: comp.height + 'px',
+          }"
+        />
         <!-- node.attrs.src.includes("//") ? node.attrs.src : this.$FileServe +
         node.attrs.src -->
+
         <img
           v-else-if="comp.type == 'konvaimage'"
           :src="comp.src.includes('//') ? comp.src : $FileServe + comp.src"
@@ -172,8 +205,11 @@ import ScreenRealcard from "./component/ScreenRealcard.vue"; //告警列表
 import ScreenBaidumap from "./component/ScreenBaidumap.vue"; //百度地图
 import ScreenLine from "./component/ScreenLine.vue"; //历史折线图
 import ScreenDeviceBar from "./component/ScreenDeviceBar.vue"; //历史柱状图
-// import ScreenHeadcounter from "./component/ScreenHeadcount.vue"; //卡片组
 import ScreenHeaditem from "./component/ScreenHeaditem.vue"; //卡片组
+// 通用组件
+import RealTime from "./component/commom/RealTime.vue";
+import DgiotNotification1 from "./component/notification/DgiotNotification1.vue"; //告警模板1
+
 import { mapGetters } from "vuex";
 import Amis from "@/components/Amis/index.vue"; //amis 组件
 import { getView } from "@/api/View/index";
@@ -196,6 +232,8 @@ export default {
     DgiotAliplayer,
     ScreenLine,
     ScreenDeviceBar,
+    RealTime,
+    DgiotNotification1,
   },
   data() {
     return {
@@ -211,6 +249,7 @@ export default {
       viewData: {},
       queryParams: [],
       dashboardId: "",
+      dashboardList: [],
     };
   },
   computed: {
@@ -238,14 +277,21 @@ export default {
       this.$message("暂未配置组态大屏");
       return false;
     } else {
+      let dashboardList = [],
+        flag = true;
       results.forEach((item) => {
-        if (item.type == "Dashboard") {
+        if (item.type == "Dashboard" && flag) {
+          dashboardList.push(item);
+          flag = false;
           this.viewtype = item.type;
           this.json = item.data.konva.Stage;
           console.log("json", this.json);
           this.dashboardId = item.objectId;
+        } else if (item.type == "Dashboard") {
+          dashboardList.push(item);
         }
       });
+      this.dashboardList = dashboardList;
       this.queryData();
       // this.commandInfo.dialog = true;
       // this.loading = false;
@@ -283,8 +329,33 @@ export default {
       })();
     };
   },
+  destroyed() {
+    var html = document.getElementsByTagName("html")[0];
+    html.style.fontSize = 16 + "px";
+  },
   methods: {
+    handleToCheckout(item) {
+      if (item.objectId != this.dashboardId) {
+        var width = window.innerWidth;
+        var height = window.innerHeight;
+        this.json = item.data.konva.Stage;
+        console.log("json", this.json);
+        this.dashboardId = item.objectId;
+        this.queryData();
+        this.layer = Konva.Node.create(this.json, "container").findOne("Layer");
+        this.stage = new Konva.Stage({
+          container: "container",
+          width: width,
+          height: height,
+        });
+        this.stage.add(this.layer);
+        this.handleInitKonva();
+      }
+    },
     async handleInitKonva() {
+      var html = document.getElementsByTagName("html")[0];
+      html.style.fontSize = (document.body.clientWidth / 1940) * 16 + "px";
+
       let list = []; //vuecomponent 组件列表
       let amislist = []; // amiscomponent 组件列表
       this.amisFlag = false;
@@ -309,7 +380,7 @@ export default {
         // });
         // console.log("node", node);
         this.initSize(node);
-
+        console.log("图片", node);
         if (node.attrs.id == "bg") {
           console.log(node.attrs);
           this.bgSrc = node.attrs.src.includes("//")
@@ -375,21 +446,34 @@ export default {
     },
     // 按比例初始化大小 -
     initSize(node) {
+      //  x: (node.attrs.x * document.body.clientWidth) / 1930,
+      // y: (node.attrs.y * document.body.clientHeight) / 940,
+      // width: (node.attrs.width * document.body.clientWidth) / 1930,
+      // height: (node.attrs.height * document.body.clientHeight) / 940,
       // console.log(node.attrs.height, document.body.clientHeight);
+      let scale = document.body.clientWidth / 1940;
       node.setAttrs({
         draggable: false,
-        x: (node.attrs.x * document.body.clientWidth) / 1920,
-        y: (node.attrs.y * document.body.clientHeight) / 940,
-        width: (node.attrs.width * document.body.clientWidth) / 1920,
-        height: (node.attrs.height * document.body.clientHeight) / 940,
+        x: node.attrs.x * scale,
+        y: node.attrs.y * scale,
+        width: node.attrs.width * scale,
+        height: node.attrs.height * scale,
+        fontSize: node.attrs.fontSize * scale,
       });
     },
     initScale(node) {
-      node.attrs.x = (node.attrs.x * document.body.clientWidth) / 1920;
-      node.attrs.width = (node.attrs.width * document.body.clientWidth) / 1920;
-      node.attrs.y = (node.attrs.y * document.body.clientHeight) / 940;
-      node.attrs.height =
-        (node.attrs.height * document.body.clientHeight) / 940;
+      // node.attrs.x = (node.attrs.x * document.body.clientWidth) / 1930;
+      // node.attrs.width = (node.attrs.width * document.body.clientWidth) / 1930;
+      // node.attrs.y = (node.attrs.y * document.body.clientHeight) / 940;
+      // node.attrs.height =
+      //   (node.attrs.height * document.body.clientHeight) / 940;
+      let scale = document.body.clientWidth / 1940;
+      console.log("比例大小", scale);
+      node.attrs.fontSize = node.attrs.fontSize * scale;
+      node.attrs.x = node.attrs.x * scale;
+      node.attrs.width = node.attrs.width * scale;
+      node.attrs.y = node.attrs.y * scale;
+      node.attrs.height = node.attrs.height * scale;
       return node;
     },
     async initScreen() {
@@ -430,6 +514,30 @@ export default {
   margin: 0 !important;
   // background: url("../../assets/bg/pageBg.png") no-repeat 100% 100%;
   background-size: cover;
+  .dashboard_check {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    display: flex;
+    .screen_check_item {
+      box-sizing: border-box;
+      width: 10em;
+      height: 2.8em;
+      line-height: 2.8em;
+      margin-right: 0.75em;
+      text-align: center;
+      color: #fff;
+      cursor: pointer;
+    }
+    .screen_select {
+      background: url("../../assets/bg/screen_select.png") no-repeat 100% 100%;
+      background-size: cover;
+    }
+    .screen_unselect {
+      background: url("../../assets/bg/screen_unselect.png") no-repeat 100% 100%;
+      background-size: cover;
+    }
+  }
   .vue_component {
     position: absolute;
     // z-index: 99;

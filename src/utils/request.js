@@ -96,7 +96,7 @@ service.interceptors.response.use(
       duration: 5 * 1000
     })
     if (error.message.indexOf('401') >= 0) {
-      console.log('异常错误', error.message) // for debug
+      // console.log('异常错误', error.message) // for debug
       setToken()
       store.dispatch('user/resetToken').then(() => {
         location.reload()

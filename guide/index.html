@@ -303,6 +303,7 @@
         },
         handleChooseProgram(o) {
           console.log(o);
+          localStorage.removeItem("sessionToken")
           if (o.url) {
             window.location.href = `${o.url}?username=${o.username}&password=${o.password}`
             return

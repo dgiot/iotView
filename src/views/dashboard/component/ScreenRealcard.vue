@@ -443,7 +443,7 @@ background-color: #2472ea;
                 padding-left: 20px;
               }
               .ct_real_name {
-                font-size: 20px;
+                font-size: 1.25em;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
@@ -452,12 +452,12 @@ background-color: #2472ea;
               .ct_real_number {
                 margin-top: 5px;
                 // padding-top: 15px;
-                font-size: 24px;
+                font-size: 1.5em;
                 color: #ffdb5c;
               }
               .ct_real_time {
                 margin-top: 2px;
-                font-size: 10px;
+                font-size: 0.625em;
                 color: #16c1f3;
               }
             }
@@ -494,7 +494,7 @@ background-color: #2472ea;
                 padding-left: 20px;
               }
               .ct_real_name {
-                font-size: 26px;
+                font-size: 1.625em;
                 padding-top: 10px;
                 overflow: hidden;
                 text-overflow: ellipsis;
@@ -505,13 +505,13 @@ background-color: #2472ea;
               .ct_real_number {
                 margin-top: 5px;
                 padding-top: 15px;
-                font-size: 30px;
+                font-size: 1.875em;
                 color: #ffdb5c;
                 flex: 2;
               }
               .ct_real_time {
                 margin-top: 10px;
-                font-size: 16px;
+                font-size: 1em;
                 color: #16c1f3;
                 flex: 1;
               }
@@ -577,7 +577,7 @@ background-color: #2472ea;
       width: 60px;
       text-align: center;
 
-      font-size: 10px !important;
+      font-size: 0.625em !important;
       option {
         padding: 5px;
       }

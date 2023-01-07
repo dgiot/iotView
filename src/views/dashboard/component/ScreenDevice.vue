@@ -8,7 +8,10 @@
           <div class="item">设备地址</div>
           <div class="item">安装位置</div>
           <div class="item">状态</div>
-          <div class="item">最后更新时间</div>
+          <div class="item">更新时间</div>
+          <div class="item" v-if="$route.path.indexOf('/dashboard') >= 0">
+            操作
+          </div>
         </div>
         <!-- <vue-seamless-scroll
           class="seamless-warp"
@@ -46,11 +49,29 @@
               <td class="table-item-content">
                 {{ utc2beijing(item.updatedAt) }}
               </td>
+              <td
+                class="table-item-content"
+                v-if="$route.path.indexOf('/dashboard') >= 0"
+              >
+                <div class="item_btn" @click="handleOpenRealCard(item)">
+                  数据
+                </div>
+              </td>
             </tr>
           </table>
         </div>
         <!-- </vue-seamless-scroll> -->
       </div>
+      <el-dialog
+        class="device_wrap"
+        :title="deviceInfo.name"
+        :append-to-body="true"
+        top="10vh"
+        @close="handlecloseDevice"
+        :visible.sync="dialogDeviceVisible"
+      >
+        <real-card :cardList="cardList" :avator="avator" />
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -58,7 +79,9 @@
 <script>
 // 原文链接：https://blog.csdn.net/weixin_55799355/article/details/124740977 自动滚动列表
 import { mapGetters } from "vuex";
-import { querycompanyDevice } from "@/api/Device";
+import avator from "@/assets/bg/avator.png";
+import { querycompanyDevice, getDeviceRealCard } from "@/api/Device";
+import RealCard from "./commom/RealCard.vue";
 import { utc2beijing } from "@/utils/index";
 export default {
   name: "ScreenDevice",
@@ -72,8 +95,12 @@ export default {
       }),
     },
   },
+  components: {
+    RealCard,
+  },
   data() {
     return {
+      avator: avator,
       selectObjectId: "",
       status: false,
       listData: [],
@@ -94,7 +121,11 @@ export default {
         order: "-createdAt",
         keys: "count(*)",
       },
+      distance: "",
       timer: {}, //定时器
+      cardList: [],
+      dialogDeviceVisible: false,
+      deviceInfo: {},
     };
   },
   computed: {
@@ -127,9 +158,8 @@ export default {
     scroll() {
       let _this = this;
       var parent = document.getElementsByClassName("table_parent")[0];
-
       var child1 = document.getElementsByClassName("table")[0];
-      // console.log("滚动", parent, parent.scrollTop, child1.scrollHeight);
+      console.log("滚动", parent.scrollHeight, child1.scrollHeight);
       // var child2 = document.getElementById("child2");
       // child2.innerHTML = child1.innerHTML;
       clearInterval(this.timer);
@@ -147,6 +177,14 @@ export default {
           let item = parent.scrollTop;
           parent.scrollTop++;
           if (item == parent.scrollTop) {
+            _this.distance = parent.scrollTop;
+            // console.log("差距", _this.distance);
+
+            // if (_this.distance < 20 && index > 10) {
+            //   console.log("index大小", index);
+            //   clearInterval(_this.timer[_this.comp.type]);
+            // }
+
             parent.scrollTop = 0;
           }
         }
@@ -206,6 +244,51 @@ export default {
     utc2beijing(date) {
       return utc2beijing(date);
     },
+    async handleOpenRealCard(deviceInfo) {
+      this.deviceInfo = deviceInfo;
+      const res = await getDeviceRealCard(deviceInfo.objectId);
+      this.cardList = this.renderCard(res.data);
+      console.log("thiscardList", this.cardList);
+      // let data = {
+      //   topic: `$dg/user/realtimecard/${deviceInfo.objectId}/report`,
+      // };
+      // this.sendTopic(data);
+      this.dialogDeviceVisible = true;
+      this.$dgiotBus.$off("$dg/user/realtimecard");
+      this.$dgiotBus.$on("$dg/user/realtimecard", (e) => {
+        // console.log(e);
+        // let receive = e;
+        let str = String.fromCharCode.apply(null, new Uint8Array(e));
+        let receive = JSON.parse(Base64.decode(str));
+        console.log("转化", receive);
+        this.cardList = this.renderCard(receive.data);
+      });
+    },
+    handlecloseDevice() {
+      console.log("关闭实时数据弹窗");
+      this.$emit("initScreen");
+    },
+    // 数据卡片分类
+    renderCard(resData) {
+      let array = [];
+      resData.forEach((item) => {
+        item.devicetype = item.devicetype === "" ? "default" : item.devicetype;
+        if (item.devicetype) array.push(item.devicetype);
+      });
+      array = [...new Set(array)]; //_.uniqBy(array)
+      let cardlist = [];
+      array.forEach((item) => {
+        let type = {}; //数据类别分类
+        let arr = [];
+        resData.forEach((item1) => {
+          if (item == item1.devicetype) arr.push(item1);
+        });
+        type["data"] = arr;
+        type["name"] = item;
+        cardlist.push(type);
+      });
+      return cardlist;
+    },
   },
 };
 </script>
@@ -236,14 +319,14 @@ background-color: #2472ea;
   width: 100%;
   height: 100%;
   // border: 1px solid #fff;
-  background: url("../../../assets/bg/bg_warning.png") no-repeat;
+  // background: url("../../../assets/bg/bg_warning.png") no-repeat;
   background-size: 100% 100%;
   .screen_right_bottom_top {
-    background: url("../../../assets/bg/bg_title.png") no-repeat;
+    // background: url("../../../assets/bg/bg_title.png") no-repeat;
     background-size: 100% 100%;
     width: 100%;
     height: 40px;
-    line-height: 40px;
+    line-height: 2.5em;
     padding-left: 10%;
     font-weight: bold;
     color: #fff;
@@ -320,6 +403,14 @@ background-color: #2472ea;
           // border: 0.1px solid #fff;
           text-align: center;
           padding: 5px;
+          .item_btn {
+            border: 0.5px solid #fff;
+            border-radius: 4px;
+          }
+          .item_btn:hover {
+            background-color: #083e66;
+            border: 1px solid #8cdcfe;
+          }
         }
       }
     }

@@ -1,6 +1,14 @@
 <template>
-  <div ref="custom-table" v-loading="loading" class="index-container">
-    <div v-show="dialog" v-if="dialog" class="dialog_wrap">
+  <div
+    ref="custom-table"
+    v-loading="loading"
+    class="index-container"
+  >
+    <div
+      v-show="dialog"
+      v-if="dialog"
+      class="dialog_wrap"
+    >
       <!-- 设备组态 -->
       <h2 style="text-align: center; font-weight: 600">
         {{ deviceInfo.name }}
@@ -60,17 +68,21 @@ export default {
     this.loading = false;
     this.dialog = true;
   },
-  methods: {},
+  methods: {
+   
+  },
   destroyed() {},
 };
 </script>
 <style lang="scss" scoped>
 .index-container {
   width: 100%;
-  height: 85vh;
+  height: 90vh;
   box-sizing: border-box;
   .dialog_wrap {
-    height: 100%;
+    height: calc(100%);
+    overflow-y: scroll;
+    overflow-x: scroll;
     width: 100%;
     padding-bottom: 1%;
     position: relative;

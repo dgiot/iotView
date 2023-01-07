@@ -1,7 +1,11 @@
 <template>
   <div class="screenheaditem" :style="{ width: '100%', height: '100%' }">
     <!-- 11111 -->
-    <div class="count_item" @click="handleTo">
+    <div
+      :style="{ color: comp.color || '#fff' }"
+      class="count_item"
+      @click="handleTo"
+    >
       <div class="count_item_head">
         <div class="count_item_head_left">
           <div style="font-size: 1.5em">{{ item.name }}</div>
@@ -9,12 +13,17 @@
         </div>
         <div class="count_item_head_right">
           <!-- :format="format(item)" -->
-          <el-progress type="circle" :percentage="item.percent"></el-progress>
+          <el-progress
+            :color="comp.color || '#409eff'"
+            type="circle"
+            :stroke-width="10"
+            :percentage="item.percent"
+          ></el-progress>
         </div>
       </div>
       <div class="count_item_foot">
         <div class="count_item_foot_left">
-          <div style="width: 50%">
+          <div style="width: 100%">
             <span class="circle success"></span>&nbsp;
             <span>{{ item.finename }}</span>
           </div>
@@ -22,7 +31,7 @@
         </div>
         <div class="count_item_foot_center"></div>
         <div class="count_item_foot_right">
-          <div style="width: 50%">
+          <div style="width: 100%">
             <span class="circle warning"></span> &nbsp;
             <span>{{ item.badname }}</span>
           </div>
@@ -217,6 +226,15 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+::v-deep {
+  .el-progress__text {
+    color: #fff !important;
+  }
+  .el-progress-circle {
+    width: 8em !important;
+    height: 8em !important;
+  }
+}
 .screenheaditem {
   display: flex;
   // .count_item:nth-child(n + 2) {
@@ -224,7 +242,7 @@ export default {
   // }
   .count_item {
     // text-shadow: 1px 1px 1px #fff;
-    color: #52c7fd;
+    // color: #52c7fd;
     height: 100%;
     flex: 1;
     display: flex;
@@ -232,7 +250,7 @@ export default {
     padding: 4%;
     box-shadow: 1px 1px 2px 1px #ccc;
     .count_item_head {
-      flex: 5;
+      flex: 4;
       display: flex;
       // background-color: #dbf4ff;
       .count_item_head_left {
@@ -247,7 +265,7 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 14px;
+      font-size: 0.9em;
       // background-color: #ccc;
       padding: 0 10px;
       .count_item_foot_left {

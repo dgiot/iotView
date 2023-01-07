@@ -2,7 +2,16 @@
   <div ref="custom-table" v-loading="loading" class="index-container">
     <div v-show="dialog" v-if="dialog" class="dialog_wrap">
       <!-- 设备组态 -->
-      <h2 style="text-align: center;font-weight:600">{{ deviceInfo.name }}</h2>
+      <div
+        style="
+          text-align: center;
+          font-weight: 600;
+          line-height: 40px;
+          font-size: 26px;
+        "
+      >
+        {{ deviceInfo.name }}
+      </div>
       <real-card :cardList="cardList" :height="height" :avator="avator" />
     </div>
   </div>
@@ -42,7 +51,7 @@ export default {
   watch: {},
   async created() {
     console.log("document.body.clientHeight", document.body.clientHeight);
-    this.height = document.body.clientHeight * 0.87 + "px";
+    this.height = document.body.clientHeight * 0.86 + "px";
     this.$store.dispatch("settings/changeSetting", {
       key: "treeFlag",
       value: true,

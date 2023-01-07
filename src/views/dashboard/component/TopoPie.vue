@@ -198,15 +198,15 @@ export default {
 </script>
 <style lang="scss" scoped>
 .topoPie {
-  background: url("../../../assets/bg/bg_warning.png") no-repeat;
+  // background: url("../../../assets/bg/bg_warning.png") no-repeat;
   background-size: 100% 100%;
   .screen_right_bottom_top {
-    background: url("../../../assets/bg/bg_title.png") no-repeat;
+    // background: url("../../../assets/bg/bg_title.png") no-repeat;
     background-size: 100% 100%;
     width: 100%;
     height: 40px;
     line-height: 40px;
-    padding-left: 50px;
+    padding-left: 10%;
     font-weight: bold;
     color: #fff;
   }

@@ -90,7 +90,7 @@
       "
     >
       <a href="https://beian.miit.gov.cn/" style="color: #fff" target="_blank">
-        Copyright © 2022 DGIOT All Rights Reserved 苏ICP备14050031号-4
+        Copyright © 2022 DGIOT All Rights Reserved 浙ICP备2021037683号-1
       </a>
     </div>
   </div>

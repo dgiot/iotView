@@ -29,7 +29,7 @@
             </el-avatar>
             <div
               class="card_content_number"
-              :style="{ 'font-size': fontsize || '28px' }"
+              :style="{ 'font-size': fontsize || '1.25em' }"
             >
               {{ item.number }} {{ item.unit }}
             </div>
@@ -88,7 +88,7 @@ export default {
       display: flex;
       line-height: 50px;
 
-      font-size: 28px;
+      font-size: 1.75em;
       color: #1b89cd;
       .card_content_number {
         flex: 1;

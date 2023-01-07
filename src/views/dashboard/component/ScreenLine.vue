@@ -126,7 +126,7 @@ export default {
       ],
     };
     return {
-      couponSelected: "h",
+      couponSelected: "s",
       chartData: {
         columns: [],
         rows: [],
@@ -175,13 +175,10 @@ export default {
       switch (type) {
         case "s":
           return 1;
-          break;
         case "m":
           return 7;
-          break;
         case "h":
           return 30;
-          break;
         case "w":
           return 365;
       }
@@ -224,13 +221,14 @@ select {
   outline: none;
 }
 .topoLine {
-  background: url("../../../assets/bg/bg_warning.png") no-repeat;
+  // background: url("../../../assets/bg/bg_warning.png") no-repeat;
   background-size: 100% 100%;
   position: relative;
   .title {
     position: absolute;
     top: 1px;
     left: 50%;
+    font-size: 1.25em;
     color: #fff;
     transform: translateX(-50%);
   }
@@ -254,7 +252,7 @@ select {
         background-color: #0f1428;
         color: #fff;
         width: 60px;
-        font-size: 10px !important;
+        font-size: 0.625em !important;
       }
     }
   }

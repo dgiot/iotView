@@ -34,10 +34,11 @@
   </div>
 </template>
 <script>
+// import { putUserInfo } from "@/api/User/index";
 import { querycompanyDevice } from "@/api/Device/index";
 import { getMaintenance } from "@/api/Maintenance/index";
 import { queryNotification } from "@/api/Notification/index";
-import { getToken } from "@/api/User/index";
+import { getToken, putUserInfo } from "@/api/User/index";
 export default {
   name: "DgiotRoleTree",
   data() {
@@ -109,6 +110,16 @@ export default {
       } else if (data.status) {
         console.log("status", data, checked);
         if (this.classtype == "Product") {
+          let params = {
+            tag: {
+              userinfo: {
+                parse_deviceid: data.objectId,
+              },
+            },
+          };
+          let objectId = localStorage.getItem("objectId");
+          console.log("objectId", objectId);
+          putUserInfo(objectId, params);
           localStorage.setItem("parse_deviceid", data.objectId);
         }
         this.$dgiotBus.$emit("reload-router-view");

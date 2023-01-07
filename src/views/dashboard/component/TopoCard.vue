@@ -4,7 +4,7 @@
     :style="{ width: comp.width + 'px', height: comp.height + 'px' }"
   >
     <div class="card_content">
-      <div style="font-size: 20px; text-shadow: 1px 2px 0.5px #000">
+      <div style="font-size: 1.25em; text-shadow: 1px 2px 0.5px #000">
         <span style="font-weight: bold">{{ label }}: </span>
         <span style="color: #efdb64">{{ value }}</span>
         <!-- <span v-if="comp.text == '产品数量'" style="color: #f8a75c">{{
@@ -22,10 +22,10 @@
         <!-- {{value}} -->
       </div>
     </div>
-    <img
+    <!-- <img
       src="@/assets/static/card.png"
       :style="{ width: comp.width + 'px', height: comp.height + 'px' }"
-    />
+    /> -->
   </div>
 </template>
 
@@ -72,7 +72,7 @@ export default {
       let str = String.fromCharCode.apply(null, new Uint8Array(e));
 
       let receive = JSON.parse(Base64.decode(str));
-      // console.log("接收到了数据", receive);
+      console.log("接收到了数据", receive);
       // this.value = e;
       // this.receive.lable = receive.lable;
       this.text = receive.lable;

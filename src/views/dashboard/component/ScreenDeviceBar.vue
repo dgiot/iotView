@@ -115,7 +115,7 @@ export default {
       ],
     };
     return {
-      couponSelected: "h",
+      couponSelected: "s",
       chartData: {
         columns: [],
         rows: [],
@@ -219,7 +219,7 @@ select {
   outline: none;
 }
 .topoBar {
-  background: url("../../../assets/bg/bg_warning.png") no-repeat;
+  // background: url("../../../assets/bg/bg_warning.png") no-repeat;
   background-size: 100% 100%;
   position: relative;
   .title {
@@ -227,6 +227,7 @@ select {
     top: 1px;
     left: 50%;
     color: #fff;
+    font-size: 1.25em;
     transform: translateX(-50%);
   }
   .line_top {
@@ -248,7 +249,7 @@ select {
         background-color: #0f1428;
         color: #fff;
         width: 60px;
-        font-size: 10px !important;
+        font-size: 0.625em !important;
       }
     }
   }

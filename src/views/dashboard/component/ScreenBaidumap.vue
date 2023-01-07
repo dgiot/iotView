@@ -134,7 +134,8 @@
           <span style="cursor: pointer" @click="closeTopo">x</span>
         </div>
         <div class="topo_content">
-          <div id="deviceTopo"></div>
+          <topo-device class="wrap_konva" :deviceInfo="deviceInfo" />
+          <!-- <div id="deviceTopo"></div>
           <div v-if="vueFlag">
             <div
               v-for="(comp, index) in vueComponents"
@@ -147,7 +148,7 @@
                 height: comp.height + 'px',
               }"
             >
-              <!-- 直播 -->
+             
               <dgiot-aliplayer
                 v-if="comp.type == 'liveboard'"
                 :comp="comp"
@@ -164,7 +165,7 @@
                   height: comp.height + 'px',
                 }"
               />
-              <!-- 告警列表 -->
+             
               <topo-caltable
                 v-else-if="comp.type == 'list' && comp.id == 'warning_list'"
                 :comp="comp"
@@ -173,7 +174,16 @@
                   height: comp.height + 'px',
                 }"
               />
-              <!-- 告警列表 -->
+              <dgiot-notification1
+                v-else-if="comp.type == 'list' && comp.id == 'warning_list1'"
+                :comp="comp"
+                :selectdevice="deviceInfo"
+                :style="{
+                  width: comp.width + 'px',
+                  height: comp.height + 'px',
+                }"
+              />
+             
               <work-order
                 v-else-if="comp.type == 'list' && comp.id == 'workorder_list'"
                 :comp="comp"
@@ -182,7 +192,7 @@
                   height: comp.height + 'px',
                 }"
               />
-              <!-- 设备在线离线图表 -->
+             
               <topo-pie
                 v-else-if="comp.type == 'pie'"
                 :comp="comp"
@@ -191,7 +201,24 @@
                   height: comp.height + 'px',
                 }"
               />
-
+              <screen-line
+                v-else-if="comp.type == 'line'"
+                :comp="comp"
+                :selectdevice="deviceInfo"
+                :style="{
+                  width: comp.width + 'px',
+                  height: comp.height + 'px',
+                }"
+              />
+              <screen-device-bar
+                v-else-if="comp.type == 'devicebar'"
+                :comp="comp"
+                :selectdevice="deviceInfo"
+                :style="{
+                  width: comp.width + 'px',
+                  height: comp.height + 'px',
+                }"
+              />
               <img
                 v-else-if="comp.type == 'konvaimage'"
                 :src="
@@ -219,7 +246,7 @@
               :schema="comp.viewData"
               :show-help="false"
             />
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -264,6 +291,11 @@ import ScreenDevice from "./ScreenDevice.vue"; //设备列表
 import WorkOrder from "./WorkOrder.vue"; //工单列表
 import ScreenRealcard from "./ScreenRealcard.vue"; //告警列表
 import Amis from "@/components/Amis/index.vue"; //amis 组件
+import ScreenLine from "./ScreenLine.vue"; //历史折线图
+import ScreenDeviceBar from "./ScreenDeviceBar.vue"; //历史柱状图
+import TopoDevice from "../../CloudOc/AmisPage/component/TopoDevice.vue";
+// 通用
+import DgiotNotification1 from "./notification/DgiotNotification1.vue"; //告警模板1
 
 import { querycompanyDevice, getDevice, getDeviceRealCard } from "@/api/Device";
 import avator from "@/assets/bg/avator.png";
@@ -297,6 +329,10 @@ export default {
     ScreenRealcard,
     WorkOrder,
     DgiotAliplayer,
+    ScreenLine,
+    ScreenDeviceBar,
+    DgiotNotification1,
+    TopoDevice,
   },
   props: {
     comp: {
@@ -336,10 +372,18 @@ export default {
       topoAmisData: {},
     };
   },
-  async created() {},
+  async created() {
+    if (this.comp.text) {
+      this.ak = this.comp.text;
+    }
+    // else {
+    //   this.ak = "S7pehghn5BdQeSGZAcpEk4bLQSQ8czvi";
+    // }
+  },
   async mounted() {
     await this.queryDevice();
     this.mapFlag = true;
+    // 接收设备列表点击的设备信息
     this.$dgiotBus.$off("device/transmit");
     this.$dgiotBus.$on("device/transmit", (item) => {
       console.log("接受了", item);
@@ -348,19 +392,19 @@ export default {
         lat: item.location.latitude,
       };
       this.sizeZoom = 15;
-      for (let index = 0; index < this.deviceList.length; index++) {
-        if (
-          this.deviceList[index].objectId == item.objectId &&
-          item.address != "---"
-        ) {
-          this.deviceInfo = this.deviceList[index];
-          console.log("amisthis.deviceInfo", this.deviceInfo);
-          this.deviceList[index].show = true;
-          // break;
-        } else {
-          this.deviceList[index].show = false;
-        }
-      }
+      // for (let index = 0; index < this.deviceList.length; index++) {
+      //   if (
+      //     this.deviceList[index].objectId == item.objectId &&
+      //     item.address != "---"
+      //   ) {
+      //     this.deviceInfo = this.deviceList[index];
+      //     console.log("amisthis.deviceInfo", this.deviceInfo);
+      //     this.deviceList[index].show = true;
+      //     // break;
+      //   } else {
+      //     this.deviceList[index].show = false;
+      //   }
+      // }
     });
     this.$dgiotBus.$off("$dg/user/realtimecard");
     this.$dgiotBus.$on("$dg/user/realtimecard", (e) => {
@@ -555,6 +599,9 @@ export default {
         });
       });
       this.devicestage.find("Image").forEach((node) => {
+        node.setAttrs({
+          draggable: false,
+        });
         if (
           node.attrs.type == "konvaimage" ||
           node.attrs.name == "vuecomponent"
@@ -580,6 +627,9 @@ export default {
         }
       });
       this.devicestage.find("Rect").forEach((node) => {
+        node.setAttrs({
+          draggable: false,
+        });
         if (node.attrs.name == "vuecomponent") {
           let item = node.attrs;
           list.push(item);
@@ -661,6 +711,8 @@ export default {
       this.productIco = "";
       this.deviceInfo = await getDevice(row.objectId);
       console.log("this.deviceInfo", this.deviceInfo);
+      this.$dgiotBus.$emit("device/historylinedata", row);
+      this.$dgiotBus.$emit("device/historybardata", row);
       // const { results = [{ icon: "" }] } = await queryProduct({
       //   count: "objectId",
       //   order: "-updatedAt",
@@ -683,6 +735,7 @@ export default {
         order: "-createdAt",
         count: "objectId",
         where: {},
+        limit: 10,
       };
       // this.queryForm.product
       //   ? (params.where.product = this.queryForm.product)
@@ -713,6 +766,7 @@ export default {
             lng: item.location?.longitude,
             lat: item.location?.latitude,
           };
+          centerflag = false;
         }
       });
       this.deviceList = list;
@@ -828,7 +882,7 @@ export default {
     display: flex;
     justify-content: space-between;
     color: #000;
-    font-size: 26px;
+    font-size: 1.8em;
   }
   // background-color: #fff;
 }

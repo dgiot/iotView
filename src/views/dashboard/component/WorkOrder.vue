@@ -127,13 +127,14 @@ export default {
         order: "-createdAt",
         keys: "count(*)",
       },
-      timer:{},
+      timer: {},
+      distance: "",
     };
   },
   computed: {},
   mounted() {
     this.fetchData();
-    this.scroll()
+    this.scroll();
   },
   methods: {
     async fetchData(args = {}) {
@@ -144,7 +145,7 @@ export default {
       // const loading = this.$baseColorfullLoading()
       let params = {
         limit: 10,
-        order: '-createdAt',
+        order: "-createdAt",
         skip: 0,
         count: "objectId",
         where: {
@@ -191,16 +192,16 @@ export default {
       // type == 0 ? '' : ''
       switch (type) {
         case 0:
-          return '待接收'; //待接收
+          return "待接收"; //待接收
           break;
         case 1:
-          return '处理中'; //处理中
+          return "处理中"; //处理中
           break;
         case 2:
-          return '已处理'; //已处理
+          return "已处理"; //已处理
           break;
         case 3:
-          return '已回退'; //已回退
+          return "已回退"; //已回退
           break;
         default:
           return type;
@@ -229,6 +230,11 @@ export default {
           let item = parent.scrollTop;
           parent.scrollTop++;
           if (item == parent.scrollTop) {
+            _this.distance = parent.scrollTop;
+            // console.log("差距", _this.distance);
+            if (_this.distance < 20) {
+              clearInterval(_this.timer[_this.comp.id]);
+            }
             parent.scrollTop = 0;
           }
         }
@@ -271,12 +277,13 @@ background-color: #2472ea;
 </style>
 <style lang="scss" scoped>
 .topoCaltable {
+  font-size: 1em;
   // border: 1px solid #fff;
-  background: url("../../../assets/bg/bg_warning.png") no-repeat;
+  // background: url("../../../assets/bg/bg_warning.png") no-repeat;
   background-size: 100% 100%;
   position: relative;
   .screen_right_bottom_top {
-    background: url("../../../assets/bg/bg_title.png") no-repeat;
+    // background: url("../../../assets/bg/bg_title.png") no-repeat;
     background-size: 100% 100%;
     width: 100%;
     height: 40px;

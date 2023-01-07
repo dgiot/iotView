@@ -5,7 +5,7 @@ export function login(data) {
     url: '/login',
     method: 'post',
     data,
-    headers:{
+    headers: {
       "Content-Type": "text/plain"
     }
   })
@@ -23,6 +23,16 @@ export function getToken(params) {
     params
   })
 }
+
+export function putUserInfo(objectId, data) {
+  return request({
+    url: `/amis/_User/${objectId}`,
+    method: "put",
+    data
+  })
+}
+
+
 
 
 export function getInfo(token) {

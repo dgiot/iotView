@@ -1,5 +1,5 @@
 <template>
-  <div class="topo_content">
+  <div @mouseenter="enter" @mouseleave="leave" class="topo_content">
     <div id="deviceTopo"></div>
     <div v-if="vueFlag">
       <div
@@ -48,7 +48,7 @@
             height: comp.height + 'px',
           }"
         />
-        <!-- 告警列表 -->
+        <!-- 告警模板 -->
         <topo-caltable
           v-else-if="comp.type == 'list' && comp.id == 'warning_list'"
           :comp="comp"
@@ -57,7 +57,17 @@
             height: comp.height + 'px',
           }"
         />
-        <!-- 告警列表 -->
+        <dgiot-notification1
+          v-else-if="comp.type == 'list' && comp.id == 'warning_list1'"
+          :comp="comp"
+          :selectdevice="deviceInfo"
+          :style="{
+            width: comp.width + 'px',
+            height: comp.height + 'px',
+          }"
+        />
+
+        <!-- 工单模板 -->
         <work-order
           v-else-if="comp.type == 'list' && comp.id == 'workorder_list'"
           :comp="comp"
@@ -125,6 +135,8 @@ import WorkOrder from "../../../dashboard/component/WorkOrder.vue"; //工单列�
 import ScreenRealcard from "../../../dashboard/component/ScreenRealcard.vue"; //告警列表
 import ScreenLine from "../../../dashboard/component/ScreenLine.vue"; //历史折线图
 import ScreenDeviceBar from "../../../dashboard/component/ScreenDeviceBar.vue"; //历史柱状图
+// 通用组件
+import DgiotNotification1 from "../../../dashboard/component/notification/DgiotNotification1.vue"; //告警模板1
 import Amis from "@/components/Amis/index.vue"; //amis 组件
 import { Base64 } from "js-base64";
 import { queryView, getTopo, getView, postAmis } from "@/api/View";
@@ -146,6 +158,7 @@ export default {
     Amis,
     ScreenLine,
     ScreenDeviceBar,
+    DgiotNotification1,
   },
   data() {
     return {
@@ -165,8 +178,33 @@ export default {
     this.handleOpenTopo(this.deviceInfo);
   },
   methods: {
+    enter() {
+      console.log("enter");
+      window.addEventListener("mousewheel", this.handleScroll, true);
+    },
+    leave() {
+      console.log("leave");
+      window.removeEventListener("mousewheel", this.handleScroll, true);
+    },
+    handleScroll(e) {
+      e = e || window.event;
+      var box1 = document.querySelector(".topo_content");
+      // console.log('滚动了', e)
+      //判断滚轮滚动方向
+      //wheelDelta获取到鼠标滚动方向，向上滚是正值，向下是负值，但火狐不支持
+      //event.detail火狐支持，向上为负值，向下为正值
+      // return
+      // if (e.wheelDelta > 0 || e.detail < 0) {
+      //   box1.style.width = box1.offsetWidth * 1.02 + "px";
+      //   box1.style.height = box1.offsetHeight * 1.02 + "px";
+      // } else {
+      //   box1.style.width = box1.offsetWidth * 0.98 + "px";
+      //   box1.style.height = box1.offsetHeight * 0.98 + "px";
+      // }
+    },
     // 打开组态弹窗
     async handleOpenTopo(deviceInfo) {
+      localStorage.setItem("parse_deviceid", deviceInfo.objectId);
       let params = {
         count: "objectId",
         order: "createdAt",
@@ -330,6 +368,9 @@ export default {
         });
       });
       this.devicestage.find("Image").forEach((node) => {
+        node.setAttrs({
+          draggable: false,
+        });
         if (
           node.attrs.type == "konvaimage" ||
           node.attrs.name == "vuecomponent"
@@ -355,6 +396,9 @@ export default {
         }
       });
       this.devicestage.find("Rect").forEach((node) => {
+        node.setAttrs({
+          draggable: false,
+        });
         if (node.attrs.name == "vuecomponent") {
           let item = node.attrs;
           list.push(item);
