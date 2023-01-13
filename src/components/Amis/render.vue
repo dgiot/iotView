@@ -4,21 +4,21 @@
 
 <script>
 import store from "@/store";
-import { Message } from 'element-ui'
+import { Message } from "element-ui";
 import { mapGetters } from "vuex";
 
-// const _ = require("lodash"); 
+// const _ = require("lodash");
 /**
  * @description amis配置参数
  */
 // https://baidu.gitee.io/amis/zh-CN/docs/start/getting-started#props
 // eslint-disable
-import { alert, confirm, render as renderSchema, toast } from 'amis'
-import ReactDOM from 'react-dom'
+import { alert, confirm, render as renderSchema, toast } from "amis";
+import ReactDOM from "react-dom";
 
 // import element from 'element-ui/lib/theme-chalk/index.css'
-import qs from 'qs'
-import axios from 'axios'
+import qs from "qs";
+import axios from "axios";
 import copy from "copy-to-clipboard";
 export default {
   name: "AmisRender",
@@ -52,18 +52,18 @@ export default {
     ...mapGetters(["token", "departmentToken"]),
   },
   mounted() {
-    this.initEnv()
-     ReactDOM.render(
-        renderSchema(
-          this.schema,
-          {
-            onAction: this.onAction || this.handleAction,
-            theme: this.theme
-          },
-          this.env
-        ),
-        this.$refs.renderBox
-      )
+    this.initEnv();
+    ReactDOM.render(
+      renderSchema(
+        this.schema,
+        {
+          onAction: this.onAction || this.handleAction,
+          theme: this.theme,
+        },
+        this.env
+      ),
+      this.$refs.renderBox
+    );
     // ReactDOM.render(
     //   renderAmis(
     //     this.schema,
@@ -89,7 +89,7 @@ export default {
           // console.log('link',link);
           let search = "";
           const idx = link.indexOf("?");
-          if (idx !=-1) {
+          if (idx != -1) {
             pathname = link.substring(0, idx);
             search = link.substring(idx);
           }
@@ -125,7 +125,7 @@ export default {
           _.merge(config.headers, {
             platform: "amis",
             departmentToken: this.departmentToken,
-            sessionToken: this.token,
+            sessionToken: localStorage.getItem("sessionToken")|| '',
             author: "xxb",
             email: "258650676@qq.com",
           });
@@ -227,13 +227,13 @@ export default {
           const { path } = this.$route;
           // 解决设计界面弹出提示问题
           console.log(path.indexOf("design"), path);
-          if (!path.indexOf('design')) {
-          Message({
-            type: type,
-            message: msg,
-            duration: 2000,
-            showClose: true,
-          });
+          if (!path.indexOf("design")) {
+            Message({
+              type: type,
+              message: msg,
+              duration: 2000,
+              showClose: true,
+            });
           }
         },
         confirm,

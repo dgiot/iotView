@@ -256,7 +256,6 @@ export default {
   async mounted() {
     console.log('localStorage.getItem("isPC")', localStorage.getItem("isPC"));
     this.isPC = localStorage.getItem("isPC") == "true" ? true : false;
-    // console.log("console.log(this.isPC);", this.isPC);
     localStorage.setItem("dgiottopbar", "[]");
     this.$store.dispatch("settings/changeSetting", {
       key: "treeFlag",
@@ -278,6 +277,7 @@ export default {
       return false;
     } else {
       let dashboardList = [],
+        amisScreenList = [],
         flag = true;
       results.forEach((item) => {
         if (item.type == "Dashboard" && flag) {
@@ -289,6 +289,8 @@ export default {
           this.dashboardId = item.objectId;
         } else if (item.type == "Dashboard") {
           dashboardList.push(item);
+        } else if (item.flag == "Amis") {
+          amisScreenList.push(item);
         }
       });
       this.dashboardList = dashboardList;
