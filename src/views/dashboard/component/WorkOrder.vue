@@ -232,9 +232,9 @@ export default {
           if (item == parent.scrollTop) {
             _this.distance = parent.scrollTop;
             // console.log("差距", _this.distance);
-            if (_this.distance < 20) {
-              clearInterval(_this.timer[_this.comp.id]);
-            }
+            // if (_this.distance < 20) {
+            //   clearInterval(_this.timer[_this.comp.id]);
+            // }
             parent.scrollTop = 0;
           }
         }

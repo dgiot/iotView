@@ -312,6 +312,11 @@ export default {
           draggable: false,
         });
       });
+      this.devicestage.find("Tag").forEach((node) => {
+        node.setAttrs({
+          draggable: false,
+        });
+      });
       this.devicestage.find("Text").forEach((node) => {
         node.setAttrs({
           draggable: false,

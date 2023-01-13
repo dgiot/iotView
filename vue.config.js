@@ -38,13 +38,24 @@ module.exports = {
     proxy: {
       '/iotapi': {
         //代理api
-        target: 'http://dev.dgiotcloud.cn', //代理接口(注意只要域名就够了) // https://www.bossupi.com    jb http://43.138.215.206
+        target: 'http://dev.dgiotcloud.cn', //代理接口(注意只要域名就够了) 
         secure: 'true',
         changeOrigin: true, //是否跨域
         ws: true, // proxy websockets
         pathRewrite: {
           //重写路径
           '^/iotapi': '/iotapi'  //代理路径
+        }
+      },
+      '/dgiot_file': {
+        //代理api
+        target: 'http://dev.dgiotcloud.cn', //代理接口(注意只要域名就够了) 
+        secure: 'true',
+        changeOrigin: true, //是否跨域
+        ws: true, // proxy websockets
+        pathRewrite: {
+          //重写路径
+          '^/dgiot_file': '/dgiot_file'  //代理路径
         }
       }
     },

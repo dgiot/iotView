@@ -82,7 +82,7 @@ export default {
   },
   methods: {
     handleBarClick(item) {
-      if (this.isPC) {
+      if (this.isPC == "true") {
         if (item.children && item.children.length > 1) {
           if (
             JSON.stringify(item.children) != localStorage.getItem("dgiottopbar")

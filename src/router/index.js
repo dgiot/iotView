@@ -71,13 +71,13 @@ export const constantRoutes = [
       },
       {
         path: '/amis/Device/konva',
-        name: 'tabs',
+        name: 'konva',
         component: () => import('@/views/Device/DeviceKonva/index'),
         meta: { title: 'amis', icon: 'form' }
       },
       {
         path: '/amis/Device/realcard',
-        name: 'tabs',
+        name: 'realcard',
         component: () => import('@/views/Device/DeviceRealCard/index'),
         meta: { title: 'amis', icon: 'form' }
       },

@@ -88,6 +88,7 @@
         transform: translateX(-50%);
         color: #fff;
       "
+      v-if="isPC"
     >
       <a href="https://beian.miit.gov.cn/" style="color: #fff" target="_blank">
         Copyright © 2022 DGIOT All Rights Reserved 浙ICP备2021037683号-1
@@ -146,7 +147,7 @@ export default {
   mounted() {
     this.isPC = isPC();
     console.log("是否为PC端", this.isPC);
-    localStorage.setItem('isPC',this.isPC)
+    localStorage.setItem("isPC", this.isPC);
     // console.log(this.$route);
     if (this.$route.query) {
       this.loginForm.username = this.$route.query.username || "";

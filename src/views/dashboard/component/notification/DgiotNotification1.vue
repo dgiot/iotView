@@ -55,13 +55,19 @@ export default {
         where: {},
       },
       timer: {},
+      interal: "",
     };
   },
   created() {
-    this.fetchData();
+    this.interal = setInterval(() => {
+      this.fetchData();
+    }, 8000);
   },
   mounted() {
     this.scroll();
+  },
+   destroyed() {
+    clearInterval(this.interal);
   },
   methods: {
     async fetchData(args = {}) {

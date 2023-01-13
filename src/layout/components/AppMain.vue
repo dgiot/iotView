@@ -11,7 +11,10 @@
       <dgiot-role-tree v-if="treeFlag" />
     </el-aside>
     <el-main style="padding: 0">
-      <div class="bar_top" v-if="$route.path.indexOf('/dashboard') < 0 && isPC">
+      <div
+        class="bar_top"
+        v-if="$route.path.indexOf('/dashboard') < 0 && isPC == 'true'"
+      >
         <div class="bar_top_right">
           <span
             class="bar_top_item"

@@ -34,15 +34,6 @@
           height: comp.height + 'px',
         }"
       >
-        <!-- <topo-line
-              v-if="comp.type == 'line'"
-              :comp="comp"
-              :style="{
-                width: comp.width + 'px',
-                height: comp.height + 'px',
-              }"
-            />
-          -->
         <!-- 数据卡片/产品数-设备数-在线数-离线数 -->
         <topo-card
           v-if="comp.type == 'counter' && comp.id != 'all_countervalue'"
@@ -215,6 +206,7 @@ import Amis from "@/components/Amis/index.vue"; //amis 组件
 import { getView } from "@/api/View/index";
 import { queryRelation } from "@/api/Relation";
 import { getDlinkJson, Startdashboard } from "@/api/Dashboard";
+import { isPC } from "@/utils/index";
 export default {
   name: "Dashboard",
   components: {
@@ -250,13 +242,21 @@ export default {
       queryParams: [],
       dashboardId: "",
       dashboardList: [],
+      isPC: true,
+      clientWidth: 1920,
     };
   },
   computed: {
     ...mapGetters(["name"]),
   },
-
+  created() {
+    this.isPC = isPC();
+    localStorage.setItem("isPC", this.isPC);
+  },
   async mounted() {
+    console.log('localStorage.getItem("isPC")', localStorage.getItem("isPC"));
+    this.isPC = localStorage.getItem("isPC") == "true" ? true : false;
+    // console.log("console.log(this.isPC);", this.isPC);
     localStorage.setItem("dgiottopbar", "[]");
     this.$store.dispatch("settings/changeSetting", {
       key: "treeFlag",
@@ -330,8 +330,10 @@ export default {
     };
   },
   destroyed() {
-    var html = document.getElementsByTagName("html")[0];
-    html.style.fontSize = 16 + "px";
+    if (this.clientWidth > 736) {
+      var html = document.getElementsByTagName("html")[0];
+      html.style.fontSize = 16 + "px";
+    }
   },
   methods: {
     handleToCheckout(item) {
@@ -353,20 +355,29 @@ export default {
       }
     },
     async handleInitKonva() {
-      var html = document.getElementsByTagName("html")[0];
-      html.style.fontSize = (document.body.clientWidth / 1940) * 16 + "px";
-
+      this.clientWidth = document.body.clientWidth;
+      if (this.clientWidth > 736) {
+        var html = document.getElementsByTagName("html")[0];
+        html.style.fontSize = (document.body.clientWidth / 1940) * 16 + "px";
+      }
       let list = []; //vuecomponent 组件列表
       let amislist = []; // amiscomponent 组件列表
       this.amisFlag = false;
       this.stage.find("Label").forEach((node) => {
-        console.log("label", node);
+        // console.log("label", node);
         // info["Label"] = stage.find("Label");
         this.initSize(node);
         node.setAttrs({
           draggable: false,
         });
         // node = this.initScale(node);
+      });
+      this.stage.find("Tag").forEach((node) => {
+        // console.log(node.attrs.text);
+        node.setAttrs({
+          draggable: false,
+        });
+        node = this.initScale(node);
       });
       this.stage.find("Text").forEach((node) => {
         node.setAttrs({
@@ -380,7 +391,6 @@ export default {
         // });
         // console.log("node", node);
         this.initSize(node);
-        console.log("图片", node);
         if (node.attrs.id == "bg") {
           console.log(node.attrs);
           this.bgSrc = node.attrs.src.includes("//")
@@ -446,34 +456,60 @@ export default {
     },
     // 按比例初始化大小 -
     initSize(node) {
+      let scale = document.body.clientWidth / 1940;
+      if (this.isPC) {
+        // console.log("isPC打开了");
+        node.setAttrs({
+          draggable: false,
+          x: node.attrs.x * scale,
+          y: node.attrs.y * scale,
+          width: node.attrs.width * scale,
+          height: node.attrs.height * scale,
+          fontSize: node.attrs.fontSize * scale,
+        });
+      } else {
+        node.setAttrs({
+          draggable: false,
+          x: (node.attrs.x * document.body.clientWidth) / 1920,
+          y: (node.attrs.y * document.body.clientHeight) / 960,
+          width: (node.attrs.width * document.body.clientWidth) / 1920,
+          height: (node.attrs.height * document.body.clientHeight) / 960,
+          fontSize: node.attrs.fontSize * scale,
+        });
+      }
       //  x: (node.attrs.x * document.body.clientWidth) / 1930,
       // y: (node.attrs.y * document.body.clientHeight) / 940,
       // width: (node.attrs.width * document.body.clientWidth) / 1930,
       // height: (node.attrs.height * document.body.clientHeight) / 940,
       // console.log(node.attrs.height, document.body.clientHeight);
-      let scale = document.body.clientWidth / 1940;
-      node.setAttrs({
-        draggable: false,
-        x: node.attrs.x * scale,
-        y: node.attrs.y * scale,
-        width: node.attrs.width * scale,
-        height: node.attrs.height * scale,
-        fontSize: node.attrs.fontSize * scale,
-      });
+
+      // node.setAttrs({
+      //   draggable: false,
+      //   x: node.attrs.x * scale,
+      //   y: node.attrs.y * scale,
+      //   width: node.attrs.width * scale,
+      //   height: node.attrs.height * scale,
+      //   fontSize: node.attrs.fontSize * scale,
+      // });
     },
     initScale(node) {
-      // node.attrs.x = (node.attrs.x * document.body.clientWidth) / 1930;
-      // node.attrs.width = (node.attrs.width * document.body.clientWidth) / 1930;
-      // node.attrs.y = (node.attrs.y * document.body.clientHeight) / 940;
-      // node.attrs.height =
-      //   (node.attrs.height * document.body.clientHeight) / 940;
       let scale = document.body.clientWidth / 1940;
-      console.log("比例大小", scale);
-      node.attrs.fontSize = node.attrs.fontSize * scale;
-      node.attrs.x = node.attrs.x * scale;
-      node.attrs.width = node.attrs.width * scale;
-      node.attrs.y = node.attrs.y * scale;
-      node.attrs.height = node.attrs.height * scale;
+      if (this.isPC) {
+        node.attrs.fontSize = node.attrs.fontSize * scale;
+        node.attrs.x = node.attrs.x * scale;
+        node.attrs.width = node.attrs.width * scale;
+        node.attrs.y = node.attrs.y * scale;
+        node.attrs.height = node.attrs.height * scale;
+      } else {
+        node.attrs.fontSize = node.attrs.fontSize * scale;
+        node.attrs.x = (node.attrs.x * document.body.clientWidth) / 1920;
+        node.attrs.width =
+          (node.attrs.width * document.body.clientWidth) / 1920;
+        node.attrs.y = (node.attrs.y * document.body.clientHeight) / 960;
+        node.attrs.height =
+          (node.attrs.height * document.body.clientHeight) / 960;
+      }
+      // console.log("比例大小", scale);
       return node;
     },
     async initScreen() {

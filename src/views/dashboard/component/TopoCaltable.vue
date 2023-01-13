@@ -158,9 +158,9 @@ export default {
             // parent.animate({scrollTop:0},500);
             _this.distance = parent.scrollTop;
             // console.log("差距", _this.distance);
-            if (_this.distance < 20) {
-              clearInterval(_this.timer[_this.comp.id]);
-            }
+            // if (_this.distance < 20) {
+            //   clearInterval(_this.timer[_this.comp.id]);
+            // }
             parent.scrollTop = 0;
           }
         }

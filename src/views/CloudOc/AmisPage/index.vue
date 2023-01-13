@@ -1146,7 +1146,7 @@ export default {
 <style lang="scss" scoped>
 .index-container {
   width: 100%;
-  height: 90vh;
+  height: 92vh;
   .dialog_wrap {
     height: 100%;
     width: 100%;
