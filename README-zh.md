@@ -49,18 +49,16 @@ git clone -b master https://github.com/dgiot/dgiot_lowcode.git
 
 ```bash
 
-npm i -g pnpm --registry=https://registry.npmmirror.com
-
-pnpm config set registry https://registry.npmmirror.com
-
-
 npm install
+
 ```
 
 - 运行
 
 ```bash
+
 npm run dev
+
 ```
 
 - 效果展示
@@ -72,7 +70,7 @@ npm run dev
 
   | 用户名      | 密码        |
   | ----------- | ----------- |
-  | dgiot_admin | dgiot_admin |
+  | dgiot_dev | dgiot_dev |
 
 - 打包
 
