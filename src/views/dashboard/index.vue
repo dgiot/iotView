@@ -306,16 +306,19 @@ export default {
       height: height,
     });
     this.stage.add(this.layer);
-    this.$dgiotBus.$on("/konva", () => {
-      this.stage.find("Text").forEach((node) => {
-        // console.log("node", node);
-        node.setAttrs({
-          text: "改变",
-        });
-      });
-      this.layer.draw();
+    this.$dgiotBus.$off("$dg/user/realdata");
+    this.$dgiotBus.$on("$dg/user/realdata", (e) => {
+      let str = String.fromCharCode.apply(null, new Uint8Array(e));
+      let receive = JSON.parse(Base64.decode(str));
+      console.log("转化", receive);
+      // receive.konva.forEach((item) => {
+      // console.log(item)
+      let number = receive.data.number + receive.data.unit;
+      var info = this.putNode(this.stage, receive.lable, number);
+      // canvas.stage.find(item.id)[0].setAttrs(item.params)
+      // });
     });
-    console.log(this.stage);
+    // console.log(this.stage);
     this.handleInitKonva();
     // 监听界面
     window.onresize = () => {
@@ -338,6 +341,17 @@ export default {
     }
   },
   methods: {
+    putNode(node, nodeid, text) {
+      // console.log("组态修改", node, nodeid, text, type);
+      // if (type != "undefined") {
+      let params = {};
+      // console.log("修改的节点", nodeid, text);
+      params["text"] = text;
+      node.find(`#${nodeid}`).forEach((item) => {
+        item.setAttrs(params);
+      });
+      this.layer.batchDraw();
+    },
     handleToCheckout(item) {
       if (item.objectId != this.dashboardId) {
         var width = window.innerWidth;

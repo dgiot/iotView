@@ -241,6 +241,8 @@ export default {
           sendTopic = "$dg/user/realtimecard";
         } else if (topic.indexOf("$dg/user/konva") >= 0) {
           sendTopic = "$dg/user/konva";
+        }else if (topic.indexOf("realdata") >= 0) {
+          sendTopic = "$dg/user/realdata";
         }
         _this.$dgiotBus.$emit(sendTopic, message);
       });
