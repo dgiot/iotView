@@ -1,7 +1,7 @@
-# dgiot-amis-dashboard 轻量级工业物联网平台
+# iotView 轻量级工业物联网平台
 <p align="center">
-  <img src="https://img.shields.io/github/commit-activity/m/dgiot/dgiot-dashboard" alt="ommit-activity">
-	<img src="https://badgen.net/badge/package/%40dgiot%2Fdgiot-dashboard/blue"
+  <img src="https://img.shields.io/github/commit-activity/m/dgiot/iotView" alt="ommit-activity">
+	<img src="https://badgen.net/badge/package/%40dgiot%2FiotView/blue"
 	alt="package" maxretrytimes="3" class="m-1 transition-all duration-1000">
   <img src="https://img.shields.io/github/release/dgiot/dgiot-dashboard?color=brightgreen" alt="release">
 
@@ -34,7 +34,7 @@ dgiot 前端框架
 
 | 源码平台 | 源码地址                                                                                      |
 | -------- | --------------------------------------------------------------------------------------------- |
-| github   | [https://github.com/dgiot/dgiot_lowcode](https://github.com/dgiot/dgiot_lowcode?from=git) |
+| github   | [https://github.com/dgiot/iotView](https://github.com/dgiot/iotView?from=git) |
 
   
 ## 安装使用
@@ -42,7 +42,7 @@ dgiot 前端框架
 - 获取项目代码
 
 ```bash
-git clone -b master https://github.com/dgiot/dgiot_lowcode.git
+git clone -b master https://github.com/dgiot/iotView.git
 ```
 
 - 安装依赖

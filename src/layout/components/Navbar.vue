@@ -64,6 +64,7 @@ export default {
       queryParams: {},
       fullscreen: false,
       clientcount: 0,
+      token:localStorage.getItem('sessionToken') || ''
     };
   },
   watch: {
@@ -90,7 +91,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["sidebar", "token", "name", "treeFlag"]),
+    ...mapGetters(["sidebar", "name", "treeFlag"]),
   },
   created() {
     Vue.prototype.$FileServe = Cookies.get("fileServer") || "";

@@ -47,6 +47,17 @@ module.exports = {
           '^/iotapi': '/iotapi'  //代理路径
         }
       },
+      '/dgiot_dashboard': {
+        //代理api
+        target: 'http://dev.dgiotcloud.cn', //代理接口(注意只要域名就够了) 
+        secure: 'true',
+        changeOrigin: true, //是否跨域
+        ws: true, // proxy websockets
+        pathRewrite: {
+          //重写路径
+          '^/dgiot_dashboard': '/dgiot_dashboard'  //代理路径
+        }
+      },
       '/dgiot_file': {
         //代理api
         target: 'http://dev.dgiotcloud.cn', //代理接口(注意只要域名就够了) 
