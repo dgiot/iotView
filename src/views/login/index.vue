@@ -269,7 +269,7 @@ export default {
         if (item.children) {
           this.initRoutes(item.children);
         }
-        if (item.meta) {
+        if (item.meta && item.meta.icon.indexOf("dgiot_file") < 0) {
           if (item.meta.title.indexOf("云") >= 0) {
             item.meta.icon = "el-icon-cloudy";
           }
@@ -277,7 +277,7 @@ export default {
             item.meta.icon = "el-icon-s-management";
           }
 
-          if (item.meta.title.indexOf("设备") >= 0) {
+          if (item.meta.title.indexOf("设备管理") >= 0) {
             item.meta.icon = "el-icon-monitor";
           }
           if (
@@ -295,9 +295,9 @@ export default {
           if (item.meta.title.indexOf("告警") >= 0) {
             item.meta.icon = "el-icon-bell";
           }
-          if (item.meta.title.indexOf("数据") >= 0) {
-            item.meta.icon = "el-icon-s-data";
-          }
+          // if (item.meta.title.indexOf("数据") >= 0) {
+          //   item.meta.icon = "el-icon-s-data";
+          // }
           if (item.meta.title.indexOf("日志") >= 0) {
             item.meta.icon = "el-icon-notebook-1";
           }
@@ -332,12 +332,13 @@ export default {
             item.meta.icon = "el-icon-data-analysis";
           } else if (item.meta.title.indexOf("控制") >= 0) {
             item.meta.icon = "el-icon-eleme";
-          } else if (item.meta.title.indexOf("光") >= 0) {
+          } else if (
+            item.meta.title.indexOf("光") >= 0 ||
+            item.meta.title.indexOf("支路") >= 0
+          ) {
             item.meta.icon = "el-icon-cpu";
           } else if (item.meta.title.indexOf("照明") >= 0) {
             item.meta.icon = "el-icon-s-opportunity";
-          } else if (item.meta.title.indexOf("环") >= 0) {
-            item.meta.icon = "el-icon-help";
           } else if (item.meta.title.indexOf("空调") >= 0) {
             item.meta.icon = "el-icon-receiving";
           } else if (item.meta.title.indexOf("能耗") >= 0) {

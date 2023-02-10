@@ -1,0 +1,54 @@
+/* *{
+  background-color: #000 !important;
+} */
+*{
+  --themeColor:#0f266b;
+  --componentColor:#1d386f;
+  --headColor:#0c6ed3;
+  --basicColor:#2850a7;
+  --whiteColor:#fff;
+}
+.antd-Page-body{
+ background-color: var(--themeColor) !important;
+}
+.antd-Form-label{ 
+  color: var(--whiteColor) !important;
+}
+.antd-Panel-body{
+  background-color: var(--componentColor) !important;
+}
+.antd-Panel-footer{
+  background-color:var(--componentColor) !important;
+}
+/* 表格 */
+.antd-Table-table{
+  background-color: var(--componentColor) !important;
+  color: var(--whiteColor) !important;
+}
+.antd-Table-table > thead > tr > th{
+  background-color: var(--headColor) !important;
+  color: var(--whiteColor) !important;
+  border: #000 1px solid !important;
+}
+/* 下拉框 */
+.antd-Select{
+  background-color: var(--basicColor) !important;
+  color: var(--whiteColor) !important;
+  border: 0 !important;
+}
+
+/* .antd-Select-option{
+  background-color: #1d386f !important;
+  color: #fff !important;
+} */
+/* 输入框 */
+.antd-TextControl-input{
+  background-color: var(--componentColor) !important;
+}
+.antd-TextControl-input input{
+  color: var(--whiteColor) !important;
+}
+/* tree 树 */
+.antd-Tree-itemText{
+  color: var(--whiteColor) !important;
+}

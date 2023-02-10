@@ -1,6 +1,6 @@
 {
   "name": "dashboard-amis",
-  "version": "4.7.3",
+  "version": "4.7.5",
   "description": "Amis Vue Template with Element UI & axios & iconfont & permission control & lint",
   "author": "失落泪 <2258650676@qq.com>",
   "scripts": {

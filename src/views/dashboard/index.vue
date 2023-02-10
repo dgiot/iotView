@@ -254,7 +254,7 @@ export default {
     localStorage.setItem("isPC", this.isPC);
   },
   async mounted() {
-    console.log('localStorage.getItem("isPC")', localStorage.getItem("isPC"));
+    // console.log('localStorage.getItem("isPC")', localStorage.getItem("isPC"));
     this.isPC = localStorage.getItem("isPC") == "true" ? true : false;
     localStorage.setItem("dgiottopbar", "[]");
     this.$store.dispatch("settings/changeSetting", {

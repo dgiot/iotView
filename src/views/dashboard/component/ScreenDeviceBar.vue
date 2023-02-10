@@ -105,8 +105,8 @@ export default {
       grid: {
         left: 10,
         right: 0,
-        width: "90%",
-        height: "75%",
+        width: "96%",
+        height: "80%",
       },
       dataZoom: [
         {

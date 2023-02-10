@@ -1143,10 +1143,14 @@ export default {
   destroyed() {},
 };
 </script>
+<style scoped>
+/* @import url('../AmisPage/style/themeBlack.css'); */
+</style>
 <style lang="scss" scoped>
+
 .index-container {
   width: 100%;
-  height: 92vh;
+  height: 90vh;
   .dialog_wrap {
     height: 100%;
     width: 100%;
@@ -1208,4 +1212,11 @@ export default {
     height: 100%;
   }
 }
+::v-deep {
+  .dgiottree .antd-Tree{
+    height: 600px;
+    overflow-y: scroll;
+  }
+}
+
 </style>
