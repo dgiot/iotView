@@ -150,6 +150,15 @@
             height: comp.height + 'px',
           }"
         />
+        <!-- 3d -->
+        <dgiot-model-fac
+          v-else-if="comp.type == '3d' && comp.id == '3d_fbx'"
+          :comp="comp"
+          :style="{
+            width: comp.width + 'px',
+            height: comp.height + 'px',
+          }"
+        />
         <!-- node.attrs.src.includes("//") ? node.attrs.src : this.$FileServe +
         node.attrs.src -->
 
@@ -197,6 +206,11 @@ import ScreenBaidumap from "./component/ScreenBaidumap.vue"; //百度地图
 import ScreenLine from "./component/ScreenLine.vue"; //历史折线图
 import ScreenDeviceBar from "./component/ScreenDeviceBar.vue"; //历史柱状图
 import ScreenHeaditem from "./component/ScreenHeaditem.vue"; //卡片组
+// 3d
+import DgiotModelFbx from "../../components/model3d/dgiot-model-fbx.vue";
+import DgiotModelDemo from "../../components/model3d/dgiot-model-demo.vue";
+import DgiotModelDemo3 from "../../components/model3d/dgiot-model-demo3.vue";
+import DgiotModelFac from "../../components/model3d/dgiot-model-fac.vue";
 // 通用组件
 import RealTime from "./component/commom/RealTime.vue";
 import DgiotNotification1 from "./component/notification/DgiotNotification1.vue"; //告警模板1
@@ -226,6 +240,11 @@ export default {
     ScreenDeviceBar,
     RealTime,
     DgiotNotification1,
+    // 3d
+    DgiotModelFbx,
+    DgiotModelDemo,
+    DgiotModelDemo3,
+    DgiotModelFac,
   },
   data() {
     return {

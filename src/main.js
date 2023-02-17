@@ -37,10 +37,10 @@ import '@dgiot/dgiot-component'
  * Currently MockJs will be used in the production environment,
  * please remove it before going online ! ! !
  */
-if (process.env.NODE_ENV === 'production') {
-  const { mockXHR } = require('../mock')
-  mockXHR()
-}
+// if (process.env.NODE_ENV === 'production') {
+//   const { mockXHR } = require('../mock')
+//   mockXHR()
+// }
 Vue.prototype.$md5 = md5
 Vue.prototype.$_ = require("lodash")
 Vue.prototype.$Cookies = Cookies

@@ -13,7 +13,24 @@ https://www.dgiotcloud.cn/wp-content/uploads/2022102808590871.png
 <template>
   <div ref="custom-table" v-loading="loading" class="index-container">
     <div v-show="dialog" v-if="dialog" class="dialog_wrap">
+      <!-- <div style="width: 100%; height: 400px; background-color: yellow">
+        <model-fbx
+          :controls-options="{
+            enableRotate: true, // 是否可旋转
+            enableZoom: true, // 是否可缩放
+            enablePan: true, // 是否可移动（鼠标右键可以移动模型）
+          }"
+          src="/dgiot_file/3d/dancing.fbx"
+        />
+      </div> -->
+
       <!-- <amis :schema="viewData" /> -->
+      <!-- <div style='text-align:center;font-size:18px'>1度</div>
+      <div style='text-align:center;font-size:14px;color:#b1b1b1'>今日用电</div>
+      <div style='text-align:center;font-size:18px'>101度</div>
+      <div style='text-align:center;font-size:14px;color:#b1b1b1'>本月用电</div>
+      <div style='text-align:center;font-size:18px'>0W</div>
+      <div style='text-align:center;font-size:14px;color:#b1b1b1'>当前功率</div> -->
       <amis
         v-if="dialog"
         modal-append-to-body
@@ -454,7 +471,7 @@ import TopoEvicence from "./component/TopoEvicence.vue";
 import TopoDevice from "./component/TopoDevice.vue";
 // import DgiotAmis from "@/components/DgiotAmis/index.vue"
 import { getView, queryView } from "@/api/View/index";
-
+// 3d
 // 数据采集
 import RealCard from "../../dashboard/component/commom/RealCard.vue";
 import avator from "@/assets/bg/avator.png";
@@ -476,7 +493,7 @@ export default {
     amis: Amis,
     TopoEvicence,
     TopoDevice,
-    RealCard,
+    RealCard
   },
   filters: {
     filterVal(val) {
@@ -1147,10 +1164,9 @@ export default {
 /* @import url('../AmisPage/style/themeBlack.css'); */
 </style>
 <style lang="scss" scoped>
-
 .index-container {
   width: 100%;
-  height: 90vh;
+  height: 95vh;
   .dialog_wrap {
     height: 100%;
     width: 100%;
@@ -1213,10 +1229,18 @@ export default {
   }
 }
 ::v-deep {
-  .dgiottree .antd-Tree{
+  .dgiot_flex_15 {
+    flex: 0 0 15% !important;
+  }
+  .dgiottree .antd-Tree {
     height: 600px;
     overflow-y: scroll;
   }
+  .antd-Page-body {
+    padding: 0;
+  }
+  .antd-Form .antd-Form-item::after {
+    border-bottom: 0;
+  }
 }
-
 </style>
