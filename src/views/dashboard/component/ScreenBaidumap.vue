@@ -551,15 +551,7 @@ export default {
       //   }
       // }
     });
-    this.$dgiotBus.$off("$dg/user/realtimecard");
-    this.$dgiotBus.$on("$dg/user/realtimecard", (e) => {
-      // console.log(e);
-      // let receive = e;
-      let str = String.fromCharCode.apply(null, new Uint8Array(e));
-      let receive = JSON.parse(Base64.decode(str));
-      console.log("转化", receive);
-      this.cardList = this.renderCard(receive.data);
-    });
+   
   },
   methods: {
     handler({ BMap, map }) {
@@ -588,7 +580,7 @@ export default {
     async handleOpenTopo(deviceInfo) {
       let params = {
         count: "objectId",
-        order: "createdAt",
+        order: "-updatedAt",
         excludeKeys: "data",
         skip: 0,
         where: {
@@ -829,6 +821,15 @@ export default {
       let data = {
         topic: `$dg/user/realtimecard/${deviceInfo.objectId}/report`,
       };
+       this.$dgiotBus.$off(`$dg/user/realtimecard/${deviceInfo.objectId}`);
+    this.$dgiotBus.$on(`$dg/user/realtimecard/${deviceInfo.objectId}`, (e) => {
+      // console.log(e);
+      // let receive = e;
+      let str = String.fromCharCode.apply(null, new Uint8Array(e));
+      let receive = JSON.parse(Base64.decode(str));
+      console.log("转化", receive);
+      this.cardList = this.renderCard(receive.data);
+    });
       this.sendTopic(data);
       this.dialogDeviceVisible = true;
     },

@@ -38,7 +38,7 @@ module.exports = {
     proxy: {
       '/iotapi': {
         //代理api
-        target: 'http://dev.dgiotcloud.cn', //代理接口(注意只要域名就够了) 
+        target: 'http://192.168.1.10', //代理接口(注意只要域名就够了) 
         secure: 'true',
         changeOrigin: true, //是否跨域
         ws: true, // proxy websockets
@@ -49,7 +49,7 @@ module.exports = {
       },
       '/dgiot_dashboard': {
         //代理api
-        target: 'http://dev.dgiotcloud.cn', //代理接口(注意只要域名就够了) 
+        target: 'http://192.168.1.10', //代理接口(注意只要域名就够了) 
         secure: 'true',
         changeOrigin: true, //是否跨域
         ws: true, // proxy websockets
@@ -60,7 +60,7 @@ module.exports = {
       },
       '/dgiot_file': {
         //代理api
-        target: 'http://dev.dgiotcloud.cn', //代理接口(注意只要域名就够了) 
+        target: 'http://192.168.1.10', //代理接口(注意只要域名就够了) 
         secure: 'true',
         changeOrigin: true, //是否跨域
         ws: true, // proxy websockets

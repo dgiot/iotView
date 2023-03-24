@@ -75,31 +75,159 @@
   padding-top: 70px;
   padding-bottom: 70px;
 }
-.bg_content_left {
-  flex: 1;
-  width: 600px;
-  height: 100%;
-  padding-left: 60px;
-  display: inline-block;
-  vertical-align: top;
-  overflow: auto;
+
+@media screen and (max-width: 768px) {
+  .bg_content_left {
+    flex: 1;
+    width: 200px;
+    height: 100%;
+    padding-left: 20px;
+    display: inline-block;
+    vertical-align: top;
+    overflow: auto;
+  }
+  .bg_content_left_item {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 90%;
+    display: inline-block;
+    /* width: 420px; */
+    /* height: 2em; */
+    margin-bottom: 30px;
+    font-weight: 500;
+    font-size: 20px;
+    text-align: center;
+    line-height: 40px;
+    color: #caf2ff;
+    cursor: pointer;
+  }
+  /* 右侧 */
+  .bg_content_right {
+    flex: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    vertical-align: top;
+    overflow: auto;
+  
+  }
+  .bg_content_right_item {
+    width: 260px;
+    height: 180px;
+    display: inline-block;
+    vertical-align: top;
+    background: url('../../assets/bg/experience-box-bg.png') no-repeat;
+    background-size: 100% 100%;
+    margin-left: 10px;
+    margin-bottom: 50px;
+    text-align: center;
+    padding-top: 25px;
+    position: relative;
+    cursor: pointer;
+   
+  
+  }
+  .bg_content_right_item_img {
+    width: 90%;
+    height: 160px;
+  }
+  .bg_content_right_item_name {
+    position: absolute;
+    left: 10px;
+    bottom: 20px;
+    width: 88%;
+    height: 35px;
+    background: rgba(0, 0, 0, 0.7);
+    text-align: left;
+    font-size: 14px;
+    color: #fff;
+    letter-spacing: 0;
+    font-weight: 600;
+    line-height: 35px;
+    padding-left: 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+}@media screen and (min-width: 768px) {
+  .bg_content_left {
+    flex: 1;
+    width: 600px;
+    height: 100%;
+    padding-left: 60px;
+    display: inline-block;
+    vertical-align: top;
+    overflow: auto;
+  }
+  .bg_content_left_item {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 80%;
+    display: inline-block;
+    /* width: 420px; */
+    /* height: 2em; */
+    margin-bottom: 30px;
+    font-weight: 500;
+    font-size: 20px;
+    text-align: center;
+    line-height: 72px;
+    color: #caf2ff;
+    cursor: pointer;
+  }
+  .bg_content_right {
+    flex: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    vertical-align: top;
+    overflow: auto;
+  
+  }
+  .bg_content_right_item {
+    width: 500px;
+    height: 325px;
+    display: inline-block;
+    vertical-align: top;
+    background: url('../../assets/bg/experience-box-bg.png') no-repeat;
+    background-size: 100% 100%;
+    margin-left: 50px;
+    margin-bottom: 50px;
+    text-align: center;
+    padding-top: 25px;
+    position: relative;
+    cursor: pointer;
+   
+  
+  }
+  .bg_content_right_item_img {
+    width: 460px;
+    height: 270px;
+  }
+  .bg_content_right_item_name {
+    position: absolute;
+    left: 20px;
+    bottom: 22px;
+    width: 460px;
+    height: 35px;
+    background: rgba(0, 0, 0, 0.7);
+    text-align: left;
+    font-size: 14px;
+    color: #fff;
+    letter-spacing: 0;
+    font-weight: 600;
+    line-height: 35px;
+    padding-left: 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
 }
-.bg_content_left_item {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 80%;
-  display: inline-block;
-  /* width: 420px; */
-  height: 72px;
-  margin-bottom: 30px;
-  font-weight: 500;
-  font-size: 20px;
-  text-align: center;
-  line-height: 72px;
-  color: #caf2ff;
-  cursor: pointer;
-}
+
+
 .bg_content_left_item:hover {
   background: url('../../assets/bg/experience-left-hover.png') no-repeat;
   background-size: 100% 100%;
@@ -113,54 +241,7 @@
   background-size: 100% 100%;
 }
 
-.bg_content_right {
-  flex: 2;
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  vertical-align: top;
-  overflow: auto;
 
-}
-.bg_content_right_item {
-  width: 500px;
-  height: 325px;
-  display: inline-block;
-  vertical-align: top;
-  background: url('../../assets/bg/experience-box-bg.png') no-repeat;
-  background-size: 100% 100%;
-  margin-left: 50px;
-  margin-bottom: 50px;
-  text-align: center;
-  padding-top: 25px;
-  position: relative;
-  cursor: pointer;
- 
-
-}
-.bg_content_right_item_img {
-  width: 460px;
-  height: 270px;
-}
-.bg_content_right_item_name {
-  position: absolute;
-  left: 20px;
-  bottom: 22px;
-  width: 460px;
-  height: 35px;
-  background: rgba(0, 0, 0, 0.7);
-  text-align: left;
-  font-size: 14px;
-  color: #fff;
-  letter-spacing: 0;
-  font-weight: 600;
-  line-height: 35px;
-  padding-left: 10px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}
 
 /* 滚动条 */
 /*里面的代码可以根据自己需求去进行更改*/

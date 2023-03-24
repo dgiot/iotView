@@ -1,5 +1,31 @@
 import request from '@/utils/request'
 
+// 获取验证码
+export function postCode(account) {
+  return request({
+    url: '/smscode?account=' + account,
+    method: 'post',
+    // data,
+    // params
+    // headers: {
+    //   "Content-Type": "text/plain"
+    // }
+  })
+}
+// 验证码登录
+export function verifyCode(phone, code, username, password) {
+  return request({
+    url: `/verify_code?account=${phone}&code=${code}&username=${username}&password=${password}`,
+    method: 'post',
+    data:{},
+    // params
+    // headers: {
+    //   "Content-Type": "text/plain"
+    // }
+  })
+}
+
+// 登录
 export function login(data) {
   return request({
     url: '/login',
@@ -7,6 +33,7 @@ export function login(data) {
     data,
     headers: {
       "Content-Type": "text/plain"
+      
     }
   })
 }

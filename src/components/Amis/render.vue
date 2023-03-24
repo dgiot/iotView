@@ -125,7 +125,7 @@ export default {
           _.merge(config.headers, {
             platform: "amis",
             departmentToken: this.departmentToken,
-            sessionToken: localStorage.getItem("sessionToken")|| '',
+            sessionToken: localStorage.getItem("sessionToken") || "",
             author: "xxb",
             email: "258650676@qq.com",
           });
@@ -219,22 +219,28 @@ export default {
         isCancel: (e) => axios.isCancel(e),
         alert,
         notify: (type, msg) => {
-          toast[type]
-            ? toast[type](msg, type === "error" ? "系统错误" : "系统消息")
-            : console.warn("[Notify]", type, msg);
-          console.log("[notify]", type, msg);
+          console.log("[notify111111]", type, msg);
+          // toast[type]
+          //   ? toast[type](msg, type === "error" ? "系统错误" : "系统消息")
+          //   : console.warn("[Notify]", type, msg);
+          // console.log("[notify]", type);
           //   当前页面路由router
           const { path } = this.$route;
           // 解决设计界面弹出提示问题
           console.log(path.indexOf("design"), path);
-          if (!path.indexOf("design")) {
+          // if (!path.indexOf("design")) {
+          let isShowMessage = localStorage.getItem("isShowMessage") || 0;
+          if (isShowMessage == 1) {
             Message({
               type: type,
               message: msg,
               duration: 2000,
               showClose: true,
             });
+            localStorage.setItem("isShowMessage", 0);
           }
+
+          // }
         },
         confirm,
         copy: (contents, options = {}) => {

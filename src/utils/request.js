@@ -27,7 +27,7 @@ service.interceptors.request.use(
   },
   error => {
     // do something with request error
-    console.log('错误', error) // for debug
+    // console.log('错误', error) // for debug
     return Promise.reject(error)
   }
 )
@@ -48,7 +48,7 @@ service.interceptors.response.use(
     const res = response
     // route.replace({path:'/login'})
     //  route.push({ path: "/login" });
-    // console.log('response', res);
+    console.log('response', res);
     // if the custom code is not 20000, it is judged as an error.
     if (res.status != 200) {
       // Message({
@@ -89,9 +89,10 @@ service.interceptors.response.use(
     }
   },
   error => {
-
+    console.log('错误',error)
+    let info = error.msg || error.message
     Message({
-      message: error.message,
+      message: info,
       type: 'error',
       duration: 5 * 1000
     })

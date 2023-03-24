@@ -179,11 +179,11 @@ export default {
   },
   methods: {
     enter() {
-      console.log("enter");
+      // console.log("enter");
       window.addEventListener("mousewheel", this.handleScroll, true);
     },
     leave() {
-      console.log("leave");
+      // console.log("leave");
       window.removeEventListener("mousewheel", this.handleScroll, true);
     },
     handleScroll(e) {

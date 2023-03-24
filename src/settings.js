@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: '物联网开发平台',
+  title: '物联网平台',
 
   /**
    * @type {boolean} true | false

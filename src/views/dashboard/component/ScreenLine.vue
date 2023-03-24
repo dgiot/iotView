@@ -126,7 +126,7 @@ export default {
       ],
     };
     return {
-      couponSelected: "s",
+      couponSelected: "h",
       chartData: {
         columns: [],
         rows: [],
@@ -145,8 +145,8 @@ export default {
   async mounted() {
     let params = {
       skip: 0,
-      limit: 10,
-      order: "-createdAt",
+      limit: 5,
+      order: "-updatedAt",
       count: "objectId",
       where: {},
     };

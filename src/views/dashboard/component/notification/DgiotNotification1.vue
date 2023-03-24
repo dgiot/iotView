@@ -64,9 +64,11 @@ export default {
     }, 8000);
   },
   mounted() {
-    this.scroll();
+    setTimeout(() => {
+      this.scroll();
+    }, 1500);
   },
-   destroyed() {
+  destroyed() {
     clearInterval(this.interal);
   },
   methods: {
@@ -88,19 +90,21 @@ export default {
       let _this = this;
       var parent = document.getElementsByClassName("noti_wrap")[0];
       var child1 = document.getElementsByClassName("noti_wrap1")[0];
-      clearInterval(this.timer[_this.comp.id]);
-      this.timer[_this.comp.id] = setInterval(function () {
-        if (parent.scrollTop >= child1.scrollHeight) {
-          parent.scrollTop = 0;
-        } else {
-          let item = parent.scrollTop;
-          parent.scrollTop++;
-          if (item == parent.scrollTop) {
-            _this.distance = parent.scrollTop;
+      if (child1.scrollHeight > parent.clientHeight * 1.5) {
+        clearInterval(this.timer[_this.comp.id]);
+        this.timer[_this.comp.id] = setInterval(function () {
+          if (parent.scrollTop >= child1.scrollHeight) {
             parent.scrollTop = 0;
+          } else {
+            let item = parent.scrollTop;
+            parent.scrollTop++;
+            if (item == parent.scrollTop) {
+              _this.distance = parent.scrollTop;
+              parent.scrollTop = 0;
+            }
           }
-        }
-      }, 50);
+        }, 50);
+      }
     },
     // 轮播
     handlemouseOver() {

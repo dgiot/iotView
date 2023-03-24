@@ -238,7 +238,8 @@ export default {
         if (topic.indexOf("$dg/user/devicestate") >= 0) {
           sendTopic = "$dg/user/devicestate";
         } else if (topic.indexOf("$dg/user/realtimecard") >= 0) {
-          sendTopic = "$dg/user/realtimecard";
+          sendTopic = `$dg/user/realtimecard/${sendtopic[sendtopic.length - 2]}`;
+          console.log('实时数据',sendTopic);
         } else if (topic.indexOf("$dg/user/konva") >= 0) {
           sendTopic = "$dg/user/konva";
         }else if (topic.indexOf("realdata") >= 0) {

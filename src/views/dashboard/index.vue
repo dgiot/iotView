@@ -7,186 +7,204 @@
       backgroundSize: '100% 100%',
     }"
   >
-    <div id="container"></div>
-    <div class="dashboard_check" v-if="dashboardList.length > 1">
-      <div
-        class="screen_check_item"
-        style="font-size: 1em"
-        :class="
-          item.objectId == dashboardId ? 'screen_select' : 'screen_unselect'
-        "
-        v-for="(item, index) in dashboardList"
-        :key="item.objectId + index"
-        @click="handleToCheckout(item)"
-      >
-        {{ item.title }}
+    <div v-if="isShowDashboard">
+      <div id="container"></div>
+      <div class="dashboard_check" v-if="dashboardList.length > 1">
+        <div
+          class="screen_check_item"
+          style="font-size: 1em"
+          :class="
+            item.objectId == dashboardId ? 'screen_select' : 'screen_unselect'
+          "
+          v-for="(item, index) in dashboardList"
+          :key="item.objectId + index"
+          @click="handleToCheckout(item)"
+        >
+          {{ item.title }}
+        </div>
       </div>
-    </div>
-    <div v-if="vueFlag">
-      <div
-        v-for="(comp, index) in vueComponents"
-        :key="index"
-        class="vue_component"
-        :style="{
-          left: comp.x + 'px',
-          top: comp.y + 'px',
-          width: comp.width + 'px',
-          height: comp.height + 'px',
-        }"
-      >
-        <!-- 数据卡片/产品数-设备数-在线数-离线数 -->
-        <topo-card
-          v-if="comp.type == 'counter' && comp.id != 'all_countervalue'"
-          :comp="comp"
+      <div v-if="vueFlag">
+        <div
+          v-for="(comp, index) in vueComponents"
+          :key="index"
+          class="vue_component"
           :style="{
+            left: comp.x + 'px',
+            top: comp.y + 'px',
             width: comp.width + 'px',
             height: comp.height + 'px',
           }"
-        />
-        <screen-headcounter
-          v-else-if="comp.type == 'count' && comp.id == 'all_countvalue'"
-          :comp="comp"
-          :style="{
-            width: comp.width + 'px',
-            height: comp.height + 'px',
-          }"
-        />
-        <screen-headitem
-          v-else-if="comp.type == 'count'"
-          :comp="comp"
-          :style="{
-            width: comp.width + 'px',
-            height: comp.height + 'px',
-          }"
-        />
-        <!-- 直播 -->
-        <dgiot-aliplayer
-          v-else-if="comp.type == 'liveboard'"
-          :comp="comp"
-          :style="{
-            width: comp.width + 'px',
-            height: comp.height + 'px',
-          }"
-        />
-        <screen-line
-          v-else-if="comp.type == 'line'"
-          :comp="comp"
-          :viewtype="viewtype"
-          :style="{
-            width: comp.width + 'px',
-            height: comp.height + 'px',
-          }"
-        />
-        <screen-device-bar
-          v-else-if="comp.type == 'devicebar'"
-          :comp="comp"
-          :viewtype="viewtype"
-          :style="{
-            width: comp.width + 'px',
-            height: comp.height + 'px',
-          }"
-        />
-        <screen-device
-          v-else-if="comp.type == 'list' && comp.id == 'device_list'"
-          :comp="comp"
-          @initScreen="initScreen"
-          :style="{
-            width: comp.width + 'px',
-            height: comp.height + 'px',
-          }"
-        />
+        >
+          <!-- 数据卡片/产品数-设备数-在线数-离线数 -->
+          <topo-card
+            v-if="comp.type == 'counter' && comp.id != 'all_countervalue'"
+            :comp="comp"
+            :style="{
+              width: comp.width + 'px',
+              height: comp.height + 'px',
+            }"
+          />
+          <screen-headcounter
+            v-else-if="comp.type == 'count' && comp.id == 'all_countvalue'"
+            :comp="comp"
+            :style="{
+              width: comp.width + 'px',
+              height: comp.height + 'px',
+            }"
+          />
+          <screen-headitem
+            v-else-if="comp.type == 'count'"
+            :comp="comp"
+            :style="{
+              width: comp.width + 'px',
+              height: comp.height + 'px',
+            }"
+          />
+          <!-- 直播 -->
+          <dgiot-aliplayer
+            v-else-if="comp.type == 'liveboard'"
+            :comp="comp"
+            :style="{
+              width: comp.width + 'px',
+              height: comp.height + 'px',
+            }"
+          />
+          <screen-line
+            v-else-if="comp.type == 'line'"
+            :comp="comp"
+            :viewtype="viewtype"
+            :style="{
+              width: comp.width + 'px',
+              height: comp.height + 'px',
+            }"
+          />
+          <screen-device-bar
+            v-else-if="comp.type == 'devicebar'"
+            :comp="comp"
+            :viewtype="viewtype"
+            :style="{
+              width: comp.width + 'px',
+              height: comp.height + 'px',
+            }"
+          />
+          <screen-device
+            v-else-if="comp.type == 'list' && comp.id == 'device_list'"
+            :comp="comp"
+            @initScreen="initScreen"
+            :style="{
+              width: comp.width + 'px',
+              height: comp.height + 'px',
+            }"
+          />
 
-        <!-- 告警模板 -->
-        <topo-caltable
-          v-else-if="comp.type == 'list' && comp.id == 'warning_list'"
-          :comp="comp"
-          :style="{
-            width: comp.width + 'px',
-            height: comp.height + 'px',
-          }"
-        />
-        <dgiot-notification1
-          v-else-if="comp.type == 'list' && comp.id == 'warning_list1'"
-          :comp="comp"
-          :style="{
-            width: comp.width + 'px',
-            height: comp.height + 'px',
-          }"
-        />
-        <!-- 设备地图 -->
-        <screen-baidumap
-          v-else-if="comp.type == 'map' && comp.id == 'baidumap'"
-          :comp="comp"
-          @initScreen="initScreen"
-          :style="{
-            width: comp.width + 'px',
-            height: comp.height + 'px',
-          }"
-        />
-        <!-- 告警模板 -->
-        <work-order
-          v-else-if="comp.type == 'list' && comp.id == 'workorder_list'"
-          :comp="comp"
-          :style="{
-            width: comp.width + 'px',
-            height: comp.height + 'px',
-          }"
-        />
-        <!-- 设备在线离线图表 -->
-        <topo-pie
-          v-else-if="comp.type == 'pie'"
-          :comp="comp"
-          :style="{
-            width: comp.width + 'px',
-            height: comp.height + 'px',
-          }"
-        />
-        <!-- 实时时间展示 -->
-        <real-time
-          v-else-if="comp.type == 'realtime'"
-          :comp="comp"
-          :style="{
-            width: comp.width + 'px',
-            height: comp.height + 'px',
-          }"
-        />
-        <!-- 3d -->
-        <dgiot-model-fac
-          v-else-if="comp.type == '3d' && comp.id == '3d_fbx'"
-          :comp="comp"
-          :style="{
-            width: comp.width + 'px',
-            height: comp.height + 'px',
-          }"
-        />
-        <!-- node.attrs.src.includes("//") ? node.attrs.src : this.$FileServe +
+          <!-- 告警模板 -->
+          <topo-caltable
+            v-else-if="comp.type == 'list' && comp.id == 'warning_list'"
+            :comp="comp"
+            :style="{
+              width: comp.width + 'px',
+              height: comp.height + 'px',
+            }"
+          />
+          <dgiot-notification1
+            v-else-if="comp.type == 'list' && comp.id == 'warning_list1'"
+            :comp="comp"
+            :style="{
+              width: comp.width + 'px',
+              height: comp.height + 'px',
+            }"
+          />
+          <!-- 设备地图 -->
+          <screen-baidumap
+            v-else-if="comp.type == 'map' && comp.id == 'baidumap'"
+            :comp="comp"
+            @initScreen="initScreen"
+            :style="{
+              width: comp.width + 'px',
+              height: comp.height + 'px',
+            }"
+          />
+          <!-- 告警模板 -->
+          <work-order
+            v-else-if="comp.type == 'list' && comp.id == 'workorder_list'"
+            :comp="comp"
+            :style="{
+              width: comp.width + 'px',
+              height: comp.height + 'px',
+            }"
+          />
+          <!-- 设备在线离线图表 -->
+          <topo-pie
+            v-else-if="comp.type == 'pie'"
+            :comp="comp"
+            :style="{
+              width: comp.width + 'px',
+              height: comp.height + 'px',
+            }"
+          />
+          <!-- 实时时间展示 -->
+          <real-time
+            v-else-if="comp.type == 'realtime'"
+            :comp="comp"
+            :style="{
+              width: comp.width + 'px',
+              height: comp.height + 'px',
+            }"
+          />
+          <!-- 3d -->
+          <dgiot-model-fac
+            v-else-if="comp.type == '3d' && comp.id == '3d_fbx'"
+            :comp="comp"
+            :style="{
+              width: comp.width + 'px',
+              height: comp.height + 'px',
+            }"
+          />
+          <!-- node.attrs.src.includes("//") ? node.attrs.src : this.$FileServe +
         node.attrs.src -->
 
-        <img
-          v-else-if="comp.type == 'konvaimage'"
-          :src="comp.src.includes('//') ? comp.src : $FileServe + comp.src"
+          <img
+            v-else-if="comp.type == 'konvaimage'"
+            :src="comp.src.includes('//') ? comp.src : $FileServe + comp.src"
+            :style="{
+              width: comp.width + 'px',
+              height: comp.height + 'px',
+            }"
+          />
+        </div>
+      </div>
+      <div v-if="amisFlag">
+        <amis
+          modal-append-to-body
+          v-for="(comp, index) in amisComponents"
+          :key="index"
+          class="amis_component"
           :style="{
+            left: comp.x + 'px',
+            top: comp.y + 'px',
             width: comp.width + 'px',
             height: comp.height + 'px',
           }"
+          :schema="comp.viewData"
+          :show-help="false"
         />
       </div>
     </div>
-    <div v-if="amisFlag">
-      <amis
-        modal-append-to-body
-        v-for="(comp, index) in amisComponents"
-        :key="index"
-        class="amis_component"
-        :style="{
+    <div v-else>
+      <!-- :style="{
           left: comp.x + 'px',
           top: comp.y + 'px',
           width: comp.width + 'px',
           height: comp.height + 'px',
-        }"
-        :schema="comp.viewData"
-        :show-help="false"
-      />
+        }" -->
+      <div v-if="shiftShow">
+        <amis
+          modal-append-to-body
+          class="amis_component"
+          :schema="header.data"
+          :show-help="false"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -263,6 +281,8 @@ export default {
       dashboardList: [],
       isPC: true,
       clientWidth: 1920,
+      shiftShow: false,
+      isShowDashboard: true,
     };
   },
   computed: {
@@ -275,6 +295,7 @@ export default {
   async mounted() {
     // console.log('localStorage.getItem("isPC")', localStorage.getItem("isPC"));
     this.isPC = localStorage.getItem("isPC") == "true" ? true : false;
+    this.isShowDashboard = document.body.clientWidth > 500 ? true : false;
     localStorage.setItem("dgiottopbar", "[]");
     this.$store.dispatch("settings/changeSetting", {
       key: "treeFlag",
@@ -308,8 +329,12 @@ export default {
           this.dashboardId = item.objectId;
         } else if (item.type == "Dashboard") {
           dashboardList.push(item);
-        } else if (item.flag == "Amis") {
+        } else if (item.flag == "Amis" && item.title.indexOf("移动端") < 0) {
           amisScreenList.push(item);
+        } else if (item.title.indexOf("移动端") >= 0) {
+          this.header = item;
+          console.log(this.header);
+          this.shiftShow = true;
         }
       });
       this.dashboardList = dashboardList;
@@ -377,6 +402,8 @@ export default {
         var height = window.innerHeight;
         this.json = item.data.konva.Stage;
         console.log("json", this.json);
+        this.vueComponents = [];
+        this.vueFlag = false;
         this.dashboardId = item.objectId;
         this.queryData();
         this.layer = Konva.Node.create(this.json, "container").findOne("Layer");
@@ -391,7 +418,7 @@ export default {
     },
     async handleInitKonva() {
       this.clientWidth = document.body.clientWidth;
-      if (this.clientWidth > 736) {
+      if (this.clientWidth > 500) {
         var html = document.getElementsByTagName("html")[0];
         html.style.fontSize = (document.body.clientWidth / 1940) * 16 + "px";
       }
@@ -555,7 +582,9 @@ export default {
       const { dashboard = {} } = await getDlinkJson("Dashboard");
       this.queryParams = dashboard;
       const Startdashboardid = this.dashboardId; // "8263c928d5";
-      await Startdashboard(Startdashboardid, {});
+      setTimeout(async () => {
+        await Startdashboard(Startdashboardid, {});
+      }, 2000);
     },
   },
 };
@@ -587,6 +616,7 @@ export default {
   background-size: cover;
   .dashboard_check {
     position: absolute;
+    z-index: 999;
     top: 4px;
     left: 4px;
     display: flex;
@@ -598,6 +628,7 @@ export default {
       margin-right: 0.75em;
       text-align: center;
       color: #fff;
+      text-shadow: 2px 3px 1px #000;
       cursor: pointer;
     }
     .screen_select {

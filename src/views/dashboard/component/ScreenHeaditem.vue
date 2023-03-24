@@ -130,9 +130,10 @@ export default {
       });
       this.item.finenumber = finenumber;
       this.item.badnumber = badnumber;
-      this.item.percent = Number(
-        ((this.item.finenumber / this.item.number) * 100).toFixed(1)
-      );
+      this.item.percent =
+        this.item.number > 0
+          ? Number(((this.item.finenumber / this.item.number) * 100).toFixed(1))
+          : 0;
     },
 
     async queryNotification() {
@@ -157,9 +158,10 @@ export default {
       });
       this.item.finenumber = finenumber;
       this.item.badnumber = badnumber;
-      this.item.percent = Number(
-        ((this.item.finenumber / this.item.number) * 100).toFixed(1)
-      );
+      this.item.percent =
+        this.item.number > 0
+          ? Number(((this.item.finenumber / this.item.number) * 100).toFixed(1))
+          : 0;
     },
 
     async queryProduct() {
@@ -174,9 +176,10 @@ export default {
       const { results, count } = await queryProduct(params);
       this.item.number = count;
       this.item.finenumber = count;
-      this.item.percent = Number(
-        ((this.item.finenumber / this.item.number) * 100).toFixed(1)
-      );
+      this.item.percent =
+        this.item.number > 0
+          ? Number(((this.item.finenumber / this.item.number) * 100).toFixed(1))
+          : 0;
     },
     async queryDevice() {
       let params = {
@@ -214,9 +217,10 @@ export default {
       });
       this.item.finenumber = finenumber;
       this.item.badnumber = badnumber;
-      this.item.percent = Number(
-        ((this.item.finenumber / this.item.number) * 100).toFixed(1)
-      );
+      this.item.percent =
+        this.item.number > 0
+          ? Number(((this.item.finenumber / this.item.number) * 100).toFixed(1))
+          : 0;
     },
     // format(item){
     //   console.log('item',item);

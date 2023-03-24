@@ -132,9 +132,13 @@ export default {
     };
   },
   computed: {},
-  mounted() {
+  created() {
     this.fetchData();
-    this.scroll();
+  },
+  mounted() {
+    setTimeout(() => {
+      this.scroll();
+    }, 1500);
   },
   methods: {
     async fetchData(args = {}) {
@@ -215,30 +219,32 @@ export default {
       // console.log("滚动", parent, parent.scrollTop, child1.scrollHeight);
       // var child2 = document.getElementById("child2");
       // child2.innerHTML = child1.innerHTML;
-      clearInterval(this.timer);
-      this.timer[_this.comp.id] = setInterval(function () {
-        // console.log("滚动", parent.scrollTop, child1.scrollHeight);
-        if (parent.scrollTop >= child1.scrollHeight) {
-          parent.scrollTop = 0;
-        } else {
-          // console.log(
-          //   "滚动2",
-          //   _this.comp.type,
-          //   parent.scrollTop,
-          //   child1.scrollHeight
-          // );
-          let item = parent.scrollTop;
-          parent.scrollTop++;
-          if (item == parent.scrollTop) {
-            _this.distance = parent.scrollTop;
-            // console.log("差距", _this.distance);
-            // if (_this.distance < 20) {
-            //   clearInterval(_this.timer[_this.comp.id]);
-            // }
+      if (child1.scrollHeight > parent.clientHeight * 1.5) {
+        clearInterval(this.timer);
+        this.timer[_this.comp.id] = setInterval(function () {
+          // console.log("滚动", parent.scrollTop, child1.scrollHeight);
+          if (parent.scrollTop >= child1.scrollHeight) {
             parent.scrollTop = 0;
+          } else {
+            // console.log(
+            //   "滚动2",
+            //   _this.comp.type,
+            //   parent.scrollTop,
+            //   child1.scrollHeight
+            // );
+            let item = parent.scrollTop;
+            parent.scrollTop++;
+            if (item == parent.scrollTop) {
+              _this.distance = parent.scrollTop;
+              // console.log("差距", _this.distance);
+              // if (_this.distance < 20) {
+              //   clearInterval(_this.timer[_this.comp.id]);
+              // }
+              parent.scrollTop = 0;
+            }
           }
-        }
-      }, 20);
+        }, 20);
+      }
     },
     handlemouseOver() {
       // console.log("11111");

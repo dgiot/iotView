@@ -1,11 +1,11 @@
 <template>
   <div class="topoCaltable" :style="{ width: '100%', height: '100%' }">
-    <div class="screen_right_bottom_top">设备列表</div>
+    <!-- <div class="screen_right_bottom_top">设备列表</div> -->
     <div class="table_content">
       <div class="backround">
         <div class="toptitle">
           <div class="item">设备名称</div>
-          <div class="item">设备地址</div>
+          <!-- <div class="item">设备地址</div> -->
           <div class="item">安装位置</div>
           <div class="item">状态</div>
           <div class="item">更新时间</div>
@@ -34,8 +34,10 @@
               @click="handleCheckDevice(item)"
             >
               <td class="table-item-content">{{ item.name }}</td>
-              <td class="table-item-content">{{ item.devaddr }}</td>
-              <td class="table-item-content">{{ item.address }}</td>
+              <!-- <td class="table-item-content">{{ item.devaddr }}</td> -->
+              <td class="table-item-content">
+                {{ item.address }}
+              </td>
               <td class="table-item-content">
                 <el-tag
                   v-if="item.status == 'OFFLINE'"
@@ -73,6 +75,21 @@
         <real-card :cardList="cardList" :avator="avator" />
       </el-dialog>
     </div>
+    <div class="screen_right_bottom">
+      <el-pagination
+        small
+        background
+        :current-page="currentPage"
+        :pager-count="5"
+        @current-change="handlePage"
+        layout="prev, pager, next"
+        :total="total"
+      >
+      </el-pagination>
+      <!-- <div class="previous" @click="handlePage(-1)">&laquo; 上一页</div>
+      <div>{{ skip }}/{{ total }}</div>
+      <div class="next" @click="handlePage(1)">下一页 &raquo;</div> -->
+    </div>
   </div>
 </template>
 
@@ -100,12 +117,16 @@ export default {
   },
   data() {
     return {
+      isCreated: true,
       avator: avator,
       selectObjectId: "",
       status: false,
       listData: [],
       warnList: [],
       deviceList: [],
+      currentPage: 1,
+      skip: 0,
+      total: 0,
       queryForm: {
         devicename: "",
         statusFlag: false,
@@ -141,14 +162,25 @@ export default {
         waitTime: 1000, // 单步运动停止的时间(默认值1000ms)
       };
     },
+    // currentPage() {
+    //   return Number(this.skip / 10) + 1;
+    // },
   },
   created() {
     this.fetchData();
   },
   mounted() {
-    this.scroll();
+    setTimeout(() => {
+      this.scroll();
+    }, 1000);
   },
   methods: {
+    handlePage(e) {
+      console.log(e, this.currentPage);
+      this.currentPage = e;
+      this.skip = (e - 1) * 10;
+      this.fetchData();
+    },
     handleCheckDevice(item) {
       this.selectObjectId = item.objectId;
       this.$dgiotBus.$emit("device/transmit", item);
@@ -159,45 +191,37 @@ export default {
       let _this = this;
       var parent = document.getElementsByClassName("table_parent")[0];
       var child1 = document.getElementsByClassName("table")[0];
-      console.log("滚动", parent.scrollHeight, child1.scrollHeight);
+      // console.log("滚动", parent.scrollHeight, child1.scrollHeight);
+      console.log("盒子高度", parent.clientHeight, child1.scrollHeight);
       // var child2 = document.getElementById("child2");
       // child2.innerHTML = child1.innerHTML;
-      clearInterval(this.timer);
-      this.timer[_this.comp.type] = setInterval(function () {
-        if (parent.scrollTop >= child1.scrollHeight) {
-          // console.log("滚动", parent.scrollTop, child1.scrollHeight);
-          parent.scrollTop = 0;
-        } else {
-          // console.log(
-          //   "滚动2",
-          //   _this.comp.type,
-          //   parent.scrollTop,
-          //   child1.scrollHeight
-          // );
-          let item = parent.scrollTop;
-          parent.scrollTop++;
-          if (item == parent.scrollTop) {
-            _this.distance = parent.scrollTop;
-            // console.log("差距", _this.distance);
+      if (child1.scrollHeight > parent.clientHeight * 1.5) {
+        clearInterval(this.timer);
 
-            // if (_this.distance < 20 && index > 10) {
-            //   console.log("index大小", index);
-            //   clearInterval(_this.timer[_this.comp.type]);
-            // }
-
+        this.timer[_this.comp.type] = setInterval(function () {
+          if (parent.scrollTop >= child1.scrollHeight) {
+            // console.log("滚动", parent.scrollTop, child1.scrollHeight);
             parent.scrollTop = 0;
+          } else {
+            let item = parent.scrollTop;
+            parent.scrollTop++;
+            if (item == parent.scrollTop) {
+              _this.distance = parent.scrollTop;
+
+              parent.scrollTop = 0;
+            }
           }
-        }
-      }, 20);
+        }, 20);
+      }
     },
     async fetchData() {
       // this.listLoading = true
       let params = {
-        skip: 0,
+        skip: this.skip,
         limit: 10,
         // excludeKeys: this.queryForm.excludeKeys,
         // include: this.queryForm.include,
-        order: "-createdAt",
+        order: "-updatedAt",
         count: "objectId",
         where: {},
       };
@@ -219,14 +243,16 @@ export default {
         params,
         this.token
       );
+      this.total = total;
       list.forEach((item) => {
         item.address =
           item.address == "" || item.address == undefined
             ? "---"
             : item.address;
       });
-      if (list.length > 0) {
+      if (list.length > 0 && this.isCreated) {
         this.selectObjectId = list[0].objectId;
+        this.isCreated = false;
       }
       this.deviceList = list;
       this.total = total;
@@ -254,15 +280,18 @@ export default {
       // };
       // this.sendTopic(data);
       this.dialogDeviceVisible = true;
-      this.$dgiotBus.$off("$dg/user/realtimecard");
-      this.$dgiotBus.$on("$dg/user/realtimecard", (e) => {
-        // console.log(e);
-        // let receive = e;
-        let str = String.fromCharCode.apply(null, new Uint8Array(e));
-        let receive = JSON.parse(Base64.decode(str));
-        console.log("转化", receive);
-        this.cardList = this.renderCard(receive.data);
-      });
+      this.$dgiotBus.$off(`$dg/user/realtimecard/${deviceInfo.objectId}`);
+      this.$dgiotBus.$on(
+        `$dg/user/realtimecard/${deviceInfo.objectId}`,
+        (e) => {
+          // console.log(e);
+          // let receive = e;
+          let str = String.fromCharCode.apply(null, new Uint8Array(e));
+          let receive = JSON.parse(Base64.decode(str));
+          console.log("转化", receive);
+          this.cardList = this.renderCard(receive.data);
+        }
+      );
     },
     handlecloseDevice() {
       console.log("关闭实时数据弹窗");
@@ -321,15 +350,35 @@ background-color: #2472ea;
   // border: 1px solid #fff;
   // background: url("../../../assets/bg/bg_warning.png") no-repeat;
   background-size: 100% 100%;
-  .screen_right_bottom_top {
+  .screen_right_bottom {
     // background: url("../../../assets/bg/bg_title.png") no-repeat;
     background-size: 100% 100%;
     width: 100%;
-    height: 40px;
-    line-height: 2.5em;
+    height: 30px;
+    margin-top: 10px;
+    line-height: 30px;
     padding-left: 10%;
     font-weight: bold;
     color: #fff;
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 10px;
+    cursor: pointer;
+    .previous {
+      background-color: #f1f1f1;
+      color: black;
+      display: inline-block;
+      // padding: 8px 16px;
+      padding: 0 8px;
+    }
+    .next {
+      margin-left: 10px;
+      background-color: #4caf50;
+      color: white;
+      display: inline-block;
+      padding: 0 8px;
+      // padding: 8px 16px;
+    }
   }
   .table_content {
     // position: absolute;

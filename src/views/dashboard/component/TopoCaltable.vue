@@ -82,7 +82,7 @@ export default {
         // order: -createdAt,
       },
       timer: {},
-      distance:"",
+      distance: "",
     };
   },
   computed: {
@@ -109,7 +109,10 @@ export default {
     this.fetchData();
   },
   mounted() {
-    this.scroll();
+    setTimeout(() => {
+      this.scroll();
+    }, 1500);
+
     // id type
     // topic
     // on
@@ -140,31 +143,33 @@ export default {
       // console.log("滚动", parent, parent.scrollTop, child1.scrollHeight);
       // var child2 = document.getElementById("child2");
       // child2.innerHTML = child1.innerHTML;
-      clearInterval(this.timer);
-      this.timer[_this.comp.id] = setInterval(function () {
-        // console.log("滚动", parent.scrollTop, child1.scrollHeight);
-        if (parent.scrollTop >= child1.scrollHeight) {
-          parent.scrollTop = 0;
-        } else {
-          // console.log(
-          //   "滚动2",
-          //   _this.comp.type,
-          //   parent.scrollTop,
-          //   child1.scrollHeight
-          // );
-          let item = parent.scrollTop;
-          parent.scrollTop++;
-          if (item == parent.scrollTop) {
-            // parent.animate({scrollTop:0},500);
-            _this.distance = parent.scrollTop;
-            // console.log("差距", _this.distance);
-            // if (_this.distance < 20) {
-            //   clearInterval(_this.timer[_this.comp.id]);
-            // }
+      if (child1.scrollHeight > parent.clientHeight * 1.5) {
+        clearInterval(this.timer);
+        this.timer[_this.comp.id] = setInterval(function () {
+          // console.log("滚动", parent.scrollTop, child1.scrollHeight);
+          if (parent.scrollTop >= child1.scrollHeight) {
             parent.scrollTop = 0;
+          } else {
+            // console.log(
+            //   "滚动2",
+            //   _this.comp.type,
+            //   parent.scrollTop,
+            //   child1.scrollHeight
+            // );
+            let item = parent.scrollTop;
+            parent.scrollTop++;
+            if (item == parent.scrollTop) {
+              // parent.animate({scrollTop:0},500);
+              _this.distance = parent.scrollTop;
+              // console.log("差距", _this.distance);
+              // if (_this.distance < 20) {
+              //   clearInterval(_this.timer[_this.comp.id]);
+              // }
+              parent.scrollTop = 0;
+            }
           }
-        }
-      }, 20);
+        }, 20);
+      }
     },
     handlemouseOver() {
       // console.log("11111");

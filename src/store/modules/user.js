@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/User/index'
+import { login, logout, getInfo, verifyCode } from '@/api/User/index'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 import Cookies from 'js-cookie'
@@ -41,6 +41,33 @@ const mutations = {
 
 const actions = {
   // user login
+  codelogin({ commit }, userInfo) {
+    const { username, password, phone, code } = userInfo
+    return new Promise((resolve, reject) => {
+      verifyCode(phone, code, username, password).then(res => {
+        console.log('response', res);
+        const { sessionToken, name, tag, objectId, roles } = res
+        if (tag.userinfo && tag.userinfo.parse_deviceid) {
+          localStorage.setItem('parse_deviceid', tag.userinfo.parse_deviceid)
+        } else {
+          localStorage.removeItem('parse_deviceid')
+        }
+        localStorage.setItem('avatar', tag.userinfo.avatar)
+        commit('SET_NAME', name)
+        localStorage.setItem('name', name)
+        commit('SET_OBJECTID', objectId)  //用户唯一标识
+        localStorage.setItem('objectId', objectId)
+        localStorage.setItem('deptId', roles[0].objectId)
+        localStorage.setItem('rolename', roles[0].name)
+        commit('SET_AVATAR', tag.userinfo.avatar)
+        commit('SET_TOKEN', sessionToken)
+        setToken(sessionToken)
+        resolve()
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
@@ -58,6 +85,7 @@ const actions = {
         commit('SET_OBJECTID', objectId)  //用户唯一标识
         localStorage.setItem('objectId', objectId)
         localStorage.setItem('deptId', roles[0].objectId)
+        localStorage.setItem('rolename', roles[0].name)
         commit('SET_AVATAR', tag.userinfo.avatar)
         commit('SET_TOKEN', sessionToken)
         setToken(sessionToken)

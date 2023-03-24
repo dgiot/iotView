@@ -29,7 +29,7 @@
             </el-avatar>
             <div
               class="card_content_number"
-              :style="{ 'font-size': fontsize || '1.25em' }"
+              :style="{ 'font-size': fontsize || '1em' }"
             >
               {{ item.number }} {{ item.unit }}
             </div>
