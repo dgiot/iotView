@@ -115,7 +115,7 @@ export default {
       ],
     };
     return {
-      couponSelected: "s",
+      couponSelected: "m",
       chartData: {
         columns: [],
         rows: [],

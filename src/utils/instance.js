@@ -8,7 +8,7 @@ import { getToken } from '@/utils/auth'
 // axios.post
 // create an axios instance
 const service = axios.create({
-  // baseURL: "https://test.hgjzt.com",   //https://test.hgjzt.com //"https://prod.dgiotcloud.com",  //https://shuukgold.ga //http://192.168.1.103:28019 //http://45.40.194.29:28019 //process.env.VUE_APP_BASE_API, // url = base url + request url
+  // baseURL: "https://test.hgjzt.com",   //https://test.hgjzt.com //"https://prod.dgiotcloud.com",  //https://shuukgold.ga  //http://45.40.194.29:28019 //process.env.VUE_APP_BASE_API, // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 360000 // request timeout
 });

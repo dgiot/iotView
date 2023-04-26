@@ -9,9 +9,8 @@
           <div class="item">安装位置</div>
           <div class="item">状态</div>
           <div class="item">更新时间</div>
-          <div class="item" v-if="$route.path.indexOf('/dashboard') >= 0">
-            操作
-          </div>
+          <!-- v-if="$route.path.indexOf('/dashboard') >= 0" -->
+          <div class="item">操作</div>
         </div>
         <!-- <vue-seamless-scroll
           class="seamless-warp"
@@ -51,10 +50,8 @@
               <td class="table-item-content">
                 {{ utc2beijing(item.updatedAt) }}
               </td>
-              <td
-                class="table-item-content"
-                v-if="$route.path.indexOf('/dashboard') >= 0"
-              >
+              <td class="table-item-content">
+                <!-- v-if="$route.path.indexOf('/dashboard') >= 0" -->
                 <div class="item_btn" @click="handleOpenRealCard(item)">
                   数据
                 </div>

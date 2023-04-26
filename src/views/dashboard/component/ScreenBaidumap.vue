@@ -806,7 +806,7 @@ export default {
       // 获取到低代码页面
       for (let index = 0; index < this.amisComponents.length; index++) {
         let res = await getView(this.amisComponents[index].id);
-        this.amisComponents[index].viewData = res.data;
+        this.amisComponents[index].viewData = res.data.data;
       }
       this.amisFlag = true;
     },
@@ -1022,16 +1022,17 @@ export default {
   top: 0%;
   left: 0%;
   // transform: translate(-50%, -50%);
-  z-index: 99;
+  z-index: 999 !important;
   height: 100%;
   background-color: rgba(114, 118, 122, 0.5);
+  // background-color: #000;
   width: 100%;
   .topo_contentwrap {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 99;
+    z-index: 999;
     height: 700px;
     background-color: #fff;
     width: 1200px;
@@ -1059,7 +1060,7 @@ export default {
   }
   .vue_component {
     position: absolute;
-    z-index: 99;
+    z-index: 999;
     // background-color: #0077b8;
   }
   .amis_component {

@@ -23,20 +23,8 @@ https://www.dgiotcloud.cn/wp-content/uploads/2022102808590871.png
           src="/dgiot_file/3d/dancing.fbx"
         />
       </div> -->
-
-      <!-- <amis :schema="viewData" /> -->
-      <!-- <div style='text-align:center;font-size:18px'>1度</div>
-      <div style='text-align:center;font-size:14px;color:#b1b1b1'>今日用电</div>
-      <div style='text-align:center;font-size:18px'>101度</div>
-      <div style='text-align:center;font-size:14px;color:#b1b1b1'>本月用电</div>
-      <div style='text-align:center;font-size:18px'>0W</div>
-      <div style='text-align:center;font-size:14px;color:#b1b1b1'>当前功率</div> -->
-      <amis
-        v-if="dialog"
-        modal-append-to-body
-        :schema="viewData"
-        :show-help="false"
-      />
+      <topo-screen :viewInfo="viewInfo" v-if="showType === 'Konva'" />
+      <amis v-else modal-append-to-body :schema="viewData" :show-help="false" />
       <!-- <dgiot-amis modal-append-to-body :schema="viewData" :show-help="false" /> -->
     </div>
     <!-- 检测 -->
@@ -469,6 +457,7 @@ import { Base64 } from "js-base64";
 import Amis from "@/components/Amis/index.vue";
 import TopoEvicence from "./component/TopoEvicence.vue";
 import TopoDevice from "./component/TopoDevice.vue";
+import TopoScreen from "./component/TopoScreen.vue";
 // import DgiotAmis from "@/components/DgiotAmis/index.vue"
 import { getView, queryView } from "@/api/View/index";
 // 3d
@@ -493,6 +482,7 @@ export default {
     amis: Amis,
     TopoEvicence,
     TopoDevice,
+    TopoScreen,
     RealCard,
   },
   filters: {
@@ -509,6 +499,8 @@ export default {
       commandInfo: {
         dialog: false,
       },
+      viewInfo: {},
+      showType: "",
       dialog: false,
       loading: true,
       viewData: {},
@@ -575,8 +567,10 @@ export default {
     localStorage.setItem("currentViewId", viewid);
     try {
       const res = await getView(viewid);
-      this.viewData = res.data || {};
+      this.viewInfo = res.data || {};
+      this.viewData = res.data.data || {};
       console.log("res.class", res);
+      this.showType = res.data.flag;
       // this.$store.dispatch("settings/changeSetting", {
       //   key: "treeFlag",
       //   value: true,
@@ -588,6 +582,7 @@ export default {
       } else {
       }
       if (JSON.stringify(this.viewData) != "{}") {
+        // this.showType = res.data.flag;
         this.dialog = true;
         this.loading = false;
       } else {
@@ -708,7 +703,7 @@ export default {
       let viewid =
         location.hash.split("/")[location.hash.split("/").length - 1];
       const { data = {} } = await getView(viewid);
-      this.viewData = data;
+      this.viewData = data.data;
       console.log("view表单", data);
       if (JSON.stringify(this.viewData) != "{}") {
         this.dialog = true;
@@ -1167,11 +1162,13 @@ export default {
 <style lang="scss" scoped>
 .index-container {
   width: 100%;
+  // height: 100%;
   height: 95vh;
   .dialog_wrap {
     height: 100%;
     width: 100%;
-    overflow: scroll;
+    box-sizing: border-box;
+    overflow-y: scroll;
   }
 }
 .evidence_body {

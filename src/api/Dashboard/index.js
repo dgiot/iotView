@@ -1,11 +1,9 @@
 import request from '@/utils/request'
 import axios from 'axios'
 import { getToken } from '@/utils/auth'
-// export async function getView(ObjectId) {
-//   return get_object('View', ObjectId)
-// }
 
-const server = 'http://192.168.1.10'
+
+const server = 'http://dev.dgiotcloud.cn'
 
 export function getDlinkJson(data) {
   return request({

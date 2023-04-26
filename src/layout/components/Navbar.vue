@@ -64,7 +64,7 @@ export default {
       queryParams: {},
       fullscreen: false,
       clientcount: 0,
-      token:localStorage.getItem('sessionToken') || ''
+      token: localStorage.getItem("sessionToken") || "",
     };
   },
   watch: {
@@ -97,6 +97,14 @@ export default {
     Vue.prototype.$FileServe = Cookies.get("fileServer") || "";
   },
   async mounted() {
+    this.$dgiotBus.$off("onMessage");
+    this.$dgiotBus.$on("onMessage", (e) => {
+      this.$notify({
+        title: "成功",
+        message: "这是一条成功的提示消息",
+        type: "success",
+      });
+    });
     this.objectId = localStorage.getItem("objectId");
     console.log("用户信息", this.objectId, this.token, this.name);
     this.$nextTick(async () => {
@@ -238,11 +246,13 @@ export default {
         if (topic.indexOf("$dg/user/devicestate") >= 0) {
           sendTopic = "$dg/user/devicestate";
         } else if (topic.indexOf("$dg/user/realtimecard") >= 0) {
-          sendTopic = `$dg/user/realtimecard/${sendtopic[sendtopic.length - 2]}`;
-          console.log('实时数据',sendTopic);
+          sendTopic = `$dg/user/realtimecard/${
+            sendtopic[sendtopic.length - 2]
+          }`;
+          console.log("实时数据", sendTopic);
         } else if (topic.indexOf("$dg/user/konva") >= 0) {
           sendTopic = "$dg/user/konva";
-        }else if (topic.indexOf("realdata") >= 0) {
+        } else if (topic.indexOf("realdata") >= 0) {
           sendTopic = "$dg/user/realdata";
         }
         _this.$dgiotBus.$emit(sendTopic, message);

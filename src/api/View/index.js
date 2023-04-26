@@ -1,7 +1,5 @@
 import request from '@/utils/request'
-// export async function getView(ObjectId) {
-//   return get_object('View', ObjectId)
-// }
+
 export function queryView(params) {
   return request({
     url: `classes/View`,
@@ -9,10 +7,11 @@ export function queryView(params) {
     params
   })
 }
-export function getView(objectId) {
+export function getView(objectId, params = {}) {
   return request({
-    url: `classes/View/${objectId}`,
+    url: `amis/View/${objectId}`,
     method: 'get',
+    params
   })
 }
 export function getTopo(params) {

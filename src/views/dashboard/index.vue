@@ -512,7 +512,7 @@ export default {
       // 获取到低代码页面
       for (let index = 0; index < this.amisComponents.length; index++) {
         let res = await getView(this.amisComponents[index].id);
-        this.amisComponents[index].viewData = res.data;
+        this.amisComponents[index].viewData = res.data.data;
       }
       this.amisFlag = true;
     },
@@ -610,6 +610,7 @@ export default {
 <style lang="scss" scoped>
 .dashboard-container {
   height: 94vh;
+  position: relative;
   // width: 100%;
   margin: 0 !important;
   // background: url("../../assets/bg/pageBg.png") no-repeat 100% 100%;
