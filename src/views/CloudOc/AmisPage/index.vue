@@ -13,17 +13,9 @@ https://www.dgiotcloud.cn/wp-content/uploads/2022102808590871.png
 <template>
   <div ref="custom-table" v-loading="loading" class="index-container">
     <div v-show="dialog" v-if="dialog" class="dialog_wrap">
-      <!-- <div style="width: 100%; height: 400px; background-color: yellow">
-        <model-fbx
-          :controls-options="{
-            enableRotate: true, // 是否可旋转
-            enableZoom: true, // 是否可缩放
-            enablePan: true, // 是否可移动（鼠标右键可以移动模型）
-          }"
-          src="/dgiot_file/3d/dancing.fbx"
-        />
-      </div> -->
+      <!-- 大屏渲染组件 -->
       <topo-screen :viewInfo="viewInfo" v-if="showType === 'Konva'" />
+      <!-- amis渲染组件 -->
       <amis v-else modal-append-to-body :schema="viewData" :show-help="false" />
       <!-- <dgiot-amis modal-append-to-body :schema="viewData" :show-help="false" /> -->
     </div>
@@ -78,7 +70,6 @@ https://www.dgiotcloud.cn/wp-content/uploads/2022102808590871.png
       </div>
     </div>
     <!-- 采集数据 -->
-    <!--  -->
     <el-drawer
       append-to-body
       :visible="visible"

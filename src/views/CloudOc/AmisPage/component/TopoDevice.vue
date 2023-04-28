@@ -422,7 +422,7 @@ export default {
         console.log("第二次重绘");
         this.devicelayer.batchDraw();
       }, 1000);
-       setTimeout(() => {
+      setTimeout(() => {
         console.log("第三次重绘");
         this.devicelayer.batchDraw();
       }, 1000);
