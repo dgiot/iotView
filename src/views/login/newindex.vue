@@ -314,7 +314,7 @@ export default {
   },
   mounted() {
     console.log("this.$route.query", this.$route.query);
-    let isPhone = localStorage.getItem("isPhone") || true;
+    let isPhone = localStorage.getItem("isPhone") || this.$route.query.isPhone || true;
     if (isPhone == 'false') {
       this.isPhone = false;
       this.isPwdShow = true;
