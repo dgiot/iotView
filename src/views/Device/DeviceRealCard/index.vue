@@ -63,6 +63,7 @@ export default {
     // console.log('是否是pc端', this.$ispc())
   },
   async mounted() {
+    localStorage.setItem("classtype","Product")
     this.objectId = localStorage.getItem("parse_deviceid") || "";
     if (this.objectId == "") {
       this.$message("请选择设备");

@@ -23,6 +23,7 @@
           {{ item.title }}
         </div>
       </div>
+      <!-- vue 组件渲染 -->
       <div v-if="vueFlag">
         <div
           v-for="(comp, index) in vueComponents"
@@ -173,6 +174,7 @@
           />
         </div>
       </div>
+      <!-- 低代码视图绑定页面渲染 -->
       <div v-if="amisFlag">
         <amis
           modal-append-to-body
