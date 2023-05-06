@@ -205,10 +205,6 @@ import { sendTopic } from "@/api/Dashboard";
 export default {
   name: "TopoDevice",
   props: {
-    deviceInfo: {
-      type: Object,
-      default: () => {},
-    },
     viewInfo: {
       type: Object,
       default: () => {},
@@ -370,9 +366,6 @@ export default {
           node.attrs.name == "vuecomponent"
         ) {
           let item = node.attrs;
-          if (item.type == "count") {
-            // console.log("item11111", item);
-          }
           list.push(item);
         } else if (node.attrs.name == "amiscomponent") {
           let item = node.attrs;
