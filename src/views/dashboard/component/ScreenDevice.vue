@@ -291,6 +291,7 @@ export default {
       );
     },
     handlecloseDevice() {
+      this.$dgiotBus.$off(`$dg/user/realtimecard/${this.deviceInfo.objectId}`);
       console.log("关闭实时数据弹窗");
       this.$emit("initScreen");
     },

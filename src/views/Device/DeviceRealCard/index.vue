@@ -81,8 +81,9 @@ export default {
         this.height = document.body.clientHeight * 0.86 + "px";
       })();
     };
-    this.$dgiotBus.$off("$dg/user/realtimecard");
-    this.$dgiotBus.$on("$dg/user/realtimecard", (e) => {
+    this.$dgiotBus.$off(`$dg/user/realtimecard/${this.deviceInfo.objectId}`);
+    // this.$dgiotBus.$off("$dg/user/realtimecard");
+    this.$dgiotBus.$on(`$dg/user/realtimecard/${this.deviceInfo.objectId}`, (e) => {
       // console.log(e);
       // let receive = e;
       let str = String.fromCharCode.apply(null, new Uint8Array(e));
