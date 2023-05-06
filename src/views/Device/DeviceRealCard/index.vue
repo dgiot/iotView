@@ -115,7 +115,9 @@ export default {
       return cardlist;
     },
   },
-  destroyed() {},
+  destroyed() {
+     this.$dgiotBus.$off(`$dg/user/realtimecard/${this.deviceInfo.objectId}`);
+  },
 };
 </script>
 <style>
