@@ -125,6 +125,16 @@
               height: comp.height + 'px',
             }"
           />
+          <!-- 思极地图 -->
+          <screen-sgmap
+              v-else-if="comp.type == 'map' && comp.id == 'sgmap'"
+              :comp="comp"
+              @initScreen="initScreen"
+              :style="{
+              width: comp.width + 'px',
+              height: comp.height + 'px',
+            }"
+          />
           <!-- 告警模板 -->
           <work-order
             v-else-if="comp.type == 'list' && comp.id == 'workorder_list'"
@@ -223,6 +233,7 @@ import ScreenDevice from "./component/ScreenDevice.vue"; //设备列表
 import WorkOrder from "./component/WorkOrder.vue"; //工单列表
 import ScreenRealcard from "./component/ScreenRealcard.vue"; //告警列表
 import ScreenBaidumap from "./component/ScreenBaidumap.vue"; //百度地图
+import ScreenSgmap from "./component/ScreenSgmap.vue"; //思极地图
 import ScreenLine from "./component/ScreenLine.vue"; //历史折线图
 import ScreenDeviceBar from "./component/ScreenDeviceBar.vue"; //历史柱状图
 import ScreenHeaditem from "./component/ScreenHeaditem.vue"; //卡片组
@@ -253,6 +264,7 @@ export default {
     ScreenRealcard,
     WorkOrder,
     ScreenBaidumap,
+    ScreenSgmap,
     // ScreenHeadcounter,
     ScreenHeaditem,
     DgiotAliplayer,
