@@ -235,21 +235,21 @@ export default {
         // this.clientcount = 0;
       });
       client.on("message", (topic, message) => {
-        console.log("收到来自", topic, "的消息", message);
+        // console.log("收到来自", topic, "的消息", message);
         let sendtopic = topic.split("/");
-        console.log(sendtopic);
+        //console.log(sendtopic);
         let sendTopic = `/${sendtopic[sendtopic.length - 3]}/${
           sendtopic[sendtopic.length - 2]
         }/${sendtopic[sendtopic.length - 1]}`;
         // return
-        console.log(sendTopic);
+        //console.log(sendTopic);
         if (topic.indexOf("$dg/user/devicestate") >= 0) {
           sendTopic = "$dg/user/devicestate";
         } else if (topic.indexOf("$dg/user/realtimecard") >= 0) {
           sendTopic = `$dg/user/realtimecard/${
             sendtopic[sendtopic.length - 2]
           }`;
-          console.log("实时数据", sendTopic);
+          //console.log("实时数据", sendTopic);
         } else if (topic.indexOf("$dg/user/konva") >= 0) {
           sendTopic = "$dg/user/konva";
         } else if (topic.indexOf("realdata") >= 0) {

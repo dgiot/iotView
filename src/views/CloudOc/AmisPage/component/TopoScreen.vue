@@ -307,11 +307,15 @@ export default {
     this.$dgiotBus.$on('$dg/user/realdata', (e) => {
       const str = String.fromCharCode.apply(null, new Uint8Array(e))
       const receive = JSON.parse(Base64.decode(str))
-      console.log('转化', receive)
+       console.log('组态大屏 ', receive)
       // receive.konva.forEach((item) => {
       // console.log(item)
       const number = receive.data.number + receive.data.unit
-      var info = this.putNode(this.stage, receive.lable, number)
+      let color = 'green'
+      if (receive.data.hasOwnProperty("color") ){ 
+        color = receive.data.color
+      }
+      var info = this.putNode(this.stage, receive.lable, number, color);
       // canvas.stage.find(item.id)[0].setAttrs(item.params)
       // });
     })
@@ -514,16 +518,16 @@ export default {
       //   box1.style.height = box1.offsetHeight * 0.98 + "px";
       // }
     },
-    putNode(node, nodeid, text) {
-      // console.log("组态修改", node, nodeid, text, type);
-      // if (type != "undefined") {
-      const params = {}
-      // console.log("修改的节点", nodeid, text);
-      params['text'] = text
-      node.find(`#${nodeid}`).forEach((item) => {
-        item.setAttrs(params)
-      })
-      this.layer.batchDraw()
+    putNode(node, nodeid, text, color) {
+        // if (type != "undefined") {
+        node.find(`#${nodeid}`).forEach((item) => {
+          item.setAttr('text',text);
+        });
+        let tagnodeid = `#${nodeid}` + '_tag'
+        node.find(tagnodeid).forEach((item) => {
+          item.setAttr('fill', color)
+        })
+        this.layer.batchDraw()
     }
   }
 }

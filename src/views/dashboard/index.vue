@@ -368,11 +368,15 @@ export default {
     this.$dgiotBus.$on("$dg/user/realdata", (e) => {
       let str = String.fromCharCode.apply(null, new Uint8Array(e));
       let receive = JSON.parse(Base64.decode(str));
-      console.log("转化", receive);
+      console.log("大屏 ", receive);
       // receive.konva.forEach((item) => {
       // console.log(item)
       let number = receive.data.number + receive.data.unit;
-      var info = this.putNode(this.stage, receive.lable, number);
+      let color = 'green'
+      if (receive.data.hasOwnProperty("color") ){ 
+        color = receive.data.color
+      }
+      var info = this.putNode(this.stage, receive.lable, number, color);
       // canvas.stage.find(item.id)[0].setAttrs(item.params)
       // });
     });
@@ -399,15 +403,16 @@ export default {
     }
   },
   methods: {
-    putNode(node, nodeid, text) {
+    putNode(node, nodeid, text, color) {
       // console.log("组态修改", node, nodeid, text, type);
       // if (type != "undefined") {
-      let params = {};
-      // console.log("修改的节点", nodeid, text);
-      params["text"] = text;
       node.find(`#${nodeid}`).forEach((item) => {
-        item.setAttrs(params);
+        item.setAttr('text',text);
       });
+      let tagnodeid = `#${nodeid}` + '_tag'
+      node.find(tagnodeid).forEach((item) => {
+        item.setAttr('fill', color)
+      })
       this.layer.batchDraw();
     },
     handleToCheckout(item) {

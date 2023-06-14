@@ -285,7 +285,7 @@ export default {
           // let receive = e;
           let str = String.fromCharCode.apply(null, new Uint8Array(e));
           let receive = JSON.parse(Base64.decode(str));
-          console.log("转化", receive);
+          console.log("实时卡片 ", receive);
           this.cardList = this.renderCard(receive.data);
         }
       );
