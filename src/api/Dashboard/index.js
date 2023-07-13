@@ -3,7 +3,7 @@ import axios from 'axios'
 import { getToken } from '@/utils/auth'
 
 
-const server = 'http://192.168.1.122'
+const server = 'http://192.168.100.3'
 
 export function getDlinkJson(data) {
   return request({

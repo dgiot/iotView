@@ -252,6 +252,8 @@ export default {
           //console.log("实时数据", sendTopic);
         } else if (topic.indexOf("$dg/user/konva") >= 0) {
           sendTopic = "$dg/user/konva";
+        } else if (topic.indexOf("allrealdata") >= 0) {
+          sendTopic = "$dg/user/allrealdata"
         } else if (topic.indexOf("realdata") >= 0) {
           sendTopic = "$dg/user/realdata";
         }

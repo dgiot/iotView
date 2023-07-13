@@ -8,16 +8,16 @@
     }"
   >
     <div v-if="isShowDashboard">
-      <div id="container"></div>
-      <div class="dashboard_check" v-if="dashboardList.length > 1">
+      <div id="container" />
+      <div v-if="dashboardList.length > 1" class="dashboard_check">
         <div
+          v-for="(item, index) in dashboardList"
+          :key="item.objectId + index"
           class="screen_check_item"
           style="font-size: 1em"
           :class="
             item.objectId == dashboardId ? 'screen_select' : 'screen_unselect'
           "
-          v-for="(item, index) in dashboardList"
-          :key="item.objectId + index"
           @click="handleToCheckout(item)"
         >
           {{ item.title }}
@@ -91,11 +91,11 @@
           <screen-device
             v-else-if="comp.type == 'list' && comp.id == 'device_list'"
             :comp="comp"
-            @initScreen="initScreen"
             :style="{
               width: comp.width + 'px',
               height: comp.height + 'px',
             }"
+            @initScreen="initScreen"
           />
 
           <!-- 告警模板 -->
@@ -119,21 +119,21 @@
           <screen-baidumap
             v-else-if="comp.type == 'map' && comp.id == 'baidumap'"
             :comp="comp"
-            @initScreen="initScreen"
             :style="{
               width: comp.width + 'px',
               height: comp.height + 'px',
             }"
+            @initScreen="initScreen"
           />
           <!-- 思极地图 -->
           <screen-sgmap
-              v-else-if="comp.type == 'map' && comp.id == 'sgmap'"
-              :comp="comp"
-              @initScreen="initScreen"
-              :style="{
+            v-else-if="comp.type == 'map' && comp.id == 'sgmap'"
+            :comp="comp"
+            :style="{
               width: comp.width + 'px',
               height: comp.height + 'px',
             }"
+            @initScreen="initScreen"
           />
           <!-- 告警模板 -->
           <work-order
@@ -181,15 +181,15 @@
               width: comp.width + 'px',
               height: comp.height + 'px',
             }"
-          />
+          >
         </div>
       </div>
       <!-- 低代码视图绑定页面渲染 -->
       <div v-if="amisFlag">
         <amis
-          modal-append-to-body
           v-for="(comp, index) in amisComponents"
           :key="index"
+          modal-append-to-body
           class="amis_component"
           :style="{
             left: comp.x + 'px',
@@ -222,38 +222,38 @@
 </template>
 
 <script>
-import backgroundImage from "../../assets/bg/pageBg1.png";
+import backgroundImage from '../../assets/bg/pageBg1.png'
 // import VueAliplayerV2 from 'vue-aliplayer-v2';
-import DgiotAliplayer from "./component/DgiotAliplayer.vue";
-import TopoCard from "./component/TopoCard.vue"; //卡片
+import DgiotAliplayer from './component/DgiotAliplayer.vue'
+import TopoCard from './component/TopoCard.vue' // 卡片
 
-import TopoPie from "./component/TopoPie.vue"; //饼图
-import TopoCaltable from "./component/TopoCaltable.vue"; //告警列表
-import ScreenDevice from "./component/ScreenDevice.vue"; //设备列表
-import WorkOrder from "./component/WorkOrder.vue"; //工单列表
-import ScreenRealcard from "./component/ScreenRealcard.vue"; //告警列表
-import ScreenBaidumap from "./component/ScreenBaidumap.vue"; //百度地图
-import ScreenSgmap from "./component/ScreenSgmap.vue"; //思极地图
-import ScreenLine from "./component/ScreenLine.vue"; //历史折线图
-import ScreenDeviceBar from "./component/ScreenDeviceBar.vue"; //历史柱状图
-import ScreenHeaditem from "./component/ScreenHeaditem.vue"; //卡片组
+import TopoPie from './component/TopoPie.vue' // 饼图
+import TopoCaltable from './component/TopoCaltable.vue' // 告警列表
+import ScreenDevice from './component/ScreenDevice.vue' // 设备列表
+import WorkOrder from './component/WorkOrder.vue' // 工单列表
+import ScreenRealcard from './component/ScreenRealcard.vue' // 告警列表
+import ScreenBaidumap from './component/ScreenBaidumap.vue' // 百度地图
+import ScreenSgmap from './component/ScreenSgmap.vue' // 思极地图
+import ScreenLine from './component/ScreenLine.vue' // 历史折线图
+import ScreenDeviceBar from './component/ScreenDeviceBar.vue' // 历史柱状图
+import ScreenHeaditem from './component/ScreenHeaditem.vue' // 卡片组
 // 3d
-import DgiotModelFbx from "../../components/model3d/dgiot-model-fbx.vue";
-import DgiotModelDemo from "../../components/model3d/dgiot-model-demo.vue";
-import DgiotModelDemo3 from "../../components/model3d/dgiot-model-demo3.vue";
-import DgiotModelFac from "../../components/model3d/dgiot-model-fac.vue";
+import DgiotModelFbx from '../../components/model3d/dgiot-model-fbx.vue'
+import DgiotModelDemo from '../../components/model3d/dgiot-model-demo.vue'
+import DgiotModelDemo3 from '../../components/model3d/dgiot-model-demo3.vue'
+import DgiotModelFac from '../../components/model3d/dgiot-model-fac.vue'
 // 通用组件
-import RealTime from "./component/commom/RealTime.vue";
-import DgiotNotification1 from "./component/notification/DgiotNotification1.vue"; //告警模板1
+import RealTime from './component/commom/RealTime.vue'
+import DgiotNotification1 from './component/notification/DgiotNotification1.vue' // 告警模板1
 
-import { mapGetters } from "vuex";
-import Amis from "@/components/Amis/index.vue"; //amis 组件
-import { getView } from "@/api/View/index";
-import { queryRelation } from "@/api/Relation";
-import { getDlinkJson, Startdashboard } from "@/api/Dashboard";
-import { isPC } from "@/utils/index";
+import { mapGetters } from 'vuex'
+import Amis from '@/components/Amis/index.vue' // amis 组件
+import { getView } from '@/api/View/index'
+import { queryRelation } from '@/api/Relation'
+import { getDlinkJson, Startdashboard } from '@/api/Dashboard'
+import { isPC } from '@/utils/index'
 export default {
-  name: "Dashboard",
+  name: 'Dashboard',
   components: {
     // DgiotAmis:DgiotAmis,
     amis: Amis,
@@ -276,14 +276,14 @@ export default {
     DgiotModelFbx,
     DgiotModelDemo,
     DgiotModelDemo3,
-    DgiotModelFac,
+    DgiotModelFac
   },
   data() {
     return {
-      viewtype: "Dashboard",
+      viewtype: 'Dashboard',
       json: {},
-      layer: "",
-      stage: "",
+      layer: '',
+      stage: '',
       bgSrc: backgroundImage,
       vueComponents: [],
       amisComponents: [],
@@ -291,115 +291,114 @@ export default {
       amisFlag: false,
       viewData: {},
       queryParams: [],
-      dashboardId: "",
+      dashboardId: '',
       dashboardList: [],
       isPC: true,
       clientWidth: 1920,
       shiftShow: false,
-      isShowDashboard: true,
-    };
+      isShowDashboard: true
+    }
   },
   computed: {
-    ...mapGetters(["name"]),
+    ...mapGetters(['name'])
   },
   created() {
-    this.isPC = isPC();
-    localStorage.setItem("isPC", this.isPC);
+    this.isPC = isPC()
+    localStorage.setItem('isPC', this.isPC)
   },
   async mounted() {
     // console.log('localStorage.getItem("isPC")', localStorage.getItem("isPC"));
-    this.isPC = localStorage.getItem("isPC") == "true" ? true : false;
-    this.isShowDashboard = document.body.clientWidth > 500 ? true : false;
-    localStorage.setItem("dgiottopbar", "[]");
-    this.$store.dispatch("settings/changeSetting", {
-      key: "treeFlag",
-      value: false,
-    });
+    this.isPC = localStorage.getItem('isPC') == 'true'
+    this.isShowDashboard = document.body.clientWidth > 500
+    localStorage.setItem('dgiottopbar', '[]')
+    this.$store.dispatch('settings/changeSetting', {
+      key: 'treeFlag',
+      value: false
+    })
     // console.log("layer", this.layer);
-    var width = window.innerWidth;
-    var height = window.innerHeight;
+    var width = window.innerWidth
+    var height = window.innerHeight
     // this.$message(`宽度-${width}高度-${height}`)
-    let destId = localStorage.getItem("deptId");
+    const destId = localStorage.getItem('deptId')
     const { results = [] } = await queryRelation({
-      destClass: "_Role",
+      destClass: '_Role',
       destId: destId,
-      destField: "views",
-      srcClass: "View",
-    });
+      destField: 'views',
+      srcClass: 'View'
+    })
     if (_.isEmpty(results)) {
-      this.$message("暂未配置组态大屏");
-      return false;
+      this.$message('暂未配置组态大屏')
+      return false
     } else {
-      let dashboardList = [],
-        amisScreenList = [],
-        flag = true;
+      const dashboardList = []
+      const amisScreenList = []
+      let flag = true
       results.forEach((item) => {
-        if (item.type == "Dashboard" && flag) {
-          dashboardList.push(item);
-          flag = false;
-          this.viewtype = item.type;
-          this.json = item.data.konva.Stage;
-          console.log("json", this.json);
-          this.dashboardId = item.objectId;
-        } else if (item.type == "Dashboard") {
-          dashboardList.push(item);
-        } else if (item.flag == "Amis" && item.title.indexOf("移动端") < 0) {
-          amisScreenList.push(item);
-        } else if (item.title.indexOf("移动端") >= 0) {
-          this.header = item;
-          console.log(this.header);
-          this.shiftShow = true;
+        if (item.type == 'Dashboard' && flag) {
+          dashboardList.push(item)
+          flag = false
+          this.viewtype = item.type
+          this.json = item.data.konva.Stage
+          console.log('json', this.json)
+          this.dashboardId = item.objectId
+        } else if (item.type == 'Dashboard') {
+          dashboardList.push(item)
+        } else if (item.flag == 'Amis' && item.title.indexOf('移动端') < 0) {
+          amisScreenList.push(item)
+        } else if (item.title.indexOf('移动端') >= 0) {
+          this.header = item
+          console.log(this.header)
+          this.shiftShow = true
         }
-      });
-      this.dashboardList = dashboardList;
-      this.queryData();
+      })
+      this.dashboardList = dashboardList
+      this.queryData()
       // this.commandInfo.dialog = true;
       // this.loading = false;
       // this.commandInfo.data = results;
     }
-    this.layer = Konva.Node.create(this.json, "container").findOne("Layer");
+    this.layer = Konva.Node.create(this.json, 'container').findOne('Layer')
     this.stage = new Konva.Stage({
-      container: "container",
+      container: 'container',
       width: width,
-      height: height,
-    });
-    this.stage.add(this.layer);
-    this.$dgiotBus.$off("$dg/user/realdata");
-    this.$dgiotBus.$on("$dg/user/realdata", (e) => {
-      let str = String.fromCharCode.apply(null, new Uint8Array(e));
-      let receive = JSON.parse(Base64.decode(str));
-      console.log("大屏 ", receive);
-      // receive.konva.forEach((item) => {
-      // console.log(item)
-      let number = receive.data.number + receive.data.unit;
-      let color = 'green'
-      if (receive.data.hasOwnProperty("color") ){ 
-        color = receive.data.color
-      }
-      var info = this.putNode(this.stage, receive.lable, number, color);
-      // canvas.stage.find(item.id)[0].setAttrs(item.params)
-      // });
-    });
+      height: height
+    })
+    this.stage.add(this.layer)
+    this.$dgiotBus.$off('$dg/user/allrealdata')
+    this.$dgiotBus.$on('$dg/user/allrealdata', (e) => {
+      const str = String.fromCharCode.apply(null, new Uint8Array(e))
+      const receive = JSON.parse(Base64.decode(str))
+      // console.log('大屏 ', receive)
+      receive.forEach((item) => {
+        const number = item.number + item.unit
+        let color = 'green'
+        if (item.hasOwnProperty('color')) {
+          color = item.color
+        }
+        var info = this.putNode(this.stage, item.label, number, color)
+        // canvas.stage.find(item.id)[0].setAttrs(item.params)
+      })
+    })
     // console.log(this.stage);
-    this.handleInitKonva();
+    this.handleInitKonva()
     // 监听界面
     window.onresize = () => {
       return (() => {
-        this.layer = Konva.Node.create(this.json, "container").findOne("Layer");
+        this.layer = Konva.Node.create(this.json, 'container').findOne('Layer')
         this.stage = new Konva.Stage({
-          container: "container",
+          container: 'container',
           width: width,
-          height: height,
-        });
-        this.stage.add(this.layer);
-        this.handleInitKonva();
-      })();
-    };
+          height: height
+        })
+        this.stage.add(this.layer)
+        this.handleInitKonva()
+      })()
+    }
   },
   destroyed() {
     if (this.clientWidth > 736) {
-      var html = document.getElementsByTagName("html")[0];
-      html.style.fontSize = 16 + "px";
+      var html = document.getElementsByTagName('html')[0]
+      html.style.fontSize = 16 + 'px'
     }
   },
   methods: {
@@ -407,137 +406,137 @@ export default {
       // console.log("组态修改", node, nodeid, text, type);
       // if (type != "undefined") {
       node.find(`#${nodeid}`).forEach((item) => {
-        item.setAttr('text',text);
-      });
-      let tagnodeid = `#${nodeid}` + '_tag'
+        item.setAttr('text', text)
+      })
+      const tagnodeid = `#${nodeid}` + '_tag'
       node.find(tagnodeid).forEach((item) => {
         item.setAttr('fill', color)
       })
-      this.layer.batchDraw();
+      this.layer.batchDraw()
     },
     handleToCheckout(item) {
       if (item.objectId != this.dashboardId) {
-        var width = window.innerWidth;
-        var height = window.innerHeight;
-        this.json = item.data.konva.Stage;
-        console.log("json", this.json);
-        this.vueComponents = [];
-        this.vueFlag = false;
-        this.dashboardId = item.objectId;
-        this.queryData();
-        this.layer = Konva.Node.create(this.json, "container").findOne("Layer");
+        var width = window.innerWidth
+        var height = window.innerHeight
+        this.json = item.data.konva.Stage
+        console.log('json', this.json)
+        this.vueComponents = []
+        this.vueFlag = false
+        this.dashboardId = item.objectId
+        this.queryData()
+        this.layer = Konva.Node.create(this.json, 'container').findOne('Layer')
         this.stage = new Konva.Stage({
-          container: "container",
+          container: 'container',
           width: width,
-          height: height,
-        });
-        this.stage.add(this.layer);
-        this.handleInitKonva();
+          height: height
+        })
+        this.stage.add(this.layer)
+        this.handleInitKonva()
       }
     },
     async handleInitKonva() {
-      this.clientWidth = document.body.clientWidth;
+      this.clientWidth = document.body.clientWidth
       if (this.clientWidth > 500) {
-        var html = document.getElementsByTagName("html")[0];
-        html.style.fontSize = (document.body.clientWidth / 1940) * 16 + "px";
+        var html = document.getElementsByTagName('html')[0]
+        html.style.fontSize = (document.body.clientWidth / 1940) * 16 + 'px'
       }
-      let list = []; //vuecomponent 组件列表
-      let amislist = []; // amiscomponent 组件列表
-      this.amisFlag = false;
-      this.stage.find("Label").forEach((node) => {
+      const list = [] // vuecomponent 组件列表
+      const amislist = [] // amiscomponent 组件列表
+      this.amisFlag = false
+      this.stage.find('Label').forEach((node) => {
         // console.log("label", node);
         // info["Label"] = stage.find("Label");
-        this.initSize(node);
+        this.initSize(node)
         node.setAttrs({
-          draggable: false,
-        });
+          draggable: false
+        })
         // node = this.initScale(node);
-      });
-      this.stage.find("Tag").forEach((node) => {
+      })
+      this.stage.find('Tag').forEach((node) => {
         // console.log(node.attrs.text);
         node.setAttrs({
-          draggable: false,
-        });
-        node = this.initScale(node);
-      });
-      this.stage.find("Text").forEach((node) => {
+          draggable: false
+        })
+        node = this.initScale(node)
+      })
+      this.stage.find('Text').forEach((node) => {
         node.setAttrs({
-          draggable: false,
-        });
-        node = this.initScale(node);
-      });
-      this.stage.find("Image").forEach((node) => {
+          draggable: false
+        })
+        node = this.initScale(node)
+      })
+      this.stage.find('Image').forEach((node) => {
         // node.setAttrs({
         //   draggable: false,
         // });
         // console.log("node", node);
-        this.initSize(node);
-        if (node.attrs.id == "bg") {
-          console.log(node.attrs);
-          this.bgSrc = node.attrs.src.includes("//")
+        this.initSize(node)
+        if (node.attrs.id == 'bg') {
+          console.log(node.attrs)
+          this.bgSrc = node.attrs.src.includes('//')
             ? node.attrs.src
-            : this.$FileServe + node.attrs.src;
+            : this.$FileServe + node.attrs.src
         }
         if (
-          node.attrs.type == "konvaimage" ||
-          node.attrs.name == "vuecomponent"
+          node.attrs.type == 'konvaimage' ||
+          node.attrs.name == 'vuecomponent'
         ) {
-          let item = node.attrs;
-          if (item.type == "count") {
+          const item = node.attrs
+          if (item.type == 'count') {
             // console.log("item11111", item);
           }
-          list.push(item);
-        } else if (node.attrs.name == "amiscomponent") {
-          let item = node.attrs;
-          amislist.push(item);
+          list.push(item)
+        } else if (node.attrs.name == 'amiscomponent') {
+          const item = node.attrs
+          amislist.push(item)
         } else if (
-          node.attrs.id.indexOf("不") < 0 &&
-          node.attrs.id.indexOf("bg") < 0
+          node.attrs.id.indexOf('不') < 0 &&
+          node.attrs.id.indexOf('bg') < 0
         ) {
           // if (node.attrs.type == "staticimage")
-          let image = new Image();
+          const image = new Image()
           node.setAttrs({
-            image: image,
-          });
-          image.src = node.attrs.src.includes("//")
+            image: image
+          })
+          image.src = node.attrs.src.includes('//')
             ? node.attrs.src
-            : this.$FileServe + node.attrs.src;
+            : this.$FileServe + node.attrs.src
           // this.layer.add(node);
           // this.layer.batchDraw();
           // this.stage.add(this.layer);
         }
-      });
-      this.stage.find("Rect").forEach((node) => {
+      })
+      this.stage.find('Rect').forEach((node) => {
         // node.setAttrs({
         //   draggable: false,
         // });
-        this.initSize(node);
-        if (node.attrs.name == "vuecomponent") {
-          let item = node.attrs;
-          list.push(item);
-        } else if (node.attrs.name == "amiscomponent") {
-          let item = node.attrs;
-          amislist.push(item);
+        this.initSize(node)
+        if (node.attrs.name == 'vuecomponent') {
+          const item = node.attrs
+          list.push(item)
+        } else if (node.attrs.name == 'amiscomponent') {
+          const item = node.attrs
+          amislist.push(item)
         }
-      });
+      })
       // this.layer.draw();
-      this.layer.batchDraw();
+      this.layer.batchDraw()
       setTimeout(() => {
-        this.layer.batchDraw();
-      }, 1500);
-      this.vueComponents = list;
-      this.vueFlag = true;
-      this.amisComponents = amislist;
+        this.layer.batchDraw()
+      }, 1500)
+      this.vueComponents = list
+      this.vueFlag = true
+      this.amisComponents = amislist
       // 获取到低代码页面
       for (let index = 0; index < this.amisComponents.length; index++) {
-        let res = await getView(this.amisComponents[index].id);
-        this.amisComponents[index].viewData = res.data.data;
+        const res = await getView(this.amisComponents[index].id)
+        this.amisComponents[index].viewData = res.data.data
       }
-      this.amisFlag = true;
+      this.amisFlag = true
     },
     // 按比例初始化大小 -
     initSize(node) {
-      let scale = document.body.clientWidth / 1940;
+      const scale = document.body.clientWidth / 1940
       if (this.isPC) {
         // console.log("isPC打开了");
         node.setAttrs({
@@ -546,8 +545,8 @@ export default {
           y: node.attrs.y * scale,
           width: node.attrs.width * scale,
           height: node.attrs.height * scale,
-          fontSize: node.attrs.fontSize * scale,
-        });
+          fontSize: node.attrs.fontSize * scale
+        })
       } else {
         node.setAttrs({
           draggable: false,
@@ -555,8 +554,8 @@ export default {
           y: (node.attrs.y * document.body.clientHeight) / 960,
           width: (node.attrs.width * document.body.clientWidth) / 1920,
           height: (node.attrs.height * document.body.clientHeight) / 960,
-          fontSize: node.attrs.fontSize * scale,
-        });
+          fontSize: node.attrs.fontSize * scale
+        })
       }
       //  x: (node.attrs.x * document.body.clientWidth) / 1930,
       // y: (node.attrs.y * document.body.clientHeight) / 940,
@@ -574,39 +573,39 @@ export default {
       // });
     },
     initScale(node) {
-      let scale = document.body.clientWidth / 1940;
+      const scale = document.body.clientWidth / 1940
       if (this.isPC) {
-        node.attrs.fontSize = node.attrs.fontSize * scale;
-        node.attrs.x = node.attrs.x * scale;
-        node.attrs.width = node.attrs.width * scale;
-        node.attrs.y = node.attrs.y * scale;
-        node.attrs.height = node.attrs.height * scale;
+        node.attrs.fontSize = node.attrs.fontSize * scale
+        node.attrs.x = node.attrs.x * scale
+        node.attrs.width = node.attrs.width * scale
+        node.attrs.y = node.attrs.y * scale
+        node.attrs.height = node.attrs.height * scale
       } else {
-        node.attrs.fontSize = node.attrs.fontSize * scale;
-        node.attrs.x = (node.attrs.x * document.body.clientWidth) / 1920;
+        node.attrs.fontSize = node.attrs.fontSize * scale
+        node.attrs.x = (node.attrs.x * document.body.clientWidth) / 1920
         node.attrs.width =
-          (node.attrs.width * document.body.clientWidth) / 1920;
-        node.attrs.y = (node.attrs.y * document.body.clientHeight) / 960;
+          (node.attrs.width * document.body.clientWidth) / 1920
+        node.attrs.y = (node.attrs.y * document.body.clientHeight) / 960
         node.attrs.height =
-          (node.attrs.height * document.body.clientHeight) / 960;
+          (node.attrs.height * document.body.clientHeight) / 960
       }
       // console.log("比例大小", scale);
-      return node;
+      return node
     },
     async initScreen() {
-      let Startdashboardid = this.dashboardId; // "8263c928d5";
-      await Startdashboard(Startdashboardid, {});
+      const Startdashboardid = this.dashboardId // "8263c928d5";
+      await Startdashboard(Startdashboardid, {})
     },
     async queryData() {
-      const { dashboard = {} } = await getDlinkJson("Dashboard");
-      this.queryParams = dashboard;
-      const Startdashboardid = this.dashboardId; // "8263c928d5";
-      setTimeout(async () => {
-        await Startdashboard(Startdashboardid, {});
-      }, 2000);
-    },
-  },
-};
+      const { dashboard = {}} = await getDlinkJson('Dashboard')
+      this.queryParams = dashboard
+      const Startdashboardid = this.dashboardId // "8263c928d5";
+      setTimeout(async() => {
+        await Startdashboard(Startdashboardid, {})
+      }, 2000)
+    }
+  }
+}
 </script>
 <style>
 /*里面的代码可以根据自己需求去进行更改*/

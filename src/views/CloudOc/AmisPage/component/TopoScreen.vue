@@ -303,21 +303,21 @@ export default {
       height: this.height
     })
     this.stage.add(this.layer)
-    this.$dgiotBus.$off('$dg/user/realdata')
-    this.$dgiotBus.$on('$dg/user/realdata', (e) => {
+    this.$dgiotBus.$off('$dg/user/allrealdata')
+    this.$dgiotBus.$on('$dg/user/allrealdata', (e) => {
       const str = String.fromCharCode.apply(null, new Uint8Array(e))
       const receive = JSON.parse(Base64.decode(str))
        console.log('组态大屏 ', receive)
-      // receive.konva.forEach((item) => {
+      receive.forEach((item) => {
       // console.log(item)
-      const number = receive.data.number + receive.data.unit
+      const number = item.number + item.unit
       let color = 'green'
-      if (receive.data.hasOwnProperty("color") ){ 
-        color = receive.data.color
+      if (item.hasOwnProperty("color")){
+        color = item.color
       }
-      var info = this.putNode(this.stage, receive.lable, number, color);
+      var info = this.putNode(this.stage, item.lable, number, color);
       // canvas.stage.find(item.id)[0].setAttrs(item.params)
-      // });
+      });
     })
     // console.log(this.stage);
     this.handleInitKonva()
