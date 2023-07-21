@@ -14,12 +14,12 @@
       <i
         style="fontsize: 20px; cursor: pointer"
         class="el-icon-full-screen"
-      ></i>
+      />
     </span>
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="$FileServe + avatar" class="user-avatar" />
+          <img :src="$FileServe + avatar" class="user-avatar">
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -42,30 +42,30 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import { getDlinkJson, Startdashboard } from "@/api/Dashboard/index";
-import Breadcrumb from "@/components/Breadcrumb";
-import Hamburger from "@/components/Hamburger";
-import { setToken } from "@/utils/auth";
-import Cookies from "js-cookie";
-import mqtt from "mqtt";
-var client;
+import { mapGetters } from 'vuex'
+import { getDlinkJson, Startdashboard } from '@/api/Dashboard/index'
+import Breadcrumb from '@/components/Breadcrumb'
+import Hamburger from '@/components/Hamburger'
+import { setToken } from '@/utils/auth'
+import Cookies from 'js-cookie'
+import mqtt from 'mqtt'
+var client
 export default {
   components: {
     Breadcrumb,
-    Hamburger,
+    Hamburger
   },
   data() {
     return {
-      avatar: "",
-      objectId: "",
-      client: "",
+      avatar: '',
+      objectId: '',
+      client: '',
       option: {},
       queryParams: {},
       fullscreen: false,
       clientcount: 0,
-      token: localStorage.getItem("sessionToken") || "",
-    };
+      token: localStorage.getItem('sessionToken') || ''
+    }
   },
   watch: {
     $route: {
@@ -74,115 +74,115 @@ export default {
         // this.activeMenu = handleActivePath(route);
         console.log(
           'Cookies.get("sidebarStatus") ',
-          Cookies.get("sidebarStatus")
-        );
+          Cookies.get('sidebarStatus')
+        )
         if (
-          route.fullPath.indexOf("/dashboard") >= 0 &&
-          (Cookies.get("sidebarStatus") == 1 ||
-            Cookies.get("sidebarStatus") == undefined)
+          route.fullPath.indexOf('/dashboard') >= 0 &&
+          (Cookies.get('sidebarStatus') == 1 ||
+            Cookies.get('sidebarStatus') == undefined)
         ) {
-          this.$store.dispatch("app/toggleSideBar");
+          this.$store.dispatch('app/toggleSideBar')
         }
         // route.fullPath.indexOf("/index") >= 0
         //   ? (this.isDeptShow = false)
         //   : (this.isDeptShow = true);
       },
-      immediate: true,
-    },
+      immediate: true
+    }
   },
   computed: {
-    ...mapGetters(["sidebar", "name", "treeFlag"]),
+    ...mapGetters(['sidebar', 'name', 'treeFlag'])
   },
   created() {
-    Vue.prototype.$FileServe = Cookies.get("fileServer") || "";
+    Vue.prototype.$FileServe = Cookies.get('fileServer') || ''
   },
   async mounted() {
-    this.$dgiotBus.$off("onMessage");
-    this.$dgiotBus.$on("onMessage", (e) => {
+    this.$dgiotBus.$off('onMessage')
+    this.$dgiotBus.$on('onMessage', (e) => {
       this.$notify({
-        title: "成功",
-        message: "这是一条成功的提示消息",
-        type: "success",
-      });
-    });
-    this.objectId = localStorage.getItem("objectId");
-    console.log("用户信息", this.objectId, this.token, this.name);
-    this.$nextTick(async () => {
-      await this.defaultSet();
-    });
+        title: '成功',
+        message: '这是一条成功的提示消息',
+        type: 'success'
+      })
+    })
+    this.objectId = localStorage.getItem('objectId')
+    console.log('用户信息', this.objectId, this.token, this.name)
+    this.$nextTick(async() => {
+      await this.defaultSet()
+    })
     const md5Info = {
       token: this.token,
       username: this.objectId,
       password: this.token,
-      router: this.$route.fullPath,
-    };
-    this.$dgiotBus.$off(`MqttPublish`);
+      router: this.$route.fullPath
+    }
+    this.$dgiotBus.$off(`MqttPublish`)
     this.$dgiotBus.$on(`MqttPublish`, (e) => {
-      console.log("publish111111", e.pubTopic, e.message);
-      client.publish(e.pubTopic, e.message);
-    });
-    this.$dgiotBus.$on("MqttConnect", (data) => {
-      console.log("接收消息", data);
-    });
-    await this.Mqtt(md5Info);
+      console.log('publish', e.pubTopic, e.message)
+      client.publish(e.pubTopic, e.message)
+    })
+    this.$dgiotBus.$on('MqttConnect', (data) => {
+      console.log('接收消息', data)
+    })
+    await this.Mqtt(md5Info)
     // this.queryData();
     // console.log(md5Info);
   },
   beforeDestroy() {
-    console.log("关闭了mqtt");
+    console.log('关闭了mqtt')
     // client.disconnect();
-    client.end();
+    client.end()
   },
   methods: {
-    //显示隐藏部门树
+    // 显示隐藏部门树
     handleChangeTree() {
-      this.$store.dispatch("settings/changeSetting", {
-        key: "treeFlag",
-        value: !this.treeFlag,
-      });
+      this.$store.dispatch('settings/changeSetting', {
+        key: 'treeFlag',
+        value: !this.treeFlag
+      })
     },
     // 全屏事件
-    //原文链接：https://blog.csdn.net/weixin_39550080/article/details/124823420
+    // 原文链接：https://blog.csdn.net/weixin_39550080/article/details/124823420
     handleFullScreen() {
-      let element = document.documentElement;
+      const element = document.documentElement
       // 判断是否已经是全屏
       // 如果是全屏，退出
       if (this.fullscreen) {
         if (document.exitFullscreen) {
-          document.exitFullscreen();
+          document.exitFullscreen()
         } else if (document.webkitCancelFullScreen) {
-          document.webkitCancelFullScreen();
+          document.webkitCancelFullScreen()
         } else if (document.mozCancelFullScreen) {
-          document.mozCancelFullScreen();
+          document.mozCancelFullScreen()
         } else if (document.msExitFullscreen) {
-          document.msExitFullscreen();
+          document.msExitFullscreen()
         }
-        console.log("已还原！");
+        console.log('已还原！')
       } else {
         // 否则，进入全屏
         if (element.requestFullscreen) {
-          element.requestFullscreen();
+          element.requestFullscreen()
         } else if (element.webkitRequestFullScreen) {
-          element.webkitRequestFullScreen();
+          element.webkitRequestFullScreen()
         } else if (element.mozRequestFullScreen) {
-          element.mozRequestFullScreen();
+          element.mozRequestFullScreen()
         } else if (element.msRequestFullscreen) {
           // IE11
-          element.msRequestFullscreen();
+          element.msRequestFullscreen()
         }
-        console.log("已全屏！");
+        console.log('已全屏！')
       }
       // 改变当前全屏状态
-      this.fullscreen = !this.fullscreen;
+      this.fullscreen = !this.fullscreen
     },
     async queryData() {
-      let params = {
-        type: "Dashboard",
-      };
-      const { dashboard = {} } = await getDlinkJson("Dashboard");
-      let list = [];
-      list.push(dashboard[1]);
-      this.queryParams = list;
+      const params = {
+        type: 'Dashboard'
+      }
+      const { dashboard = {}} = await getDlinkJson('Dashboard')
+      const list = []
+      list.push(dashboard[1])
+      this.queryParams = list
       // setTimeout(() => {
       //     this.queryParams.forEach((e) => {
       //       let key = e.vuekey
@@ -193,33 +193,33 @@ export default {
       // await Startdashboard(Startdashboardid, this.queryParams);
     },
     async Mqtt(md5Info) {
-      const { VUE_APP_URL, NODE_ENV } = process.env;
-      const { hostname, protocol } = location;
+      const { VUE_APP_URL, NODE_ENV } = process.env
+      const { hostname, protocol } = location
       // console.log(location);
       const ip =
-        NODE_ENV == "development"
-          ? VUE_APP_URL.split("//")[1].split(":")[0]
-          : hostname.split(":")[0]; // 修复代理带端口的问题
-      console.log("地址", ip);
+        NODE_ENV == 'development'
+          ? VUE_APP_URL.split('//')[1].split(':')[0]
+          : hostname.split(':')[0] // 修复代理带端口的问题
+      console.log('地址', ip)
       this.option = {
         keepalive: 60,
         clientId: md5Info.token, // dlink 协议 user 认证改为user token
         ip,
-        isSSL: protocol === "https:" ? true : false,
-        port: protocol == "http:" ? 8083 : 8084,
+        isSSL: protocol === 'https:',
+        port: protocol == 'http:' ? 8083 : 8084,
         username: md5Info.username,
         password: md5Info.password,
         connectTimeout: 10 * 1000,
-        router: md5Info.router,
-      };
+        router: md5Info.router
+      }
       // console.groupEnd();
-      let head = this.option.isSSL ? "wss" : "ws";
+      const head = this.option.isSSL ? 'wss' : 'ws'
       client = mqtt.connect(
         `${head}://${ip}:${this.option.port}/mqtt`,
         this.option
-      ); //47.118.69.187
-      this.mqttMsg();
-      await this.$dgiotBus.$emit("MqttConnect", this.option);
+      ) // 47.118.69.187
+      this.mqttMsg()
+      await this.$dgiotBus.$emit('MqttConnect', this.option)
       // this.$dgiotBus.$emit('MqttSubscribe', {
       //   router: md5(this.$route.fullPath),
       //   topic: 'h7ml/topic/test/1',
@@ -229,57 +229,57 @@ export default {
       // })
     },
     mqttMsg() {
-      let _this = this;
-      client.on("connect", (e) => {
-        console.log("连接成功", e);
+      const _this = this
+      client.on('connect', (e) => {
+        console.log('连接成功', e)
         // this.clientcount = 0;
-      });
-      client.on("message", (topic, message) => {
+      })
+      client.on('message', (topic, message) => {
         // console.log("收到来自", topic, "的消息", message);
-        let sendtopic = topic.split("/");
-        //console.log(sendtopic);
+        const sendtopic = topic.split('/')
+        // console.log(sendtopic);
         let sendTopic = `/${sendtopic[sendtopic.length - 3]}/${
           sendtopic[sendtopic.length - 2]
-        }/${sendtopic[sendtopic.length - 1]}`;
+        }/${sendtopic[sendtopic.length - 1]}`
         // return
-        //console.log(sendTopic);
-        if (topic.indexOf("$dg/user/devicestate") >= 0) {
-          sendTopic = "$dg/user/devicestate";
-        } else if (topic.indexOf("$dg/user/realtimecard") >= 0) {
+        // console.log(sendTopic);
+        if (topic.indexOf('$dg/user/devicestate') >= 0) {
+          sendTopic = '$dg/user/devicestate'
+        } else if (topic.indexOf('$dg/user/realtimecard') >= 0) {
           sendTopic = `$dg/user/realtimecard/${
             sendtopic[sendtopic.length - 2]
-          }`;
-          //console.log("实时数据", sendTopic);
-        } else if (topic.indexOf("$dg/user/konva") >= 0) {
-          sendTopic = "$dg/user/konva";
-        } else if (topic.indexOf("allrealdata") >= 0) {
-          sendTopic = "$dg/user/allrealdata"
-        } else if (topic.indexOf("realdata") >= 0) {
-          sendTopic = "$dg/user/realdata";
+          }`
+          // console.log("实时数据", sendTopic);
+        } else if (topic.indexOf('$dg/user/konva') >= 0) {
+          sendTopic = '$dg/user/konva'
+        } else if (topic.indexOf('allrealdata') >= 0) {
+          sendTopic = '$dg/user/allrealdata'
+        } else if (topic.indexOf('realdata') >= 0) {
+          sendTopic = '$dg/user/realdata'
         }
-        _this.$dgiotBus.$emit(sendTopic, message);
-      });
-      client.on("reconnect", (error) => {
-        console.log("正在重连", client);
-        this.clientcount++;
-        console.log(this.clientcount);
+        _this.$dgiotBus.$emit(sendTopic, message)
+      })
+      client.on('reconnect', (error) => {
+        console.log('正在重连', client)
+        this.clientcount++
+        console.log(this.clientcount)
         if (this.clientcount >= 10) {
-          client.end();
+          client.end()
         }
         // client.end();
         // mqtt.client.disconnect();
-      });
-      client.on("error", (error) => {
-        console.log("连接失败", error);
-      });
+      })
+      client.on('error', (error) => {
+        console.log('连接失败', error)
+      })
     },
     toggleSideBar() {
-      this.$store.dispatch("app/toggleSideBar");
+      this.$store.dispatch('app/toggleSideBar')
     },
     async logout() {
-      setToken("");
-      await this.$store.dispatch("user/logout");
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`);
+      setToken('')
+      await this.$store.dispatch('user/logout')
+      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     },
     async defaultSet() {
       // this.backgroundImage = Cookies.get('startIframe')
@@ -287,16 +287,16 @@ export default {
       //   : this.backgroundimage
       // console.log("环境", process.env.NODE_ENV, process.env.VUE_APP_BASE_API);
       const url =
-        process.env.NODE_ENV === "development"
+        process.env.NODE_ENV === 'development'
           ? process.env.VUE_APP_URL
-          : location.origin;
+          : location.origin
       // console.log("url", url);
-      Cookies.set("fileServer", url, { expires: 60 * 1000 * 30 });
-      this.$FileServe = Cookies.get("fileServer") || "";
-      this.avatar = localStorage.getItem("avatar") || "";
-    },
-  },
-};
+      Cookies.set('fileServer', url, { expires: 60 * 1000 * 30 })
+      this.$FileServe = Cookies.get('fileServer') || ''
+      this.avatar = localStorage.getItem('avatar') || ''
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

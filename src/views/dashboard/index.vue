@@ -252,6 +252,7 @@ import { getView } from '@/api/View/index'
 import { queryRelation } from '@/api/Relation'
 import { getDlinkJson, Startdashboard } from '@/api/Dashboard'
 import { isPC } from '@/utils/index'
+import { getToken } from '@/utils/auth'
 export default {
   name: 'Dashboard',
   components: {
@@ -368,7 +369,7 @@ export default {
     this.$dgiotBus.$on('$dg/user/allrealdata', (e) => {
       const str = String.fromCharCode.apply(null, new Uint8Array(e))
       const receive = JSON.parse(Base64.decode(str))
-      // console.log('大屏 ', receive)
+      console.log('大屏 ', receive)
       receive.forEach((item) => {
         const number = item.number + item.unit
         let color = 'green'
@@ -377,6 +378,17 @@ export default {
         }
         var info = this.putNode(this.stage, item.label, number, color)
         // canvas.stage.find(item.id)[0].setAttrs(item.params)
+      })
+      const sessionToken = getToken()
+      const pubTopic = `$dg/user/dashboard/${sessionToken}/ack` // 返回
+      const message = {
+        ack: 'heartbeat'
+      }
+      this.$dgiotBus.$emit(`MqttPublish`, {
+        pubTopic,
+        message: JSON.stringify(message),
+        qs: 0,
+        status: false
       })
     })
     // console.log(this.stage);
@@ -407,6 +419,7 @@ export default {
       // if (type != "undefined") {
       node.find(`#${nodeid}`).forEach((item) => {
         item.setAttr('text', text)
+        item.setAttr('fill', 'black')
       })
       const tagnodeid = `#${nodeid}` + '_tag'
       node.find(tagnodeid).forEach((item) => {
@@ -472,7 +485,7 @@ export default {
         // console.log("node", node);
         this.initSize(node)
         if (node.attrs.id == 'bg') {
-          console.log(node.attrs)
+          // console.log(node.attrs)
           this.bgSrc = node.attrs.src.includes('//')
             ? node.attrs.src
             : this.$FileServe + node.attrs.src
