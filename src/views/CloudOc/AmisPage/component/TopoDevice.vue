@@ -1,6 +1,6 @@
 <template>
-  <div @mouseenter="enter" @mouseleave="leave" class="topo_content">
-    <div id="deviceTopo"></div>
+  <div class="topo_content" @mouseenter="enter" @mouseleave="leave">
+    <div id="deviceTopo" />
     <div v-if="vueFlag">
       <div
         v-for="(comp, index) in vueComponents"
@@ -93,14 +93,14 @@
             width: comp.width + 'px',
             height: comp.height + 'px',
           }"
-        />
+        >
       </div>
     </div>
     <div v-if="amisFlag">
       <amis
-        modal-append-to-body
         v-for="(comp, index) in amisComponents"
         :key="index"
+        modal-append-to-body
         class="amis_component"
         :style="{
           left: comp.x + 'px',
@@ -113,12 +113,12 @@
       />
     </div>
     <el-dialog
+      v-if="dialogTopoAmisVisible"
       top="10vh"
       :append-to-body="true"
       width="1240px"
-      @close="handlecloseDevice"
       :visible.sync="dialogTopoAmisVisible"
-      v-if="dialogTopoAmisVisible"
+      @close="handlecloseDevice"
     >
       <amis modal-append-to-body :schema="topoAmisData" :show-help="false" />
     </el-dialog>
@@ -126,29 +126,23 @@
 </template>
 
 <script>
-import DgiotAliplayer from "../../../dashboard/component/DgiotAliplayer.vue";
+import DgiotAliplayer from '../../../dashboard/component/DgiotAliplayer.vue'
 // import TopoCard from "./TopoCard.vue"; //卡片
 // import TopoPie from "./TopoPie.vue"; //饼图
-import TopoCaltable from "../../../dashboard/component/TopoCaltable.vue"; //告警列表
-import ScreenDevice from "../../../dashboard/component/ScreenDevice.vue"; //设备列表
-import WorkOrder from "../../../dashboard/component/WorkOrder.vue"; //工单列表
-import ScreenRealcard from "../../../dashboard/component/ScreenRealcard.vue"; //告警列表
-import ScreenLine from "../../../dashboard/component/ScreenLine.vue"; //历史折线图
-import ScreenDeviceBar from "../../../dashboard/component/ScreenDeviceBar.vue"; //历史柱状图
+import TopoCaltable from '../../../dashboard/component/TopoCaltable.vue' // 告警列表
+import ScreenDevice from '../../../dashboard/component/ScreenDevice.vue' // 设备列表
+import WorkOrder from '../../../dashboard/component/WorkOrder.vue' // 工单列表
+import ScreenRealcard from '../../../dashboard/component/ScreenRealcard.vue' // 告警列表
+import ScreenLine from '../../../dashboard/component/ScreenLine.vue' // 历史折线图
+import ScreenDeviceBar from '../../../dashboard/component/ScreenDeviceBar.vue' // 历史柱状图
 // 通用组件
-import DgiotNotification1 from "../../../dashboard/component/notification/DgiotNotification1.vue"; //告警模板1
-import Amis from "@/components/Amis/index.vue"; //amis 组件
-import { Base64 } from "js-base64";
-import { queryView, getTopo, getView, postAmis } from "@/api/View";
-import { sendTopic } from "@/api/Dashboard";
+import DgiotNotification1 from '../../../dashboard/component/notification/DgiotNotification1.vue' // 告警模板1
+import Amis from '@/components/Amis/index.vue' // amis 组件
+import { Base64 } from 'js-base64'
+import { queryView, getTopo, getView, postAmis } from '@/api/View'
+import { sendTopic } from '@/api/Dashboard'
 export default {
-  name: "TopoDevice",
-  props: {
-    deviceInfo: {
-      type: Object,
-      default: () => {},
-    },
-  },
+  name: 'TopoDevice',
   components: {
     DgiotAliplayer,
     TopoCaltable,
@@ -158,41 +152,47 @@ export default {
     Amis,
     ScreenLine,
     ScreenDeviceBar,
-    DgiotNotification1,
+    DgiotNotification1
+  },
+  props: {
+    deviceInfo: {
+      type: Object,
+      default: () => {}
+    }
   },
   data() {
     return {
       vueFlag: false,
       amisFlag: false,
-      vueComponents: [], //vue 组件
-      devicestage: {}, //组态舞台
-      devicelayer: {}, //组态layer
-      devicetopo: {}, //设备组态
+      vueComponents: [], // vue 组件
+      devicestage: {}, // 组态舞台
+      devicelayer: {}, // 组态layer
+      devicetopo: {}, // 设备组态
       dialogTopoAmisVisible: false,
-      topoAmisData: {},
-    };
+      topoAmisData: {}
+    }
   },
   mounted() {
-    this.vueComponents = [];
-    this.amisComponents = [];
-    this.handleOpenTopo(this.deviceInfo);
+    this.vueComponents = []
+    this.amisComponents = []
+    this.handleOpenTopo(this.deviceInfo)
   },
   methods: {
     enter() {
       // console.log("enter");
-      window.addEventListener("mousewheel", this.handleScroll, true);
+      window.addEventListener('mousewheel', this.handleScroll, true)
     },
     leave() {
       // console.log("leave");
-      window.removeEventListener("mousewheel", this.handleScroll, true);
+      window.removeEventListener('mousewheel', this.handleScroll, true)
     },
     handleScroll(e) {
-      e = e || window.event;
-      var box1 = document.querySelector(".topo_content");
+      e = e || window.event
+      var box1 = document.querySelector('.topo_content')
       // console.log('滚动了', e)
-      //判断滚轮滚动方向
-      //wheelDelta获取到鼠标滚动方向，向上滚是正值，向下是负值，但火狐不支持
-      //event.detail火狐支持，向上为负值，向下为正值
+      // 判断滚轮滚动方向
+      // wheelDelta获取到鼠标滚动方向，向上滚是正值，向下是负值，但火狐不支持
+      // event.detail火狐支持，向上为负值，向下为正值
       // return
       // if (e.wheelDelta > 0 || e.detail < 0) {
       //   box1.style.width = box1.offsetWidth * 1.02 + "px";
@@ -204,64 +204,64 @@ export default {
     },
     // 打开组态弹窗
     async handleOpenTopo(deviceInfo) {
-      localStorage.setItem("parse_deviceid", deviceInfo.objectId);
-      let params = {
-        count: "objectId",
-        order: "createdAt",
-        excludeKeys: "data",
+      localStorage.setItem('parse_deviceid', deviceInfo.objectId)
+      const params = {
+        count: 'objectId',
+        order: 'createdAt',
+        excludeKeys: 'data',
         skip: 0,
         where: {
-          class: { $regex: "Product" },
-          type: { $regex: "Topo" },
-          key: { $regex: deviceInfo.product.objectId },
-        },
-      };
-
-      const res = await queryView(params);
-      console.log("组态", res);
-      if (res.results.length == 0) {
-        this.$message("暂未配置组态");
-        return;
+          class: { $regex: 'Product' },
+          type: { $regex: 'Topo' },
+          key: { $regex: deviceInfo.product.objectId }
+        }
       }
-      let param = {
+
+      const res = await queryView(params)
+      console.log('组态', res)
+      if (res.results.length == 0) {
+        this.$message('暂未配置组态')
+        return
+      }
+      const param = {
         productid: deviceInfo.product.objectId,
         devaddr: deviceInfo.devaddr,
-        viewid: res.results[0]?.objectId || "",
-      };
-      const result = await getTopo(param);
+        viewid: res.results[0]?.objectId || ''
+      }
+      const result = await getTopo(param)
       // console.log("组态渲染", result);
-      this.devicetopo = result.data.Stage;
-      let data = {
-        topic: `$dg/user/konva/${deviceInfo.objectId}/report`,
-      };
+      this.devicetopo = result.data.Stage
+      const data = {
+        topic: `$dg/user/konva/${deviceInfo.objectId}/report`
+      }
 
       // this.dialogTopoVisible = true;
 
-      console.log("this.deviceInfo", this.deviceInfo);
+      console.log('this.deviceInfo', this.deviceInfo)
 
       setTimeout(() => {
-        this.initDeviceKonva();
-        this.sendTopic(data);
-      }, 500);
+        this.initDeviceKonva()
+        this.sendTopic(data)
+      }, 500)
     },
     initDeviceKonva() {
       //
       // this.devicelayer = Konva.Node.create(this.devicetopo, "deviceTopo");
       this.devicelayer = Konva.Node.create(
         this.devicetopo,
-        "deviceTopo"
-      ).findOne("Layer");
+        'deviceTopo'
+      ).findOne('Layer')
       this.devicestage = new Konva.Stage({
-        container: "deviceTopo",
+        container: 'deviceTopo',
         width: 1200,
-        height: 700,
-      });
-      this.devicestage.add(this.devicelayer);
-      this.$dgiotBus.$off("$dg/user/konva");
-      this.$dgiotBus.$on("$dg/user/konva", (e) => {
-        let str = String.fromCharCode.apply(null, new Uint8Array(e));
-        let receive = JSON.parse(Base64.decode(str));
-        console.log(receive);
+        height: 700
+      })
+      this.devicestage.add(this.devicelayer)
+      this.$dgiotBus.$off('$dg/user/konva')
+      this.$dgiotBus.$on('$dg/user/konva', (e) => {
+        const str = String.fromCharCode.apply(null, new Uint8Array(e))
+        const receive = JSON.parse(Base64.decode(str))
+        console.log(receive)
         receive.konva.forEach((item) => {
           // console.log(item)
           var info = this.putNode(
@@ -269,9 +269,9 @@ export default {
             item.id,
             item.text,
             item.type
-          );
+          )
           // canvas.stage.find(item.id)[0].setAttrs(item.params)
-        });
+        })
         // this.stage.find(e.id).forEach((node) => {
         //   // console.log("node", node);
         //   node.setAttrs({
@@ -279,23 +279,23 @@ export default {
         //   });
         // });
         // this.devicelayer.draw();
-      });
+      })
       // console.log(this.stage);
-      this.handleInitKonva();
+      this.handleInitKonva()
     },
     // 实时更新组态内容
     putNode(node, nodeid, text, type) {
       // console.log("组态修改", node, nodeid, text, type);
-      if (type != "undefined") {
-        let params = {};
-        params[type] = text;
-        console.log(nodeid, text);
+      if (type != 'undefined') {
+        const params = {}
+        params[type] = text
+        console.log(nodeid, text)
         node.find(`#${nodeid}`).forEach((item) => {
-          console.log(item);
-          item.setAttrs(params);
+          console.log(item)
+          item.setAttrs(params)
           // var change = node.find(`#${nodeid}`)[0]
-        });
-        this.devicelayer.batchDraw();
+        })
+        this.devicelayer.batchDraw()
       }
       // in nodeid find node
       // in node.name event
@@ -303,146 +303,146 @@ export default {
       // node.setAttrs(params)
     },
     async handleInitKonva() {
-      let list = []; //vuecomponent 组件列表
-      let amislist = []; // amiscomponent 组件列表
-      this.devicestage.find("Label").forEach((node) => {
+      const list = [] // vuecomponent 组件列表
+      const amislist = [] // amiscomponent 组件列表
+      this.devicestage.find('Label').forEach((node) => {
         // info["Label"] = stage.find("Label");
         // this.initSize(node)
         node.setAttrs({
-          draggable: false,
-        });
-      });
-      this.devicestage.find("Tag").forEach((node) => {
+          draggable: false
+        })
+      })
+      this.devicestage.find('Tag').forEach((node) => {
         node.setAttrs({
-          draggable: false,
-        });
-      });
-      this.devicestage.find("Text").forEach((node) => {
+          draggable: false
+        })
+      })
+      this.devicestage.find('Text').forEach((node) => {
         node.setAttrs({
-          draggable: false,
-        });
-        node.on("touchend", async (e) => {
-          console.log("touchend", node);
+          draggable: false
+        })
+        node.on('touchend', async(e) => {
+          console.log('touchend', node)
           if (node.attrs.bind_amis) {
-            localStorage.setItem("parse_objectid", this.deviceInfo.objectId);
+            localStorage.setItem('parse_objectid', this.deviceInfo.objectId)
             localStorage.setItem(
-              "parse_productid",
+              'parse_productid',
               this.deviceInfo.product.objectId
-            );
-            let params = {
-              viewid: node.attrs.amis_id,
-            };
-            let data = {
+            )
+            const params = {
+              viewid: node.attrs.amis_id
+            }
+            const data = {
               render: {
-                text: node.attrs.text.trim(),
-              },
-            };
-            let res = await postAmis(params, data);
+                text: node.attrs.text.trim()
+              }
+            }
+            const res = await postAmis(params, data)
             // let res = await getView(node.attrs.amis_id);
-            this.topoAmisData = res.data;
-            this.dialogTopoAmisVisible = true;
+            this.topoAmisData = res.data
+            this.dialogTopoAmisVisible = true
             // amis_id
           }
           // if (node.getAttr("bind_amis") && node.getAttr("amis_id").length > 0)
           //   dgiotBus.$emit("nodeInfo", node);
-        });
+        })
         /** */
-        node.on("click", async (e) => {
-          console.log("click", node);
+        node.on('click', async(e) => {
+          console.log('click', node)
           if (node.attrs.bind_amis) {
-            localStorage.setItem("parse_objectid", this.deviceInfo.objectId);
+            localStorage.setItem('parse_objectid', this.deviceInfo.objectId)
             localStorage.setItem(
-              "parse_productid",
+              'parse_productid',
               this.deviceInfo.product.objectId
-            );
-            let params = {
-              viewid: node.attrs.amis_id,
-            };
-            let data = {
+            )
+            const params = {
+              viewid: node.attrs.amis_id
+            }
+            const data = {
               render: {
-                text: node.attrs.text.trim(),
-              },
-            };
-            let res = await postAmis(params, data);
+                text: node.attrs.text.trim()
+              }
+            }
+            const res = await postAmis(params, data)
             // console.log("res", res);
             // let res = await getView(node.attrs.amis_id);
-            this.topoAmisData = res.data;
-            this.dialogTopoAmisVisible = true;
+            this.topoAmisData = res.data
+            this.dialogTopoAmisVisible = true
             // amis_id
           }
-        });
-      });
-      this.devicestage.find("Image").forEach((node) => {
+        })
+      })
+      this.devicestage.find('Image').forEach((node) => {
         node.setAttrs({
-          draggable: false,
-        });
+          draggable: false
+        })
         if (
-          node.attrs.type == "konvaimage" ||
-          node.attrs.name == "vuecomponent"
+          node.attrs.type == 'konvaimage' ||
+          node.attrs.name == 'vuecomponent'
         ) {
-          let item = node.attrs;
-          list.push(item);
-        } else if (node.attrs.name == "amiscomponent") {
-          let item = node.attrs;
-          amislist.push(item);
-        } else if (node.attrs.id.indexOf("不") < 0) {
+          const item = node.attrs
+          list.push(item)
+        } else if (node.attrs.name == 'amiscomponent') {
+          const item = node.attrs
+          amislist.push(item)
+        } else if (node.attrs.id.indexOf('不') < 0) {
           // if (node.attrs.type == "staticimage")
-          let image = new Image();
+          const image = new Image()
           node.setAttrs({
-            image: image,
-          });
-          image.src = node.attrs.src.includes("//")
+            image: image
+          })
+          image.src = node.attrs.src.includes('//')
             ? node.attrs.src
-            : this.$FileServe + node.attrs.src;
+            : this.$FileServe + node.attrs.src
           // image.src = node.attrs.src;
           // this.devicelayer.add(node);
           // this.devicelayer.batchDraw();
           // this.stage.add(this.layer);
         }
-      });
-      this.devicestage.find("Rect").forEach((node) => {
+      })
+      this.devicestage.find('Rect').forEach((node) => {
         node.setAttrs({
-          draggable: false,
-        });
-        if (node.attrs.name == "vuecomponent") {
-          let item = node.attrs;
-          list.push(item);
-        } else if (node.attrs.name == "amiscomponent") {
-          let item = node.attrs;
-          amislist.push(item);
+          draggable: false
+        })
+        if (node.attrs.name == 'vuecomponent') {
+          const item = node.attrs
+          list.push(item)
+        } else if (node.attrs.name == 'amiscomponent') {
+          const item = node.attrs
+          amislist.push(item)
         }
-      });
+      })
       // this.layer.draw();
-      this.devicelayer.batchDraw();
+      this.devicelayer.batchDraw()
       setTimeout(() => {
-        console.log("第一次重绘");
-        this.devicelayer.batchDraw();
-      }, 500);
+        console.log('第一次重绘')
+        this.devicelayer.batchDraw()
+      }, 500)
       setTimeout(() => {
-        console.log("第二次重绘");
-        this.devicelayer.batchDraw();
-      }, 1000);
+        console.log('第二次重绘')
+        this.devicelayer.batchDraw()
+      }, 1000)
       setTimeout(() => {
-        console.log("第三次重绘");
-        this.devicelayer.batchDraw();
-      }, 1000);
-      this.vueComponents = list;
-      this.vueFlag = true;
-      this.amisComponents = amislist;
+        console.log('第三次重绘')
+        this.devicelayer.batchDraw()
+      }, 1000)
+      this.vueComponents = list
+      this.vueFlag = true
+      this.amisComponents = amislist
       // 获取到低代码页面
       for (let index = 0; index < this.amisComponents.length; index++) {
-        let res = await getView(this.amisComponents[index].id);
-        this.amisComponents[index].viewData = res.data.data;
+        const res = await getView(this.amisComponents[index].id)
+        this.amisComponents[index].viewData = res.data.data
       }
-      this.amisFlag = true;
+      this.amisFlag = true
     },
     sendTopic(data) {
       sendTopic(data).then((res) => {
-        console.log(res);
-      });
-    },
-  },
-};
+        console.log(res)
+      })
+    }
+  }
+}
 </script>
 <style lang="scss" scoped>
 .topo_content {

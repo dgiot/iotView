@@ -218,6 +218,15 @@
         />
       </div>
     </div>
+    <el-dialog
+      v-if="dialogScreenAmisVisible"
+      top="10vh"
+      :append-to-body="true"
+      width="600px"
+      :visible.sync="dialogScreenAmisVisible"
+    >
+      <amis modal-append-to-body :schema="screenAmisData" :show-help="false" />
+    </el-dialog>
   </div>
 </template>
 
@@ -248,7 +257,7 @@ import DgiotNotification1 from './component/notification/DgiotNotification1.vue'
 
 import { mapGetters } from 'vuex'
 import Amis from '@/components/Amis/index.vue' // amis 组件
-import { getView } from '@/api/View/index'
+import { getView, postAmis } from '@/api/View/index'
 import { queryRelation } from '@/api/Relation'
 import { getDlinkJson, Startdashboard } from '@/api/Dashboard'
 import { isPC } from '@/utils/index'
@@ -297,7 +306,9 @@ export default {
       isPC: true,
       clientWidth: 1920,
       shiftShow: false,
-      isShowDashboard: true
+      isShowDashboard: true,
+      dialogScreenAmisVisible: false,
+      screenAmisData: {}
     }
   },
   computed: {
@@ -369,16 +380,30 @@ export default {
     this.$dgiotBus.$on('$dg/user/allrealdata', (e) => {
       const str = String.fromCharCode.apply(null, new Uint8Array(e))
       const receive = JSON.parse(Base64.decode(str))
-      console.log('大屏 ', receive)
+      console.log('allrealdata', receive)
+      let red = 0
+      let green = 0
+      let yellow = 0
       receive.forEach((item) => {
         const number = item.number + item.unit
         let color = 'green'
         if (item.hasOwnProperty('color')) {
           color = item.color
+          if (color === 'red') {
+            red = red + 1
+          } else if (color === 'green') {
+            green = green + 1
+          } else if (color === 'yellow') {
+            yellow = yellow + 1
+          }
         }
         var info = this.putNode(this.stage, item.label, number, color)
         // canvas.stage.find(item.id)[0].setAttrs(item.params)
       })
+      this.putNode(this.stage, 'status_red_text', red.toString(), 'red')
+      this.putNode(this.stage, 'status_green_text', green.toString(), 'green')
+      this.putNode(this.stage, 'status_yellow_text', yellow.toString(), 'yellow')
+
       const sessionToken = getToken()
       const pubTopic = `$dg/user/dashboard/${sessionToken}/ack` // 返回
       const message = {
@@ -475,6 +500,56 @@ export default {
       this.stage.find('Text').forEach((node) => {
         node.setAttrs({
           draggable: false
+        })
+        node.on('touchend', async(e) => {
+          console.error('touchend', node)
+          if (node.attrs.bind_amis) {
+            localStorage.setItem('parse_objectid', node.attrs.screen_deviceid)
+            localStorage.setItem(
+              'parse_productid',
+              node.attrs.screen_productid
+            )
+            const params = {
+              viewid: node.attrs.amis_id
+            }
+            const data = {
+              render: {
+                screen_deviceid: node.attrs.screen_deviceid,
+                screen_productid: node.attrs.screen_productid
+              }
+            }
+            const res = await postAmis(params, data)
+            // console.log("res", res);
+            // let res = await getView(node.attrs.amis_id);
+            this.screenAmisData = res.data
+            this.dialogScreenAmisVisible = true
+            // amis_id
+          }
+        })
+        node.on('click', async(e) => {
+          console.error('click', node)
+          if (node.attrs.bind_amis) {
+            localStorage.setItem('parse_objectid', node.attrs.screen_deviceid)
+            localStorage.setItem(
+              'parse_productid',
+              node.attrs.screen_productid
+            )
+            const params = {
+              viewid: node.attrs.amis_id
+            }
+            const data = {
+              render: {
+                screen_deviceid: node.attrs.screen_deviceid,
+                screen_productid: node.attrs.screen_productid
+              }
+            }
+            const res = await postAmis(params, data)
+            // console.log("res", res);
+            // let res = await getView(node.attrs.amis_id);
+            this.screenAmisData = res.data
+            this.dialogScreenAmisVisible = true
+            // amis_id
+          }
         })
         node = this.initScale(node)
       })

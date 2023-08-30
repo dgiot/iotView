@@ -307,17 +307,30 @@ export default {
     this.$dgiotBus.$on('$dg/user/allrealdata', (e) => {
       const str = String.fromCharCode.apply(null, new Uint8Array(e))
       const receive = JSON.parse(Base64.decode(str))
-       console.log('组态大屏 ', receive)
+      console.log('组态大屏 ', receive)
+      const red = 0
+      const green = 0
+      const yellow = 0
       receive.forEach((item) => {
       // console.log(item)
-      const number = item.number + item.unit
-      let color = 'green'
-      if (item.hasOwnProperty("color")){
-        color = item.color
-      }
-      var info = this.putNode(this.stage, item.lable, number, color);
+        const number = item.number + item.unit
+        let color = 'green'
+        if (item.hasOwnProperty('color')) {
+          color = item.color
+          if (item.color === 'red') {
+            red + 1
+          } else if (item.color === 'green') {
+            green + 1
+          } else if (item.color === 'yellow') {
+            yellow + 1
+          }
+        }
+        var info = this.putNode(this.stage, item.lable, number, color)
       // canvas.stage.find(item.id)[0].setAttrs(item.params)
-      });
+      })
+      this.putNode(this.stage, 'status_red_text', red.toString(), 'red')
+      this.putNode(this.stage, 'status_green_text', green.toString(), 'green')
+      this.putNode(this.stage, 'status_yellow_text', yellow.toString(), 'yellow')
     })
     // console.log(this.stage);
     this.handleInitKonva()
@@ -519,15 +532,15 @@ export default {
       // }
     },
     putNode(node, nodeid, text, color) {
-        // if (type != "undefined") {
-        node.find(`#${nodeid}`).forEach((item) => {
-          item.setAttr('text',text);
-        });
-        let tagnodeid = `#${nodeid}` + '_tag'
-        node.find(tagnodeid).forEach((item) => {
-          item.setAttr('fill', color)
-        })
-        this.layer.batchDraw()
+      // if (type != "undefined") {
+      node.find(`#${nodeid}`).forEach((item) => {
+        item.setAttr('text', text)
+      })
+      const tagnodeid = `#${nodeid}` + '_tag'
+      node.find(tagnodeid).forEach((item) => {
+        item.setAttr('fill', color)
+      })
+      this.layer.batchDraw()
     }
   }
 }

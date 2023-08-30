@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@dgiot/dgiot-component": "^0.0.3",
-    "amis": "1.9.1-beta.11",
+    "amis": "3.3.0",
     "axios": "^0.26.1",
     "core-js": "3.23.5",
     "echarts": "^4.9.0",

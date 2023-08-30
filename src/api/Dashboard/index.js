@@ -3,7 +3,7 @@ import axios from 'axios'
 import { getToken } from '@/utils/auth'
 
 
-const server = 'http://192.168.100.3'
+const server = 'http://dev.dgiotcloud.cn'
 
 export function getDlinkJson(data) {
   return request({

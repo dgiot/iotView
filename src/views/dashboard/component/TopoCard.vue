@@ -30,71 +30,87 @@
 </template>
 
 <script>
-import { Base64 } from "js-base64";
-import { mapGetters, mapMutations } from "vuex";
+import { Base64 } from 'js-base64'
+import { mapGetters, mapMutations } from 'vuex'
+import { getToken } from '@/utils/auth'
+
 export default {
-  name: "TopoCard",
+  name: 'TopoCard',
   props: {
     comp: {
       type: Object,
       default: () => ({
-        type: "line",
+        type: 'line',
         width: 262,
-        hieght: 72,
-      }),
-    },
+        hieght: 72
+      })
+    }
   },
   computed: {
     ...mapGetters([
-      "_product_count",
-      "_dev_count",
-      "_dev_online_count",
-      "_dev_off_count",
-    ]),
+      '_product_count',
+      '_dev_count',
+      '_dev_online_count',
+      '_dev_off_count'
+    ])
   },
   data() {
     return {
       value: 0,
-      topic: "",
-      label: "",
-    };
+      topic: '',
+      label: ''
+    }
   },
-  created() {},
+  created() {
+  },
   mounted() {
-    this.label = this.comp.text;
+    this.label = this.comp.text
     // $dg/user/konva
-    this.topic = `/${this.comp.type}/${this.comp.id}/report`;
+    this.topic = `/${this.comp.type}/${this.comp.id}/report`
     // console.log(this.topic);
     //  this.$dgiotBus.$off(this.topic);
-    this.$dgiotBus.$off(this.topic);
+    this.$dgiotBus.$off(this.topic)
     this.$dgiotBus.$on(this.topic, (e) => {
       // console.log("11111");
-      let str = String.fromCharCode.apply(null, new Uint8Array(e));
+      const str = String.fromCharCode.apply(null, new Uint8Array(e))
 
-      let receive = JSON.parse(Base64.decode(str));
-      console.log("接收到了数据", receive);
+      const receive = JSON.parse(Base64.decode(str))
+      console.log(this.comp.type, '接收到了数据=>', receive)
+      const sessionToken = getToken()
+      const pubTopic = `$dg/user/dashboard/${sessionToken}/ack` // 返回
+      const message = {
+        ack: 'heartbeat'
+      }
+      this.$dgiotBus.$emit(`MqttPublish`, {
+        pubTopic,
+        message: JSON.stringify(message),
+        qs: 0,
+        status: false
+      })
       // this.value = e;
       // this.receive.lable = receive.lable;
-      this.text = receive.lable;
-      this.value = receive.value;
-    });
+      this.text = receive.lable
+      this.value = receive.value
+    })
   },
   destroyed() {
-    this.$dgiotBus.$off(this.topic);
-  },
-};
+    this.$dgiotBus.$off(this.topic)
+  }
+}
 </script>
 <style lang="scss" scoped>
 .topoCard {
   position: relative;
-  .card_content {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
-  }
+
+.card_content {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
+
 }
 </style>

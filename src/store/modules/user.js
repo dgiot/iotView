@@ -10,7 +10,7 @@ const getDefaultState = () => {
     name: localStorage.getItem('name') || '',
     avatar: '',
     objectId: localStorage.getItem('objectId') || '',
-    routes: [],
+    routes: []
   }
 }
 
@@ -30,11 +30,11 @@ const mutations = {
     state.avatar = avatar
   },
   SET_OBJECTID: (state, objectId) => {
-    console.log('objectId', objectId);
+    console.log('objectId', objectId)
     state.objectId = objectId
   },
   setRoutes: (state, routes) => {
-    console.log('routes', routes);
+    console.log('routes', routes)
     state.routes = routes
   }
 }
@@ -45,8 +45,8 @@ const actions = {
     const { username, password, phone, code } = userInfo
     return new Promise((resolve, reject) => {
       verifyCode(phone, code, username, password).then(res => {
-        console.log('response', res);
-        const { sessionToken, name, tag, objectId, roles } = res
+        console.log('response', res)
+        const { sessionToken, name, tag, objectId, roles, nick } = res
         if (tag.userinfo && tag.userinfo.parse_deviceid) {
           localStorage.setItem('parse_deviceid', tag.userinfo.parse_deviceid)
         } else {
@@ -55,7 +55,8 @@ const actions = {
         localStorage.setItem('avatar', tag.userinfo.avatar)
         commit('SET_NAME', name)
         localStorage.setItem('name', name)
-        commit('SET_OBJECTID', objectId)  //用户唯一标识
+        localStorage.setItem('nick', nick)
+        commit('SET_OBJECTID', objectId) // 用户唯一标识
         localStorage.setItem('objectId', objectId)
         localStorage.setItem('deptId', roles[0].objectId)
         localStorage.setItem('rolename', roles[0].name)
@@ -72,8 +73,8 @@ const actions = {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(res => {
-        console.log('response', res);
-        const { sessionToken, name, tag, objectId, roles } = res
+        console.log('response', res)
+        const { sessionToken, name, tag, objectId, roles, nick } = res
         if (tag.userinfo && tag.userinfo.parse_deviceid) {
           localStorage.setItem('parse_deviceid', tag.userinfo.parse_deviceid)
         } else {
@@ -82,7 +83,8 @@ const actions = {
         localStorage.setItem('avatar', tag.userinfo.avatar)
         commit('SET_NAME', name)
         localStorage.setItem('name', name)
-        commit('SET_OBJECTID', objectId)  //用户唯一标识
+        localStorage.setItem('nick', nick)
+        commit('SET_OBJECTID', objectId) // 用户唯一标识
         localStorage.setItem('objectId', objectId)
         localStorage.setItem('deptId', roles[0].objectId)
         localStorage.setItem('rolename', roles[0].name)
