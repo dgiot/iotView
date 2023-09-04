@@ -9,11 +9,10 @@
 -->
 <template>
   <div class="DgiotAmis" :key="amisKey">
-    <amis-render :schema="schema" />
+    <amis-render :schema="schema" :screen_deviceid="screen_deviceid" :screen_productid="screen_productid" />
     <!-- <draw-code v-show="showHelp" :code="schema" /> -->
   </div>
 </template>
-
 <script>
 import "amis/lib/themes/default.css";
 import "amis/lib/themes/antd.css";
@@ -46,6 +45,16 @@ export default {
       required: false,
       default: () => amisdefault,
     },
+    screen_deviceid: {
+      type: String,
+      required: false,
+      default: '',
+    },
+    screen_productid: {
+      type: String,
+      required: false,
+      default: '',
+    },
     showHelp: {
       type: Boolean,
       required: false,
@@ -54,25 +63,28 @@ export default {
   },
   data() {
     return {
-      amisKey: new Date().getTime(),
+      amisKey: new Date().getTime().toString() + Math.random().toString(),
     };
   },
   watch: {
     schema: {
       handler(val) {
-        this.amisKey = new Date().getTime();
+        this.amisKey = new Date().getTime().toString() + Math.random().toString();
       },
       immediate: true,
       deep: true,
     },
   },
 };
+
 </script>
 <style lang="scss">
-.DgiotAmis{
+.DgiotAmis {
   height: 100%;
-  .box{
+
+  .box {
     height: 100%;
   }
-}  
+}
+
 </style>

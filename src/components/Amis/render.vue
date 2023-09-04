@@ -1,5 +1,5 @@
 <template>
-  <div :key="amisKey" ref="renderBox" class="box" className="box"></div>
+  <div :key="amisKey" ref="renderBox" :screen_deviceid="screen_deviceid" class="box" className="box"></div>
 </template>
 
 <script>
@@ -27,6 +27,16 @@ export default {
     schema: {
       type: Object,
     },
+    screen_deviceid: {
+      type: String,
+      required: false,
+      default: '',
+    },
+    screen_productid: {
+      type: String,
+      required: false,
+      default: '',
+    },
     updateLocation: {
       type: Function,
       required: false,
@@ -45,13 +55,14 @@ export default {
   },
   data() {
     return {
-      amisKey: `x${new Date().getTime()}`, //moment(new Date()).format('X')
+      amisKey: new Date().getTime().toString() + Math.random().toString(), //moment(new Date()).format('X')
     };
   },
   computed: {
     ...mapGetters(["token", "departmentToken"]),
   },
   mounted() {
+    console.log('%c 当前amis的设备id %s %s', 'background:#ffff00;', this.screen_deviceid, this.amisKey)
     this.initEnv();
     ReactDOM.render(
       renderSchema(
@@ -80,19 +91,20 @@ export default {
   methods: {
     initEnv() {
       this.env = {
-        session: "global",
+        session: "global" + this.screen_deviceid ,
         updateLocation: this.updateLocation || this.updateRoute,
         isCurrentUrl: (to) => {
           const link = this.normalizeLink(to);
           const location = window.location;
           let pathname = link;
-          // console.log('link',link);
+          console.log('link',link);
           let search = "";
           const idx = link.indexOf("?");
           if (idx != -1) {
             pathname = link.substring(0, idx);
             search = link.substring(idx);
           }
+          console.log('search', search)
           if (search) {
             if (pathname !== location.pathname || !location.search) {
               return false;
@@ -108,6 +120,9 @@ export default {
           return false;
         },
         fetcher: ({ url, method, data, config, headers }) => {
+          // let screen_deviceid = 
+          console.log(this.$refs.renderBox)
+          console.log('%c 触发网络请求 %s %s %s %s %s', 'background:#00ffff;', method, url, this.screen_deviceid, this.screen_productid, this.amisKey)
           // url = qs.stringify(url)
           let replaceArr = {};
           config = config || {};
@@ -120,7 +135,7 @@ export default {
 
           config.headers = headers || {};
           config.method = method;
-          // console.log(this.token);
+          console.log('TOKEN TOKEN', this.token);
           // config.headers['sessionToken'] = this.token
           _.merge(config.headers, {
             platform: "amis",
@@ -129,9 +144,10 @@ export default {
             author: "xxb",
             email: "258650676@qq.com",
           });
+          console.log('要发送的数据', data)
           if (method === "get" && data) {
             config.params = data;
-            // console.log("请求参数", config, config.data, data);
+            console.log("请求参数", config, config.data, data);
           } else if (data && data instanceof FormData) {
             // config.headers = config.headers || {};
             config.headers["Content-Type"] = "multipart/form-data";
@@ -161,6 +177,8 @@ export default {
                 localStorage.getItem("parse_notificationid")
               )
             : "";
+          url = url.replaceAll('parse_objectid', this.screen_deviceid)  
+          console.log('%c 替换后的网址 %s', 'background:#ffff00;', url)
           if (headers?.dgiotReplace?.length) {
             const dgiotReplace = headers["dgiotReplace"].split(","); // 将dgiotReplace参数string格式转化为对象格式
             const { store = "localStorage" } = headers; // token 存储方式 默认存储在localStorage中

@@ -198,6 +198,8 @@
             height: comp.height + 'px',
           }"
           :schema="comp.viewData"
+          :screen_deviceid="comp.screen_deviceid"
+          :screen_productid="comp.screen_productid"
           :show-help="false"
         />
       </div>
@@ -618,6 +620,8 @@ export default {
       // 获取到低代码页面
       for (let index = 0; index < this.amisComponents.length; index++) {
         const res = await getView(this.amisComponents[index].id)
+        console.log('%c 获取到低代码页面代码', 'background:#ffff00;')
+        console.log(res)
         this.amisComponents[index].viewData = res.data.data
       }
       this.amisFlag = true
