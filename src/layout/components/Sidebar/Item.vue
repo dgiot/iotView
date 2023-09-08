@@ -19,14 +19,14 @@ export default {
 
     if (icon) {
       if (icon.includes("el-icon")) {
-        vnodes.push(<i class={[icon, "sub-el-icon"]} />);
+        vnodes.push(<i class={[icon, "sub-el-icon"]}  style="font-size: 25px;"/>);
       } else if (icon.includes("dgiot_file")) {
         // sidebarStatus 1 打开侧边栏 0 关闭侧边栏
         if (Cookies.get("sidebarStatus") == "1") {
           vnodes.push(
             <div style="display:inline-block;text-align:center;">
               <img
-                style="height:18px;width:18px;margin-right: 12px;"
+                style="height:30px;width:30px;margin-right: 12px;"
                 src={Vue.prototype.$FileServe + icon}
               />
             </div>
@@ -35,7 +35,7 @@ export default {
            vnodes.push(
             <div style="display:inline-block;text-align:center;margin-left: 18px;">
               <img
-                style="height:18px;width:18px;"
+                style="height:30px;width:30px;"
                 src={Vue.prototype.$FileServe + icon}
               />
             </div>
