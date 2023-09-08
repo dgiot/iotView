@@ -235,7 +235,7 @@ export default {
         // this.clientcount = 0;
       })
       client.on('message', (topic, message) => {
-        // console.log("收到来自", topic, "的消息", message);
+        // console.log('收到来自', topic, '的消息', message)
         const sendtopic = topic.split('/')
         // console.log(sendtopic);
         let sendTopic = `/${sendtopic[sendtopic.length - 3]}/${
@@ -256,6 +256,8 @@ export default {
           sendTopic = '$dg/user/allrealdata'
         } else if (topic.indexOf('realdata') >= 0) {
           sendTopic = '$dg/user/realdata'
+        } else if (topic.indexOf('amisdata') >= 0) {
+          sendTopic = '$dg/user/amisdata'
         }
         _this.$dgiotBus.$emit(sendTopic, message)
       })
