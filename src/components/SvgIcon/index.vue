@@ -1,14 +1,9 @@
 <template>
   <div v-if="isExternal" :style="styleExternalIcon" class="svg-external-icon svg-icon" v-on="$listeners" />
-<!--  <svg v-else :class="svgClass" aria-hidden="true" v-on="$listeners">-->
-<!--&lt;!&ndash;    <use :xlink:href="iconName" />&ndash;&gt;-->
+  <svg v-else :class="svgClass" aria-hidden="true" v-on="$listeners">
 <!--    <use :xlink:href="iconName" />-->
-<!--  </svg>-->
-  <div style="display:inline-block;text-align:center;">
-    <img
-      style="height:30px;width:30px;margin-right: 12px;"
-      src=/dgiot_file/scene/device/1694167965005.png
-    />
+    <use :xlink:href="iconName" />
+  </svg>
 </template>
 
 <script>
