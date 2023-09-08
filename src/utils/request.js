@@ -46,7 +46,10 @@ service.interceptors.response.use(
    */
   response => {
     const res = response
-
+    // route.replace({path:'/login'})
+    //  route.push({ path: "/login" });
+    console.log('response', res);
+    // if the custom code is not 20000, it is judged as an error.
     if (res.status != 200) {
       // Message({
       //   message: res.statusText || 'Error',
@@ -62,6 +65,7 @@ service.interceptors.response.use(
           type: 'error',
           duration: 5 * 1000
         })
+
       } else if (res.status === 401) {
         Message({
           message: '登录失效',
@@ -85,8 +89,8 @@ service.interceptors.response.use(
     }
   },
   error => {
-    console.log('错误', error)
-    const info = error.msg || error.message
+    console.log('错误',error)
+    let info = error.msg || error.message
     Message({
       message: info,
       type: 'error',

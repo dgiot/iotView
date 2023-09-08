@@ -30,11 +30,6 @@ export function postAmis(params, data) {
   })
 }
 
-export function postBatchAmis(data) {
-  return request({
-    url: `/batch_amis`,
-    method: 'post',
-    data
-  })
-}
+
+
 

@@ -198,6 +198,8 @@
             height: comp.height + 'px',
           }"
           :schema="comp.viewData"
+          :screen_deviceid="comp.screen_deviceid"
+          :screen_productid="comp.screen_productid"
           :show-help="false"
         />
       </div>
@@ -257,7 +259,7 @@ import DgiotNotification1 from './component/notification/DgiotNotification1.vue'
 
 import { mapGetters } from 'vuex'
 import Amis from '@/components/Amis/index.vue' // amis 组件
-import { getView, postAmis, postBatchAmis } from '@/api/View/index'
+import { getView, postAmis } from '@/api/View/index'
 import { queryRelation } from '@/api/Relation'
 import { getDlinkJson, Startdashboard } from '@/api/Dashboard'
 import { isPC } from '@/utils/index'
@@ -418,13 +420,6 @@ export default {
     })
     // console.log(this.stage);
     this.handleInitKonva()
-    //  $dg/user/topo/r:5aa22b535060886e42e71b777a1101e7/amisdata/report
-    this.$dgiotBus.$off('$dg/user/amisdata')
-    this.$dgiotBus.$on('$dg/user/amisdata', (e) => {
-      const str = String.fromCharCode.apply(null, new Uint8Array(e))
-      const amisdata = JSON.parse(Base64.decode(str))
-      this.amisComponents = amisdata
-    })
     // 监听界面
     window.onresize = () => {
       return (() => {
@@ -561,18 +556,24 @@ export default {
         node = this.initScale(node)
       })
       this.stage.find('Image').forEach((node) => {
+        // node.setAttrs({
+        //   draggable: false,
+        // });
+        // console.log("node", node);
         this.initSize(node)
-        if (node.attrs.id === 'bg') {
+        if (node.attrs.id == 'bg') {
+          // console.log(node.attrs)
           this.bgSrc = node.attrs.src.includes('//')
             ? node.attrs.src
             : this.$FileServe + node.attrs.src
         }
         if (
-          node.attrs.type === 'konvaimage' ||
-          node.attrs.name === 'vuecomponent'
+          node.attrs.type == 'konvaimage' ||
+          node.attrs.name == 'vuecomponent'
         ) {
           const item = node.attrs
-          if (item.type === 'count') {
+          if (item.type == 'count') {
+            // console.log("item11111", item);
           }
           list.push(item)
         } else if (node.attrs.name == 'amiscomponent') {
@@ -582,6 +583,7 @@ export default {
           node.attrs.id.indexOf('不') < 0 &&
           node.attrs.id.indexOf('bg') < 0
         ) {
+          // if (node.attrs.type == "staticimage")
           const image = new Image()
           node.setAttrs({
             image: image
@@ -589,48 +591,39 @@ export default {
           image.src = node.attrs.src.includes('//')
             ? node.attrs.src
             : this.$FileServe + node.attrs.src
+          // this.layer.add(node);
+          // this.layer.batchDraw();
+          // this.stage.add(this.layer);
         }
       })
       this.stage.find('Rect').forEach((node) => {
+        // node.setAttrs({
+        //   draggable: false,
+        // });
         this.initSize(node)
-        if (node.attrs.name === 'vuecomponent') {
+        if (node.attrs.name == 'vuecomponent') {
           const item = node.attrs
           list.push(item)
-        } else if (node.attrs.name === 'amiscomponent') {
+        } else if (node.attrs.name == 'amiscomponent') {
           const item = node.attrs
           amislist.push(item)
         }
       })
       // this.layer.draw();
-      // this.layer.batchDraw()
-      // setTimeout(() => {
-      //   this.layer.batchDraw()
-      // }, 1500)
+      this.layer.batchDraw()
+      setTimeout(() => {
+        this.layer.batchDraw()
+      }, 1500)
       this.vueComponents = list
       this.vueFlag = true
-      // this.amisComponents = amislist
+      this.amisComponents = amislist
       // 获取到低代码页面
-      // console.log('amislist', amislist)
-      // amislist.forEach((item) => {
-      //   if (item.id) {
-      //     const params = {
-      //       viewid: item.amisid
-      //     }
-      //     const data = {
-      //       amislist: amislist,
-      //       render: {
-      //         screen_deviceid: item.screen_deviceid,
-      //         screen_productid: item.screen_productid
-      //       }
-      //     }
-      //     postAmis(params, data).then((res) => {
-      //       item.viewData = res.data
-      //       console.error('this.amisComponents', JSON.stringify(item)),
-      //
-      //       this.amisComponents.push(item)
-      //     })
-      //   }
-      // })
+      for (let index = 0; index < this.amisComponents.length; index++) {
+        const res = await getView(this.amisComponents[index].id)
+        console.log('%c 获取到低代码页面代码', 'background:#ffff00;')
+        console.log(res)
+        this.amisComponents[index].viewData = res.data.data
+      }
       this.amisFlag = true
     },
     // 按比例初始化大小 -
