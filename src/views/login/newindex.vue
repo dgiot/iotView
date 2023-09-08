@@ -26,18 +26,16 @@
         <h3 class="title">物联网平台</h3>
         <div class="login_mode">
           <span
-            @click="handleToCheckModel(1)"
             class="login_mode_code"
             :class="{ green: isPhone }"
-            >短信登录</span
-          >
+            @click="handleToCheckModel(1)"
+          >短信登录</span>
           <span
             v-if="isPwdShow"
-            @click="handleToCheckModel(-1)"
             class="login_mode_pwd"
             :class="{ green: !isPhone }"
-            >密码登录</span
-          >
+            @click="handleToCheckModel(-1)"
+          >密码登录</span>
         </div>
       </div>
 
@@ -51,12 +49,12 @@
           v-model="phoneForm.phone"
           placeholder="请输入手机号"
           name="phone"
-          @input="handleListenPhone"
           type="text"
           tabindex="1"
           auto-complete="on"
+          @input="handleListenPhone"
         />
-        <span class="send" v-if="send" @click="handleSend">发送</span>
+        <span v-if="send" class="send" @click="handleSend">发送</span>
         <span v-if="alreadySend" class="send" bindtap="sendMsg">{{
           second + "s"
         }}</span>
@@ -84,20 +82,20 @@
         </span>
       </el-form-item>
       <!-- <el-form-item> -->
-      <el-checkbox style="color: #ccc" v-model="checked"
-        >我已阅读并同意
+      <el-checkbox
+        v-model="checked"
+        style="color: #ccc"
+      >我已阅读并同意
         <a
           target="blank"
           href="https://prod.dgiotcloud.cn/dgiot_file/dgiot用户协议.html"
           class="user_intruction"
-          >《用户协议》</a
-        >和
+        >《用户协议》</a>和
         <a
           target="blank"
           href="https://prod.dgiotcloud.cn/dgiot_file/dgiot隐私协议.html"
           class="user_intruction"
-          >《隐私政策》</a
-        >
+        >《隐私政策》</a>
       </el-checkbox>
       <div>
         <span
@@ -109,8 +107,7 @@
             padding: 0 4px;
             border-radius: 4px;
           "
-          >请阅读并勾选协议</span
-        >
+        >请阅读并勾选协议</span>
       </div>
       <!-- </el-form-item> -->
 
@@ -119,16 +116,14 @@
         type="primary"
         style="width: 100%; margin-top: 15px; margin-bottom: 30px"
         @click.native.prevent="handleLogin"
-        >登录</el-button
-      >
+      >登录</el-button>
 
       <div class="tips">
         <a
           style="margin: 0 auto; cursor: pointer"
           href="https://aisuda.bce.baidu.com/amis/zh-CN/docs/index"
           target="_blank"
-          >amis</a
-        >
+        >amis</a>
       </div>
     </el-form>
     <el-form
@@ -144,17 +139,15 @@
         <h3 class="title">物联网平台</h3>
         <div class="login_mode">
           <span
-            @click="handleToCheckModel(1)"
             class="login_mode_code"
             :class="{ green: isPhone }"
-            >短信登录</span
-          >
+            @click="handleToCheckModel(1)"
+          >短信登录</span>
           <span
-            @click="handleToCheckModel(-1)"
             class="login_mode_pwd"
             :class="{ green: !isPhone }"
-            >密码登录</span
-          >
+            @click="handleToCheckModel(-1)"
+          >密码登录</span>
         </div>
       </div>
 
@@ -201,19 +194,18 @@
         type="primary"
         style="width: 100%; margin-bottom: 30px"
         @click.native.prevent="handleLogin1"
-        >登录</el-button
-      >
+      >登录</el-button>
 
       <div class="tips">
         <a
           style="margin: 0 auto; cursor: pointer"
           href="https://aisuda.bce.baidu.com/amis/zh-CN/docs/index"
           target="_blank"
-          >amis</a
-        >
+        >amis</a>
       </div>
     </el-form>
     <div
+      v-if="isPC"
       style="
         position: absolute;
         bottom: 1px;
@@ -221,7 +213,6 @@
         transform: translateX(-50%);
         color: #fff;
       "
-      v-if="isPC"
     >
       <a href="https://beian.miit.gov.cn/" style="color: #fff" target="_blank">
         Copyright © 2022 DGIOT All Rights Reserved 浙ICP备2021037683号-1
@@ -231,516 +222,516 @@
 </template>
 
 <script>
-import { validUsername, isvalidPhone } from "@/utils/validate";
-import { getNavigation } from "@/api/Navigation";
-import { isPC } from "@/utils/index";
-import { Roletree, postCode } from "@/api/User/index";
-import { postCookie } from "@/api/Dashboard/index";
-import { mapMutations } from "vuex"; //mapMutations，mapGetters
-import Cookies from "js-cookie";
-import { getToken } from "@/utils/auth";
+import { validUsername, isvalidPhone } from '@/utils/validate'
+import { getNavigation } from '@/api/Navigation'
+import { isPC } from '@/utils/index'
+import { Roletree, postCode } from '@/api/User/index'
+import { postCookie } from '@/api/Dashboard/index'
+import { mapMutations } from 'vuex' // mapMutations，mapGetters
+import Cookies from 'js-cookie'
+import { getToken } from '@/utils/auth'
 export default {
-  name: "Login",
+  name: 'Login',
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
-        callback(new Error("Please enter the correct user name"));
+        callback(new Error('Please enter the correct user name'))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 4) {
-        callback(new Error("密码不能少于4位"));
+        callback(new Error('密码不能少于4位'))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
     const validPhone = (rule, value, callback) => {
       if (!value) {
-        callback(new Error("请输入手机号"));
+        callback(new Error('请输入手机号'))
       } else if (!isvalidPhone(value)) {
-        //判断用户输入的值是否符合规则
-        callback(new Error("请输入正确的11位手机号码"));
+        // 判断用户输入的值是否符合规则
+        callback(new Error('请输入正确的11位手机号码'))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
     return {
       isPC: true,
       backgroundImage:
-        "/dgiot_dashboard/public/assets/images/platform/assets/login_images/background.jpg",
-      url: "",
+        '/dgiot_dashboard/public/assets/images/platform/assets/login_images/background.jpg',
+      url: '',
       checked: false,
       loginForm: {
-        username: "",
-        password: "",
+        username: '',
+        password: ''
       },
       phoneForm: {
-        phone: "",
-        code: "",
+        phone: '',
+        code: ''
       },
       phoneRules: {
         phone: [
           {
             required: true,
-            trigger: "blur",
+            trigger: 'blur',
             // message: "请输入手机号",
-            validator: validPhone,
-          },
+            validator: validPhone
+          }
         ],
         code: [
           // validatePassword
-          { required: true, trigger: "blur", message: "请输入验证码" },
-        ],
+          { required: true, trigger: 'blur', message: '请输入验证码' }
+        ]
       },
       loginRules: {
-        username: [{ required: true, trigger: "blur", message: "请输入账号" }],
+        username: [{ required: true, trigger: 'blur', message: '请输入账号' }],
         password: [
           // validatePassword
-          { required: true, trigger: "blur", message: "请输入密码" },
-        ],
+          { required: true, trigger: 'blur', message: '请输入密码' }
+        ]
       },
       loading: false,
-      passwordType: "",
+      passwordType: '',
       redirect: undefined,
       alreadySend: false,
       send: false,
       second: 60,
-      setTimer: "",
+      setTimer: '',
       isPhone: true,
-      isPwdShow: false,
-    };
+      isPwdShow: false
+    }
+  },
+  watch: {
+    $route: {
+      handler: function(route) {
+        this.redirect = route.query && route.query.redirect
+      },
+      immediate: true
+    }
   },
   mounted() {
-    console.log("this.$route.query", this.$route.query);
-    let isPhone = localStorage.getItem("isPhone") || this.$route.query.isPhone || true;
+    console.log('this.$route.query', this.$route.query)
+    const isPhone = localStorage.getItem('isPhone') || this.$route.query.isPhone || true
     if (isPhone == 'false') {
-      this.isPhone = false;
-      this.isPwdShow = true;
+      this.isPhone = false
+      this.isPwdShow = true
     }
     // if (this.$route.query.isPhone == 'false') {
     //   this.isPhone = false;
     // }
-    this.isPC = isPC();
-    console.log("是否为PC端", this.isPC, this.$route.query);
-    localStorage.setItem("isPC", this.isPC);
+    this.isPC = isPC()
+    console.log('是否为PC端', this.isPC, this.$route.query)
+    localStorage.setItem('isPC', this.isPC)
     // console.log(this.$route);
     if (this.$route.query.username && this.$route.query.password) {
-      this.loginForm.username = this.$route.query.username || "";
-      this.loginForm.password = this.$route.query.password || "";
-      localStorage.setItem("dgiotusername", this.loginForm.username);
-      localStorage.setItem("dgiotpassword", this.loginForm.password);
+      this.loginForm.username = this.$route.query.username || ''
+      this.loginForm.password = this.$route.query.password || ''
+      localStorage.setItem('dgiotusername', this.loginForm.username)
+      localStorage.setItem('dgiotpassword', this.loginForm.password)
     } else {
-      this.loginForm.username = localStorage.getItem("dgiotusername") || "";
-      this.loginForm.password = localStorage.getItem("dgiotpassword") || "";
+      this.loginForm.username = localStorage.getItem('dgiotusername') || ''
+      this.loginForm.password = localStorage.getItem('dgiotpassword') || ''
     }
-    console.log("this.loginForm", this.loginForm);
-    this.$nextTick(async () => {
-      await this.defaultSet();
-      this.backgroundImage = this.url + this.backgroundImage;
+    console.log('this.loginForm', this.loginForm)
+    this.$nextTick(async() => {
+      await this.defaultSet()
+      this.backgroundImage = this.url + this.backgroundImage
       // await this.init()
-    });
-  },
-  watch: {
-    $route: {
-      handler: function (route) {
-        this.redirect = route.query && route.query.redirect;
-      },
-      immediate: true,
-    },
+    })
   },
   methods: {
     handleSend() {
       // let data = {
       //   account: this.phoneForm.phone,
       // };
-      let reg = /^1([38][0-9]|4[014-9]|[59][0-35-9]|6[2567]|7[0-8])\d{8}$/;
+      const reg = /^1([38][0-9]|4[014-9]|[59][0-35-9]|6[2567]|7[0-8])\d{8}$/
       // console.log();
       if (reg.test(this.phoneForm.phone)) {
         postCode(this.phoneForm.phone)
           .then((res) => {
-            this.alreadySend = true;
-            this.send = false;
+            this.alreadySend = true
+            this.send = false
             //     this.setData({
             //   alreadySend: true,
             //   send: false
             // })
 
-            this.timer();
+            this.timer()
           })
           .catch((err) => {
-            console.log("err", err);
+            console.log('err', err)
             // this.$message({
             //   message: err.msg,
             //   type: "error",
             // });
-          });
+          })
       }
     },
     handleToCheckModel(value) {
       if (value == 1) {
-        this.isPhone = true;
-        this.loginForm.username = localStorage.getItem("dgiotusername") || "";
-        this.loginForm.password = localStorage.getItem("dgiotpassword") || "";
-        this.passwordType = "";
+        this.isPhone = true
+        this.loginForm.username = localStorage.getItem('dgiotusername') || ''
+        this.loginForm.password = localStorage.getItem('dgiotpassword') || ''
+        this.passwordType = ''
       } else {
-        this.isPhone = false;
+        this.isPhone = false
         // this.loginForm.username = "";
         // this.loginForm.password = "";
-        this.passwordType = "password";
+        this.passwordType = 'password'
       }
     },
     timer() {
-      let promise = new Promise((resolve, reject) => {
+      const promise = new Promise((resolve, reject) => {
         this.setTimer = setInterval(() => {
-          this.second = this.second - 1;
+          this.second = this.second - 1
           // this.setData({
           //   second: this.data.second - 1,
           // });
           if (this.second <= 0) {
-            this.second = 60;
-            this.alreadySend = false;
-            this.send = true;
+            this.second = 60
+            this.alreadySend = false
+            this.send = true
             // this.setData({
             //   second: 60,
             //   alreadySend: false,
             //   send: true,
             // });
-            resolve(this.setTimer);
+            resolve(this.setTimer)
           }
-        }, 1000);
-      });
+        }, 1000)
+      })
       promise.then(() => {
         if (this.setTimer) {
-          clearInterval(this.setTimer);
+          clearInterval(this.setTimer)
         }
-      });
+      })
     },
     handleListenPhone(e) {
-      let reg = /^1([38][0-9]|4[014-9]|[59][0-35-9]|6[2567]|7[0-8])\d{8}$/;
+      const reg = /^1([38][0-9]|4[014-9]|[59][0-35-9]|6[2567]|7[0-8])\d{8}$/
       // console.log();
       if (reg.test(e)) {
         if (!this.alreadySend) {
-          this.send = true;
+          this.send = true
         }
       }
     },
     showPwd() {
-      if (this.passwordType === "password") {
-        this.passwordType = "";
+      if (this.passwordType === 'password') {
+        this.passwordType = ''
       } else {
-        this.passwordType = "password";
+        this.passwordType = 'password'
       }
       this.$nextTick(() => {
-        this.$refs.password.focus();
-      });
+        this.$refs.password.focus()
+      })
     },
     // 密码登录
     handleLogin1() {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
-          this.loading = true;
+          this.loading = true
           this.$store
-            .dispatch("user/login", this.loginForm)
-            .then(async () => {
-              console.log("成功");
-              Vue.prototype.$FileServe = Cookies.get("fileServer") || "";
-              const res = await getNavigation();
+            .dispatch('user/login', this.loginForm)
+            .then(async() => {
+              console.log('成功')
+              Vue.prototype.$FileServe = Cookies.get('fileServer') || ''
+              const res = await getNavigation()
 
               // console.log("路由", res);
-              let list = [];
-              let item = {
-                path: "/",
-                url: "/",
+              const list = []
+              const item = {
+                path: '/',
+                url: '/',
                 // component: Layout,
-                redirect: "/dashboard",
+                redirect: '/dashboard',
                 meta: {
-                  title: "首页",
-                  icon: "dashboard",
-                  hidden: false,
+                  title: '首页',
+                  icon: 'dashboard',
+                  hidden: false
                 },
                 children: [
                   {
-                    path: "/dashboard",
-                    url: "/dashboard",
-                    name: "Dashboard",
+                    path: '/dashboard',
+                    url: '/dashboard',
+                    name: 'Dashboard',
                     // component: () => import("@/views/dashboard/index"),
-                    meta: { title: "首页", icon: "dashboard", hidden: false },
-                  },
-                ],
-              };
-              list.push(item);
+                    meta: { title: '首页', icon: 'dashboard', hidden: false }
+                  }
+                ]
+              }
+              list.push(item)
               res.results.forEach((item) => {
-                if (item.url != "/" && item.url != "/roles") {
-                  list.push(item);
+                if (item.url != '/' && item.url != '/roles') {
+                  list.push(item)
                 }
-              });
-              let routes = this.initRoutes(list);
-              let routelist = [];
+              })
+              const routes = this.initRoutes(list)
+              const routelist = []
               // 过滤admin 中的路由
               routes.forEach((element, index) => {
                 if (element.children) {
                   if (
-                    element.children[0].url.indexOf("amis") >= 0 ||
-                    element.children[0].name.indexOf("Dashboard") >= 0
+                    element.children[0].url.indexOf('amis') >= 0 ||
+                    element.children[0].name.indexOf('Dashboard') >= 0
                   ) {
-                    routelist.push(element);
+                    routelist.push(element)
                   }
                 } else {
-                  routelist.push(element);
+                  routelist.push(element)
                 }
-              });
-              localStorage.setItem("routes", JSON.stringify(routelist)); //路由列表
-              let roletree = await Roletree();
+              })
+              localStorage.setItem('routes', JSON.stringify(routelist)) // 路由列表
+              const roletree = await Roletree()
               localStorage.setItem(
-                "dgiotroletree",
+                'dgiotroletree',
                 JSON.stringify(roletree.results)
-              );
+              )
               // console.log("树", roletree);
               //  this.$store.commit("setRoutes", res.results);
               //  this.$store.commit("SET_NAME",'111');
 
               // 设置使用什么地图
-              let data = {
-                UserSession: getToken() || "",
+              const data = {
+                UserSession: getToken() || '',
                 cookie: {
-                  mapType: "baidu",
-                },
-              };
-              await postCookie(data);
-              this.$router.push({ path: "/" }); //path: this.redirect ||
-              this.loading = false;
+                  mapType: 'baidu'
+                }
+              }
+              await postCookie(data)
+              this.$router.push({ path: '/' }) // path: this.redirect ||
+              this.loading = false
             })
             .catch(() => {
-              this.loading = false;
-            });
+              this.loading = false
+            })
         } else {
-          console.log("error submit!!");
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
+      })
     },
     handleLogin() {
       if (!this.checked) {
-        this.$message("请阅读并勾选协议后进行登录");
-        return;
+        this.$message('请阅读并勾选协议后进行登录')
+        return
       }
       this.$refs.phoneForm.validate((valid) => {
-        console.log(valid);
+        console.log(valid)
         if (valid) {
-          this.loading = true;
-          let params = Object.assign(this.loginForm, this.phoneForm);
-          console.log(params);
+          this.loading = true
+          const params = Object.assign(this.loginForm, this.phoneForm)
+          console.log(params)
           // return;
           if (!params.username || !params.password) {
-            this.$message("当前未选择体验场景，将返回选择体验场景");
-            this.loading = false;
+            this.$message('当前未选择体验场景，将返回选择体验场景')
+            this.loading = false
             setTimeout(() => {
-              window.location.href = window.location.origin;
-            }, 2000);
-            return;
+              window.location.href = window.location.origin
+            }, 2000)
+            return
           }
 
           this.$store
-            .dispatch("user/codelogin", params)
-            .then(async () => {
-              localStorage.setItem("isPhone", false);
-              console.log("成功");
-              Vue.prototype.$FileServe = Cookies.get("fileServer") || "";
-              const res = await getNavigation();
+            .dispatch('user/codelogin', params)
+            .then(async() => {
+              localStorage.setItem('isPhone', false)
+              console.log('成功')
+              Vue.prototype.$FileServe = Cookies.get('fileServer') || ''
+              const res = await getNavigation()
 
               // console.log("路由", res);
-              let list = [];
-              let item = {
-                path: "/",
-                url: "/",
+              const list = []
+              const item = {
+                path: '/',
+                url: '/',
                 // component: Layout,
-                redirect: "/dashboard",
+                redirect: '/dashboard',
                 meta: {
-                  title: "首页",
-                  icon: "dashboard",
-                  hidden: false,
+                  title: '首页',
+                  icon: 'dashboard',
+                  hidden: false
                 },
                 children: [
                   {
-                    path: "/dashboard",
-                    url: "/dashboard",
-                    name: "Dashboard",
+                    path: '/dashboard',
+                    url: '/dashboard',
+                    name: 'Dashboard',
                     // component: () => import("@/views/dashboard/index"),
-                    meta: { title: "首页", icon: "dashboard", hidden: false },
-                  },
-                ],
-              };
-              list.push(item);
+                    meta: { title: '首页', icon: 'dashboard', hidden: false }
+                  }
+                ]
+              }
+              list.push(item)
               res.results.forEach((item) => {
-                if (item.url != "/" && item.url != "/roles") {
-                  list.push(item);
+                if (item.url != '/' && item.url != '/roles') {
+                  list.push(item)
                 }
-              });
-              let routes = this.initRoutes(list);
-              let routelist = [];
+              })
+              const routes = this.initRoutes(list)
+              const routelist = []
               // 过滤admin 中的路由
               routes.forEach((element, index) => {
                 if (element.children) {
                   if (
-                    element.children[0].url.indexOf("amis") >= 0 ||
-                    element.children[0].name.indexOf("Dashboard") >= 0
+                    element.children[0].url.indexOf('amis') >= 0 ||
+                    element.children[0].name.indexOf('Dashboard') >= 0
                   ) {
-                    routelist.push(element);
+                    routelist.push(element)
                   }
                 } else {
-                  routelist.push(element);
+                  routelist.push(element)
                 }
-              });
-              localStorage.setItem("routes", JSON.stringify(routelist)); //路由列表
-              let roletree = await Roletree();
+              })
+              localStorage.setItem('routes', JSON.stringify(routelist)) // 路由列表
+              const roletree = await Roletree()
               localStorage.setItem(
-                "dgiotroletree",
+                'dgiotroletree',
                 JSON.stringify(roletree.results)
-              );
+              )
               // console.log("树", roletree);
               //  this.$store.commit("setRoutes", res.results);
               //  this.$store.commit("SET_NAME",'111');
 
               // 设置使用什么地图
-              let data = {
-                UserSession: getToken() || "",
+              const data = {
+                UserSession: getToken() || '',
                 cookie: {
-                  mapType: "baidu",
-                },
-              };
-              await postCookie(data);
-              this.$router.push({ path: "/" }); //path: this.redirect ||
-              this.loading = false;
+                  mapType: 'baidu'
+                }
+              }
+              await postCookie(data)
+              this.$router.push({ path: '/' }) // path: this.redirect ||
+              this.loading = false
             })
             .catch(() => {
-              this.loading = false;
-            });
+              this.loading = false
+            })
         } else {
-          console.log("error submit!!");
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
+      })
     },
     initRoutes(routes) {
       // console.log('routes',routes);
       routes.forEach((item, i) => {
-        item.path = item.url;
+        item.path = item.url
         if (item.children) {
-          this.initRoutes(item.children);
+          this.initRoutes(item.children)
         }
-        if (item.meta && item.meta.icon.indexOf("dgiot_file") < 0) {
-          if (item.meta.title.indexOf("云") >= 0) {
-            item.meta.icon = "el-icon-cloudy";
+        if (item.meta && item.meta.icon.indexOf('dgiot_file') < 0) {
+          if (item.meta.title.indexOf('云') >= 0) {
+            item.meta.icon = 'el-icon-cloudy'
           }
-          if (item.meta.title.indexOf("管理") >= 0) {
-            item.meta.icon = "el-icon-s-management";
+          if (item.meta.title.indexOf('管理') >= 0) {
+            item.meta.icon = 'el-icon-s-management'
           }
 
-          if (item.meta.title.indexOf("设备管理") >= 0) {
-            item.meta.icon = "el-icon-monitor";
+          if (item.meta.title.indexOf('设备管理') >= 0) {
+            item.meta.icon = 'el-icon-monitor'
           }
           if (
-            item.meta.title.indexOf("运维") >= 0 ||
-            item.meta.title.indexOf("设置") >= 0
+            item.meta.title.indexOf('运维') >= 0 ||
+            item.meta.title.indexOf('设置') >= 0
           ) {
-            item.meta.icon = "el-icon-setting";
+            item.meta.icon = 'el-icon-setting'
           }
-          if (item.meta.title.indexOf("工单") >= 0) {
-            item.meta.icon = "el-icon-s-order";
+          if (item.meta.title.indexOf('工单') >= 0) {
+            item.meta.icon = 'el-icon-s-order'
           }
-          if (item.meta.title.indexOf("系统") >= 0) {
-            item.meta.icon = "el-icon-s-help";
+          if (item.meta.title.indexOf('系统') >= 0) {
+            item.meta.icon = 'el-icon-s-help'
           }
-          if (item.meta.title.indexOf("告警") >= 0) {
-            item.meta.icon = "el-icon-bell";
+          if (item.meta.title.indexOf('告警') >= 0) {
+            item.meta.icon = 'el-icon-bell'
           }
           // if (item.meta.title.indexOf("数据") >= 0) {
           //   item.meta.icon = "el-icon-s-data";
           // }
-          if (item.meta.title.indexOf("日志") >= 0) {
-            item.meta.icon = "el-icon-notebook-1";
+          if (item.meta.title.indexOf('日志') >= 0) {
+            item.meta.icon = 'el-icon-notebook-1'
           }
           if (
-            item.meta.title.indexOf("园区") >= 0 ||
-            item.meta.title.indexOf("建筑") >= 0
+            item.meta.title.indexOf('园区') >= 0 ||
+            item.meta.title.indexOf('建筑') >= 0
           ) {
-            item.meta.icon = "el-icon-office-building";
+            item.meta.icon = 'el-icon-office-building'
           }
 
-          if (item.meta.title.indexOf("工厂") >= 0) {
-            item.meta.icon = "el-icon-school";
+          if (item.meta.title.indexOf('工厂') >= 0) {
+            item.meta.icon = 'el-icon-school'
           }
           if (
-            item.meta.title.indexOf("人") >= 0 ||
-            item.meta.title.indexOf("员工") >= 0
+            item.meta.title.indexOf('人') >= 0 ||
+            item.meta.title.indexOf('员工') >= 0
           ) {
-            item.meta.icon = "el-icon-user-solid";
-          } else if (item.meta.title.indexOf("工序") >= 0) {
-            item.meta.icon = "el-icon-s-operation";
-          } else if (item.meta.title.indexOf("场景") >= 0) {
-            item.meta.icon = "el-icon-picture-outline";
-          } else if (item.meta.title.indexOf("质检") >= 0) {
-            item.meta.icon = "el-icon-circle-check";
-          } else if (item.meta.title.indexOf("监控") >= 0) {
-            item.meta.icon = "el-icon-camera";
-          } else if (item.meta.title.indexOf("票") >= 0) {
-            item.meta.icon = "el-icon-s-ticket";
-          } else if (item.meta.title.indexOf("信息") >= 0) {
-            item.meta.icon = "el-icon-info";
-          } else if (item.meta.title.indexOf("系统") >= 0) {
-            item.meta.icon = "el-icon-data-analysis";
-          } else if (item.meta.title.indexOf("控制") >= 0) {
-            item.meta.icon = "el-icon-eleme";
+            item.meta.icon = 'el-icon-user-solid'
+          } else if (item.meta.title.indexOf('工序') >= 0) {
+            item.meta.icon = 'el-icon-s-operation'
+          } else if (item.meta.title.indexOf('场景') >= 0) {
+            item.meta.icon = 'el-icon-picture-outline'
+          } else if (item.meta.title.indexOf('质检') >= 0) {
+            item.meta.icon = 'el-icon-circle-check'
+          } else if (item.meta.title.indexOf('监控') >= 0) {
+            item.meta.icon = 'el-icon-camera'
+          } else if (item.meta.title.indexOf('票') >= 0) {
+            item.meta.icon = 'el-icon-s-ticket'
+          } else if (item.meta.title.indexOf('信息') >= 0) {
+            item.meta.icon = 'el-icon-info'
+          } else if (item.meta.title.indexOf('系统') >= 0) {
+            item.meta.icon = 'el-icon-data-analysis'
+          } else if (item.meta.title.indexOf('控制') >= 0) {
+            item.meta.icon = 'el-icon-eleme'
           } else if (
-            item.meta.title.indexOf("光") >= 0 ||
-            item.meta.title.indexOf("支路") >= 0
+            item.meta.title.indexOf('光') >= 0 ||
+            item.meta.title.indexOf('支路') >= 0
           ) {
-            item.meta.icon = "el-icon-cpu";
-          } else if (item.meta.title.indexOf("照明") >= 0) {
-            item.meta.icon = "el-icon-s-opportunity";
-          } else if (item.meta.title.indexOf("空调") >= 0) {
-            item.meta.icon = "el-icon-receiving";
-          } else if (item.meta.title.indexOf("能耗") >= 0) {
-            item.meta.icon = "el-icon-magic-stick";
-          } else if (item.meta.title.indexOf("机械") >= 0) {
-            item.meta.icon = "material";
-          } else if (item.meta.title.indexOf("停车") >= 0) {
-            item.meta.icon = "stop";
+            item.meta.icon = 'el-icon-cpu'
+          } else if (item.meta.title.indexOf('照明') >= 0) {
+            item.meta.icon = 'el-icon-s-opportunity'
+          } else if (item.meta.title.indexOf('空调') >= 0) {
+            item.meta.icon = 'el-icon-receiving'
+          } else if (item.meta.title.indexOf('能耗') >= 0) {
+            item.meta.icon = 'el-icon-magic-stick'
+          } else if (item.meta.title.indexOf('机械') >= 0) {
+            item.meta.icon = 'material'
+          } else if (item.meta.title.indexOf('停车') >= 0) {
+            item.meta.icon = 'stop'
           }
-          if (item.meta.title.indexOf("对战") >= 0) {
-            item.meta.icon = "fight";
-          } else if (item.meta.title.indexOf("射击") >= 0) {
-            item.meta.icon = "shooting";
-          } else if (item.meta.title.indexOf("跑") >= 0) {
-            item.meta.icon = "run";
-          } else if (item.meta.title.indexOf("跳") >= 0) {
-            item.meta.icon = "jump";
-          } else if (item.meta.title.indexOf("投") >= 0) {
-            item.meta.icon = "throw";
+          if (item.meta.title.indexOf('对战') >= 0) {
+            item.meta.icon = 'fight'
+          } else if (item.meta.title.indexOf('射击') >= 0) {
+            item.meta.icon = 'shooting'
+          } else if (item.meta.title.indexOf('跑') >= 0) {
+            item.meta.icon = 'run'
+          } else if (item.meta.title.indexOf('跳') >= 0) {
+            item.meta.icon = 'jump'
+          } else if (item.meta.title.indexOf('投') >= 0) {
+            item.meta.icon = 'throw'
           }
 
           // console.log("mata", item.meta);
           // el-icon-cloudy
         }
-      });
-      return routes;
+      })
+      return routes
     },
     async defaultSet() {
       // console.log("环境", process.env.NODE_ENV, process.env.VUE_APP_BASE_API);
       const url =
-        process.env.NODE_ENV === "development"
+        process.env.NODE_ENV === 'development'
           ? process.env.VUE_APP_URL
-          : location.origin;
-      Cookies.set("fileServer", url, { expires: 60 * 1000 * 30 });
-      this.url = url;
+          : location.origin
+      Cookies.set('fileServer', url, { expires: 60 * 1000 * 30 })
+      this.url = url
     },
     handleIn() {
-      window.location.href = window.location.origin;
-    },
-  },
-};
+      window.location.href = window.location.origin
+    }
+  }
+}
 </script>
 
 <style lang="scss">

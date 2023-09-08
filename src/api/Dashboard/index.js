@@ -2,8 +2,7 @@ import request from '@/utils/request'
 import axios from 'axios'
 import { getToken } from '@/utils/auth'
 
-
-const server = 'http://dev.dgiotcloud.cn'
+const server = 'http://192.168.1.4:5080'
 
 export function getDlinkJson(data) {
   return request({
@@ -28,7 +27,7 @@ export async function Startdashboard(dashboardId, data) {
       dashboardId: dashboardId
     },
     headers: {
-      "sessionToken": getToken()
+      'sessionToken': getToken()
     }
   })
 }
