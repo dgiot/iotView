@@ -422,6 +422,7 @@ export default {
     this.$dgiotBus.$off('$dg/user/amisdata')
     this.$dgiotBus.$on('$dg/user/amisdata', (e) => {
       const str = String.fromCharCode.apply(null, new Uint8Array(e))
+      console.log('amisdata', str)
       const amisdata = JSON.parse(Base64.decode(str))
       this.amisComponents = amisdata
     })
