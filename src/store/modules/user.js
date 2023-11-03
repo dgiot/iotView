@@ -2,6 +2,7 @@ import { login, logout, getInfo, verifyCode } from '@/api/User/index'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 import Cookies from 'js-cookie'
+import store from '@/store'
 
 const getDefaultState = () => {
   return {
@@ -97,7 +98,113 @@ const actions = {
       })
     })
   },
+  initRoutes({ commit }, routes) {
+    // console.error('routes', routes)
+    return new Promise((resolve, reject) => {
+      routes.forEach((item, i) => {
+        item.path = item.url
+        if (item.children) {
+          store.dispatch('user/initRoutes', item.children)
+        }
+        if (item.meta && item.meta.icon.indexOf('dgiot_file') < 0) {
+          if (item.meta.title.indexOf('云') >= 0) {
+            item.meta.icon = 'el-icon-cloudy'
+          }
+          if (item.meta.title.indexOf('管理') >= 0) {
+            item.meta.icon = 'el-icon-s-management'
+          }
 
+          if (item.meta.title.indexOf('设备管理') >= 0) {
+            item.meta.icon = 'el-icon-monitor'
+          }
+          if (
+            item.meta.title.indexOf('运维') >= 0 ||
+              item.meta.title.indexOf('设置') >= 0
+          ) {
+            item.meta.icon = 'el-icon-setting'
+          }
+          if (item.meta.title.indexOf('工单') >= 0) {
+            item.meta.icon = 'el-icon-s-order'
+          }
+          if (item.meta.title.indexOf('系统') >= 0) {
+            item.meta.icon = 'el-icon-s-help'
+          }
+          if (item.meta.title.indexOf('告警') >= 0) {
+            item.meta.icon = 'el-icon-bell'
+          }
+          // if (item.meta.title.indexOf("数据") >= 0) {
+          //   item.meta.icon = "el-icon-s-data";
+          // }
+          if (item.meta.title.indexOf('日志') >= 0) {
+            item.meta.icon = 'el-icon-notebook-1'
+          }
+          if (
+            item.meta.title.indexOf('园区') >= 0 ||
+              item.meta.title.indexOf('建筑') >= 0
+          ) {
+            item.meta.icon = 'el-icon-office-building'
+          }
+
+          if (item.meta.title.indexOf('工厂') >= 0) {
+            item.meta.icon = 'el-icon-school'
+          }
+          if (
+            item.meta.title.indexOf('人') >= 0 ||
+              item.meta.title.indexOf('员工') >= 0
+          ) {
+            item.meta.icon = 'el-icon-user-solid'
+          } else if (item.meta.title.indexOf('工序') >= 0) {
+            item.meta.icon = 'el-icon-s-operation'
+          } else if (item.meta.title.indexOf('场景') >= 0) {
+            item.meta.icon = 'el-icon-picture-outline'
+          } else if (item.meta.title.indexOf('质检') >= 0) {
+            item.meta.icon = 'el-icon-circle-check'
+          } else if (item.meta.title.indexOf('监控') >= 0) {
+            item.meta.icon = 'el-icon-camera'
+          } else if (item.meta.title.indexOf('票') >= 0) {
+            item.meta.icon = 'el-icon-s-ticket'
+          } else if (item.meta.title.indexOf('信息') >= 0) {
+            item.meta.icon = 'el-icon-info'
+          } else if (item.meta.title.indexOf('系统') >= 0) {
+            item.meta.icon = 'el-icon-data-analysis'
+          } else if (item.meta.title.indexOf('控制') >= 0) {
+            item.meta.icon = 'el-icon-eleme'
+          } else if (
+            item.meta.title.indexOf('光') >= 0 ||
+              item.meta.title.indexOf('支路') >= 0
+          ) {
+            item.meta.icon = 'el-icon-cpu'
+          } else if (item.meta.title.indexOf('照明') >= 0) {
+            item.meta.icon = 'el-icon-s-opportunity'
+          } else if (item.meta.title.indexOf('空调') >= 0) {
+            item.meta.icon = 'el-icon-receiving'
+          } else if (item.meta.title.indexOf('能耗') >= 0) {
+            item.meta.icon = 'el-icon-magic-stick'
+          } else if (item.meta.title.indexOf('机械') >= 0) {
+            item.meta.icon = 'material'
+          } else if (item.meta.title.indexOf('停车') >= 0) {
+            item.meta.icon = 'stop'
+          }
+          if (item.meta.title.indexOf('对战') >= 0) {
+            item.meta.icon = 'fight'
+          } else if (item.meta.title.indexOf('射击') >= 0) {
+            item.meta.icon = 'shooting'
+          } else if (item.meta.title.indexOf('跑') >= 0) {
+            item.meta.icon = 'run'
+          } else if (item.meta.title.indexOf('跳') >= 0) {
+            item.meta.icon = 'jump'
+          } else if (item.meta.title.indexOf('投') >= 0) {
+            item.meta.icon = 'throw'
+          }
+
+          // console.log("mata", item.meta);
+          // el-icon-cloudy
+        }
+      })
+      // console.log('routes', routes)
+      resolve(routes)
+    })
+  },
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {

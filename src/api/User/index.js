@@ -4,7 +4,7 @@ import request from '@/utils/request'
 export function postCode(account) {
   return request({
     url: '/smscode?account=' + account,
-    method: 'post',
+    method: 'post'
     // data,
     // params
     // headers: {
@@ -17,7 +17,7 @@ export function verifyCode(phone, code, username, password) {
   return request({
     url: `/verify_code?account=${phone}&code=${code}&username=${username}&password=${password}`,
     method: 'post',
-    data:{},
+    data: {}
     // params
     // headers: {
     //   "Content-Type": "text/plain"
@@ -32,15 +32,15 @@ export function login(data) {
     method: 'post',
     data,
     headers: {
-      "Content-Type": "text/plain"
-      
+      'Content-Type': 'text/plain'
+
     }
   })
 }
 export function Roletree() {
   return request({
     url: '/roletree',
-    method: 'get',
+    method: 'get'
   })
 }
 export function getToken(params) {
@@ -54,13 +54,10 @@ export function getToken(params) {
 export function putUserInfo(objectId, data) {
   return request({
     url: `/amis/_User/${objectId}`,
-    method: "put",
+    method: 'put',
     data
   })
 }
-
-
-
 
 export function getInfo(token) {
   return request({

@@ -362,7 +362,7 @@ export default {
           // el-icon-cloudy
         }
       })
-      console.log('routes', routes)
+      // console.log('routes', routes)
       return routes
     },
     async defaultSet() {
